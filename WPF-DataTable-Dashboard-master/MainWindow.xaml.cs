@@ -11,6 +11,10 @@ using System.Windows.Controls;
 using iText.IO.Image;
 using iText.Kernel.Pdf.Extgstate;
 using iText.Kernel.Pdf;
+using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
+using static System.Resources.ResXFileRef;
 
 namespace DataGrid
 {
@@ -124,6 +128,10 @@ namespace DataGrid
         private void AddWaterMarkButton_Click(object sender, RoutedEventArgs e) 
         {
             Border addingWaterMark_Mask = (Border)MainGrid.FindName("AddingWaterMark_Mask");
+            System.Windows.Controls.TextBox addingWaterMark_TextBox = (System.Windows.Controls.TextBox)AddingWaterMark_Mask.FindName("AddingWaterMark_TextBox");
+            MahApps.Metro.IconPacks.PackIconMaterial addingWaterMark_Icon = (MahApps.Metro.IconPacks.PackIconMaterial)MainGrid.FindName("AddingWaterMark_Icon");
+            var converter = new System.Windows.Media.BrushConverter();//改变首字符圈圈颜色用的
+            //bool TaskisOver = false;
 
             membersDataGrid.ItemsSource = members;
             if (members.Count != 0)
@@ -147,8 +155,6 @@ namespace DataGrid
                         int BeforeAddFile = file_list.Count;
 
                         file_list = file.GetFilePath();
-
-                        var converter = new System.Windows.Media.BrushConverter();//改变首字符圈圈颜色用的
 
                         members.Clear();
                         membersDataGrid.ItemsSource = null;
@@ -179,33 +185,38 @@ namespace DataGrid
                                 fileType = "未知类型文件";
                                 bgColor = (System.Windows.Media.Brush)converter.ConvertFromString("#D3D3D3");
                             }
-                            
+
                             members.Add(new Member { Number = (i + 1).ToString(), Character = fileName.Substring(0, 1), BgColor = bgColor, Name = fileName, Position = fileDir, Email = "", Phone = fileType });
-                        }  
+                        }
                         membersDataGrid.ItemsSource = members;
                         break;
                 }
             }
-            else 
+            else
             {
-                addingWaterMark_Mask.Visibility = Visibility.Visible;
-                for (int i = 0; i < file_list.Count; i++)
+                this.Dispatcher.Invoke(new Action(() => { addingWaterMark_Mask.Visibility = Visibility.Visible; addingWaterMark_Icon.Visibility = Visibility.Visible; }));
+                Task task = Task.Run(() =>
                 {
-                    string filePath = file_list[i];
-                    string fileDir = file.getFileDir(filePath);
-                    string fileName = file.getFileName(filePath);
-                    string fileExtension = System.IO.Path.GetExtension(file_list[i]);
-                    file.StartAddWaterMark(fileOperate, filePath, fileDir, fileName, fileExtension);
+                    this.Dispatcher.Invoke(new Action(() => { addingWaterMark_TextBox.Text = "请稍等，正在添加水印中...(0"  + "/" + file_list.Count + ")"; }));
+                    for (int i = 0; i < file_list.Count; i++)
+                    {
+                        string filePath = file_list[i];
+                        string fileDir = file.getFileDir(filePath);
+                        string fileName = file.getFileName(filePath);
+                        string fileExtension = System.IO.Path.GetExtension(file_list[i]);
+                        file.StartAddWaterMark(fileOperate, filePath, fileDir, fileName, fileExtension);
 
-                    //System.Windows.Controls.Button ButtonGroup = (membersDataGrid.Columns[i].GetCellContent(membersDataGrid.Items[5]) as System.Windows.Controls.Button);
-                    
-                    //StackPanel dataGridTemplateColumn = (StackPanel)membersDataGrid.Columns[i].GetCellContent(membersDataGrid.Items[4]);
-                    //System.Windows.Controls.Button removeFile_Button = (System.Windows.Controls.Button)dataGridTemplateColumn.FindName("RemoveFile_Button");
-                    //System.Windows.Controls.Button fileCheck_Button = (System.Windows.Controls.Button)dataGridTemplateColumn.FindName("FileCheck_Button");
-                    //removeFile_Button.Visibility = System.Windows.Visibility.Collapsed;
-                    //fileCheck_Button.Visibility =System.Windows.Visibility.Visible;
+                        this.Dispatcher.Invoke(new Action(() => { addingWaterMark_TextBox.Text = "请稍等，正在添加水印中...(" + (i + 1) + "/" + file_list.Count + ")"; }));
+                    }
+                    this.Dispatcher.Invoke(new Action(() => 
+                    {
+                        addingWaterMark_TextBox.Text = "文件已全部添加水印！";
+                        addingWaterMark_Icon.Kind = MahApps.Metro.IconPacks.PackIconMaterialKind.CheckBold;
+                        addingWaterMark_Icon.Foreground = (System.Windows.Media.Brush)converter.ConvertFromString("#FF42D12F"); 
+                    })
+                    );
                 }
-                addingWaterMark_Mask.Visibility = Visibility.Collapsed;
+                );
             }
         }
         private void RemoveFileButton_Click(object sender, RoutedEventArgs e) 
@@ -333,22 +344,22 @@ namespace DataGrid
             string fileNameWithoutExt = System.IO.Path.GetFileNameWithoutExtension(filePath);
             string fileExtension = System.IO.Path.GetExtension(filePath);
             document.SaveToFile(fileDir + "\\" + fileNameWithoutExt + "(已添加水印)" + fileExtension);
+            return;
         }
         public void XLSWaterMark(string filePath, string fileDir)
         {
             //加载Excel文档并获取第一个工作表
             Workbook workbook = new Workbook();
             workbook.LoadFromFile(filePath);
-            Worksheet sheet = workbook.Worksheets[0];
-
-            //加载一张图片并设置为背景图片
-            //SkiaSharp.SKBitmap bm = SkiaSharp.SKBitmap.Decode(Environment.CurrentDirectory + "\\WaterMarkPic\\ExcelWaterMark.png");
-            sheet.PageSetup.BackgoundImage = bm;
-
+            foreach (var sheet in workbook.Worksheets)
+            {
+                sheet.PageSetup.BackgoundImage = bm;
+            }
             //保存文档
             string fileNameWithoutExt = System.IO.Path.GetFileNameWithoutExtension(filePath);
             string fileExtension = System.IO.Path.GetExtension(filePath);
             workbook.SaveToFile(fileDir + "\\" + fileNameWithoutExt + "(已添加水印)" + fileExtension);
+
         }
 
         public void PDFWatermark(string filePath, string fileDir)
@@ -382,6 +393,7 @@ namespace DataGrid
             }
 
             doc.Close();
+            return ;
         }
         public void PDFSplit()
         {
