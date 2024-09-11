@@ -15,19 +15,29 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using static System.Resources.ResXFileRef;
+using System.Windows.Media;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace DataGrid
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow :System.Windows.Window
     {
         ObservableCollection<Member> members = new ObservableCollection<Member>();
         File file = new File();
         FileOperate fileOperate = new FileOperate();
         List<string> file_list = new List<string>();
+        TextBlock title_TextBlock;
+        System.Windows.Controls.Button button_AddFile;
+        System.Windows.Controls.Button menuButton_AddFile;
+        System.Windows.Controls.Button menuButton_A2a;
 
         public MainWindow()
         {
             InitializeComponent();
+            title_TextBlock = (TextBlock)MainGrid.FindName("Title_TextBlock");
+            button_AddFile = (System.Windows.Controls.Button)MainGrid.FindName("Button_AddFile");
+            menuButton_AddFile = (System.Windows.Controls.Button)MenuButton_Grid.FindName("MenuButton_AddWaterMark");
+            menuButton_A2a = (System.Windows.Controls.Button)MenuButton_Grid.FindName("MenuButton_A2a");
         }
 
         private bool IsMaximize = false;
@@ -72,7 +82,27 @@ namespace DataGrid
             }
             
         }
-        private void GetFilePathButton_Click(object sender, RoutedEventArgs e)
+        private void MenuButton_AddWaterMark_Click(object sender, RoutedEventArgs e)
+        {
+            this.Dispatcher.Invoke(new Action(() =>
+            {
+                button_AddFile.Visibility = Visibility.Visible;
+                //menuButton_AddFile = Visibility;
+                //menuButton_A2a;
+                title_TextBlock.Text = "添加水印";
+            }));
+        }
+        private void MenuButton_A2a_Click(object sender, RoutedEventArgs e)
+        {
+            this.Dispatcher.Invoke(new Action(() => 
+            {
+                button_AddFile.Visibility = Visibility.Collapsed;
+                //menuButton_AddFile = Visibility;
+                //menuButton_A2a;
+                title_TextBlock.Text = "大小写转换";
+            }));
+        }
+            private void GetFilePathButton_Click(object sender, RoutedEventArgs e)
         {
             //获取文件前的fileList的数量
             int BeforeAddFile = file_list.Count;
@@ -130,6 +160,7 @@ namespace DataGrid
             Border addingWaterMark_Mask = (Border)MainGrid.FindName("AddingWaterMark_Mask");
             System.Windows.Controls.TextBox addingWaterMark_TextBox = (System.Windows.Controls.TextBox)AddingWaterMark_Mask.FindName("AddingWaterMark_TextBox");
             MahApps.Metro.IconPacks.PackIconMaterial addingWaterMark_Icon = (MahApps.Metro.IconPacks.PackIconMaterial)MainGrid.FindName("AddingWaterMark_Icon");
+
             var converter = new System.Windows.Media.BrushConverter();//改变首字符圈圈颜色用的
             //bool TaskisOver = false;
 
@@ -205,8 +236,45 @@ namespace DataGrid
                         string fileName = file.getFileName(filePath);
                         string fileExtension = System.IO.Path.GetExtension(file_list[i]);
                         file.StartAddWaterMark(fileOperate, filePath, fileDir, fileName, fileExtension);
-
-                        this.Dispatcher.Invoke(new Action(() => { addingWaterMark_TextBox.Text = "请稍等，正在添加水印中...(" + (i + 1) + "/" + file_list.Count + ")"; }));
+                        
+                        this.Dispatcher.Invoke(new Action(() => 
+                        {
+                            
+                            //Trace.WriteLine("----------- cp---------------:" + VisualTreeHelper.GetChildrenCount(cp));
+                            //if (cp != null && VisualTreeHelper.GetChildrenCount(cp) > 0)
+                            //{
+                            //    Trace.WriteLine("-----------找到了ContentPresenter---------------");
+                            //    //找到StackPanel
+                            //    StackPanel stackPanel = VisualTreeHelper.GetChild(cp, 0) as StackPanel;
+                            //    if (stackPanel != null)
+                            //    {
+                            //        Trace.WriteLine("-----------找到了stackPanel---------------");
+                            //    }
+                            //    else
+                            //    {
+                            //        Trace.WriteLine("-----------没找到stackPanel---------------");
+                            //    }
+                            //    //再找到按钮
+                            //    System.Windows.Controls.Button removeFile_Button = (System.Windows.Controls.Button)VisualTreeHelper.GetChild(stackPanel, 1);
+                            //    if (removeFile_Button != null)
+                            //    {
+                            //        removeFile_Button.Visibility = Visibility.Collapsed;
+                            //    }
+                            //    else
+                            //    {
+                            //        Trace.WriteLine("-----------没找到removeFile_Button---------------");
+                            //    }
+                            //}
+                            //else 
+                            //{
+                            //    Trace.WriteLine("-----------没找到ContentPresenter---------------");
+                            //}
+                            Trace.WriteLine("----------- membersDataGrid.Columns[" + i + "]---------------" + membersDataGrid.Columns[i].GetCellContent(membersDataGrid.Items[i]));
+                            Trace.WriteLine("----------- membersDataGrid.ColumnsNum:" + membersDataGrid.Columns[i].GetCellContent(membersDataGrid.Items[i]));
+                            
+                            addingWaterMark_TextBox.Text = "请稍等，正在添加水印中...(" + (i + 1) + "/" + file_list.Count + ")"; 
+                        })
+                        );
                     }
                     this.Dispatcher.Invoke(new Action(() => 
                     {

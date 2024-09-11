@@ -17,7 +17,7 @@
             </Grid.ColumnDefinitions>
 
             <!--Left Menu-->
-            <Grid>
+            <Grid x:Name="MenuButton_Grid">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="*"/>
@@ -25,7 +25,7 @@
 
                 <!--Menu Icon-->
                 <Button Style="{StaticResource topButton}" HorizontalAlignment="Left" Margin="20 28 0 35" Click="HelpButton_Click">
-                    <Icon:PackIconMaterial Kind="HelpCircleOutline" Width="25" Height="25" />
+                    <Icon:PackIconMaterial Kind="HelpCircleOutline" Width="25" Height="25" Visibility="Collapsed" />
                 </Button>
 
                 <Border Grid.Row="1" Background="#623ED0" CornerRadius="0 50 0 30">
@@ -46,8 +46,8 @@
                         <Separator Margin="10" Background="#7E5FDC" DockPanel.Dock="Top" Height="0.8"/>
 
                         <!--Menu Buttons-->
-                        <StackPanel x:Name="Featurelist_Panel" DockPanel.Dock="Top" >
-                            <Button Style="{StaticResource menuButton}" Background="#7B5CD6" Foreground="White">
+                        <StackPanel x:Name="MenuButton_List" DockPanel.Dock="Top" >
+                            <Button x:Name="MenuButton_AddWaterMark" Style="{StaticResource menuButton}" Background="#7B5CD6" Foreground="White" Click="MenuButton_AddWaterMark_Click">
                                 <StackPanel Orientation="Horizontal">
                                     <Icon:PackIconMaterial Kind="Watermark" Style="{StaticResource menuButtonIcon}"/>
                                     <TextBlock Text="添加水印"/>
@@ -83,10 +83,10 @@
                             </Button>
                             <!--Menu Seprator-->
                             <Separator Margin="10" Background="#7E5FDC" DockPanel.Dock="Top" Height="0.8"/>
-                            <Button Style="{StaticResource menuButton}" IsEnabled="False">
+                            <Button x:Name="MenuButton_A2a" Style="{StaticResource menuButton}" Click="MenuButton_A2a_Click">
                                 <StackPanel Orientation="Horizontal">
                                     <Icon:PackIconMaterial Kind="CabinAFrame" Style="{StaticResource menuButtonIcon}"/>
-                                    <TextBlock Text="大小写转换(无权限)"/>
+                                    <TextBlock Text="大小写转换"/>
                                 </StackPanel>
                             </Button>
                             <Button Style="{StaticResource menuButton}" IsEnabled="False">
@@ -115,17 +115,17 @@
             <!--Main Section-->
             <Grid x:Name="MainGrid" Grid.Column="1" Margin="30 20 20 20">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="57*"/>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="383*"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
 
                 <!--Search Textbox-->
-                <Grid Width="200" HorizontalAlignment="Left">
+                <Grid Width="0" HorizontalAlignment="Left">
                     <TextBlock Margin="20 0" VerticalAlignment="Center" Foreground="#B0B9C6" IsHitTestVisible="False"
                            Panel.ZIndex="1" Text="Search here ..."
                            Visibility="{Binding ElementName=textBoxSearch, Path=Text.IsEmpty, Converter={StaticResource BoolToVis}}" />
@@ -145,10 +145,10 @@
                 </Button>-->
 
                 <!--Page Title-->
-                <TextBlock Text="添加水印" Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0" Foreground="#121518" HorizontalAlignment="Left"/>
+                <TextBlock x:Name="Title_TextBlock" Text="添加水印" Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0" Foreground="#121518" HorizontalAlignment="Left"/>
 
                 <!--Add Button-->
-                <Button Style="{StaticResource addButton}" Click="GetFilePathButton_Click">
+                <Button x:Name="Button_AddFile" Style="{StaticResource addButton}" Click="GetFilePathButton_Click">
                     <StackPanel Orientation="Horizontal">
                         <Icon:PackIconMaterial Kind="Plus" VerticalAlignment="Center" Margin="0 1 8 0" Width="11" Height="11"/>
                         <TextBlock Text="添加文件..."/>
@@ -204,7 +204,6 @@
                                         <Border Width="25" Height="25" CornerRadius="50" Margin="0 0 10 0" Background="{Binding BgColor}">
                                             <TextBlock Text="{Binding Character}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" Margin="0 0 0 1"/>
                                         </Border>
-
                                         <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
                                     </StackPanel>
                                 </DataTemplate>
@@ -213,11 +212,11 @@
                         <DataGridTextColumn Header="文件路径" Binding="{Binding Position}" IsReadOnly="True" Width="*"/>
                         <!--<DataGridTextColumn Header="Email Address" Binding="{Binding Email}" IsReadOnly="True" Width="*"/>-->
                         <DataGridTextColumn Header="文件类型" Binding="{Binding Phone}" IsReadOnly="True" Width="*"/>
-                        <DataGridTemplateColumn Header="" IsReadOnly="True" Width="auto">
+                        <DataGridTemplateColumn x:Name="EditButtonPanel" Header="" IsReadOnly="True" Width="auto">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Button x:Name="FileCheck_Button" Style="{StaticResource gridCheckButton}" Visibility="Hidden" Click="FileCheck_Button_Click">
+                                    <StackPanel x:Name="StackPanel_EditButton" Orientation="Horizontal">
+                                        <Button x:Name="FileCheck_Button" Style="{StaticResource gridCheckButton}" Visibility="Collapsed" Click="FileCheck_Button_Click" Margin="0 0 7 0">
                                             <Icon:PackIconMaterial Kind="PencilOutline" Style="{StaticResource gridButtonIcon}"/>
                                         </Button>
                                         <Button x:Name="RemoveFile_Button" Margin="0 0 0 0" Style="{StaticResource gridRemoveButton}" Click="RemoveFileButton_Click">
