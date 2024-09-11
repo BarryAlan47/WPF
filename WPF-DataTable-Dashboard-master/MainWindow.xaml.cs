@@ -17,6 +17,8 @@ using System.Threading.Tasks;
 using static System.Resources.ResXFileRef;
 using System.Windows.Media;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Text.RegularExpressions;
+using Spire.Doc.Fields;
 
 namespace DataGrid
 {
@@ -28,16 +30,23 @@ namespace DataGrid
         List<string> file_list = new List<string>();
         TextBlock title_TextBlock;
         System.Windows.Controls.Button button_AddFile;
-        System.Windows.Controls.Button menuButton_AddFile;
+        System.Windows.Controls.Button menuButton_AddWaterMark;
         System.Windows.Controls.Button menuButton_A2a;
+        Border a2a_Panel;
+        System.Windows.Controls.TextBox textBox_a;
+        System.Windows.Controls.TextBox textBox_A;
+        System.Windows.Media.BrushConverter converter = new System.Windows.Media.BrushConverter();//改变首字符圈圈颜色用的
 
         public MainWindow()
         {
             InitializeComponent();
             title_TextBlock = (TextBlock)MainGrid.FindName("Title_TextBlock");
             button_AddFile = (System.Windows.Controls.Button)MainGrid.FindName("Button_AddFile");
-            menuButton_AddFile = (System.Windows.Controls.Button)MenuButton_Grid.FindName("MenuButton_AddWaterMark");
+            menuButton_AddWaterMark = (System.Windows.Controls.Button)MenuButton_Grid.FindName("MenuButton_AddWaterMark");
             menuButton_A2a = (System.Windows.Controls.Button)MenuButton_Grid.FindName("MenuButton_A2a");
+            a2a_Panel = (Border)MainGrid.FindName("A2a_Panel");
+            textBox_a = (System.Windows.Controls.TextBox)a2a_Panel.FindName("TextBox_a");
+            textBox_A = (System.Windows.Controls.TextBox)a2a_Panel.FindName("TextBox_A");
         }
 
         private bool IsMaximize = false;
@@ -87,9 +96,12 @@ namespace DataGrid
             this.Dispatcher.Invoke(new Action(() =>
             {
                 button_AddFile.Visibility = Visibility.Visible;
-                //menuButton_AddFile = Visibility;
-                //menuButton_A2a;
                 title_TextBlock.Text = "添加水印";
+                a2a_Panel.Visibility = Visibility.Collapsed;
+                menuButton_AddWaterMark.Background = (System.Windows.Media.Brush)converter.ConvertFromString("#7B5CD6"); 
+                menuButton_AddWaterMark.Foreground = (System.Windows.Media.Brush)converter.ConvertFromString("#FFFFFFFF");
+                menuButton_A2a.Background = (System.Windows.Media.Brush)converter.ConvertFromString("#007B5CD6");
+                menuButton_A2a.Foreground = (System.Windows.Media.Brush)converter.ConvertFromString("#FFD0C0FF");
             }));
         }
         private void MenuButton_A2a_Click(object sender, RoutedEventArgs e)
@@ -97,9 +109,12 @@ namespace DataGrid
             this.Dispatcher.Invoke(new Action(() => 
             {
                 button_AddFile.Visibility = Visibility.Collapsed;
-                //menuButton_AddFile = Visibility;
-                //menuButton_A2a;
                 title_TextBlock.Text = "大小写转换";
+                a2a_Panel.Visibility = Visibility.Visible;
+                menuButton_A2a.Background = (System.Windows.Media.Brush)converter.ConvertFromString("#7B5CD6");
+                menuButton_A2a.Foreground = (System.Windows.Media.Brush)converter.ConvertFromString("#FFFFFFFF");
+                menuButton_AddWaterMark.Background = (System.Windows.Media.Brush)converter.ConvertFromString("#007B5CD6");
+                menuButton_AddWaterMark.Foreground = (System.Windows.Media.Brush)converter.ConvertFromString("#FFD0C0FF");
             }));
         }
             private void GetFilePathButton_Click(object sender, RoutedEventArgs e)
@@ -161,7 +176,7 @@ namespace DataGrid
             System.Windows.Controls.TextBox addingWaterMark_TextBox = (System.Windows.Controls.TextBox)AddingWaterMark_Mask.FindName("AddingWaterMark_TextBox");
             MahApps.Metro.IconPacks.PackIconMaterial addingWaterMark_Icon = (MahApps.Metro.IconPacks.PackIconMaterial)MainGrid.FindName("AddingWaterMark_Icon");
 
-            var converter = new System.Windows.Media.BrushConverter();//改变首字符圈圈颜色用的
+            //var converter = new System.Windows.Media.BrushConverter();//改变首字符圈圈颜色用的
             //bool TaskisOver = false;
 
             membersDataGrid.ItemsSource = members;
@@ -372,6 +387,28 @@ namespace DataGrid
         private void CloseTheAppButton_Click(object sender, RoutedEventArgs e)
         {
             Environment.Exit(0);
+        }
+
+        private void TextBox_a_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (textBox_a.Text != "")
+            {
+                float textBox_a_value = float.Parse(textBox_a.Text);
+                var s = textBox_a_value.ToString("#L#E#D#C#K#E#D#C#J#E#D#C#I#E#D#C#H#E#D#C#G#E#D#C#F#E#D#C#.0B0A");
+                var d = Regex.Replace(s, @"((?<=-|^)[^1-9]*)|((?'z'0)[0A-E]*((?=[1-9])|(?'-z'(?=[F-L\.]|$))))|((?'b'[F-L])(?'z'0)[0A-L]*((?=[1-9])|(?'-z'(?=[\.]|$))))", "${b}${z}");
+                var r = Regex.Replace(d, ".", m => "负元空零壹贰叁肆伍陆柒捌玖空空空空空空空分角拾佰仟万亿兆京垓秭穰"[m.Value[0] - '-'].ToString());
+                var final_text = "人民币" + r + "整";
+                textBox_A.Text = final_text;
+            }
+            else 
+            {
+                textBox_A.Text = "";
+            }
+        }
+
+        private void Copy_A_Value_Button_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Clipboard.SetDataObject(textBox_A.Text); 
         }
     }
 

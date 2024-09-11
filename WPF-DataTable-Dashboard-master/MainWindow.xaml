@@ -8,7 +8,7 @@
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
     </Window.Resources>
-
+    
     <Border CornerRadius="30" Background="#EFF2F7" MouseDown="Border_MouseDown" MouseLeftButtonDown="Border_MouseLeftButtonDown">
         <Grid x:Name="FatherGrid">
             <Grid.ColumnDefinitions>
@@ -125,14 +125,14 @@
                 </Grid.RowDefinitions>
 
                 <!--Search Textbox-->
-                <Grid Width="0" HorizontalAlignment="Left">
-                    <TextBlock Margin="20 0" VerticalAlignment="Center" Foreground="#B0B9C6" IsHitTestVisible="False"
+                <Grid Width="200" HorizontalAlignment="Left">
+                    <!--<TextBlock Margin="20 0" VerticalAlignment="Center" Foreground="#B0B9C6" IsHitTestVisible="False"
                            Panel.ZIndex="1" Text="Search here ..."
                            Visibility="{Binding ElementName=textBoxSearch, Path=Text.IsEmpty, Converter={StaticResource BoolToVis}}" />
 
                     <TextBox Name="textBoxSearch" Style="{StaticResource searchTextbox}"/>
 
-                    <Icon:PackIconMaterial Kind="Magnify" Width="15" Height="15" VerticalAlignment="Center" Margin="0 0 15 0" Foreground="#B0B9C6" HorizontalAlignment="Right" />
+                    <Icon:PackIconMaterial Kind="Magnify" Width="15" Height="15" VerticalAlignment="Center" Margin="0 0 15 0" Foreground="#B0B9C6" HorizontalAlignment="Right" />-->
                 </Grid>
 
                 <!--Top Buttons-->
@@ -159,7 +159,7 @@
                 <Separator Height="1" Grid.Row="3" Background="#DAE2EA" Margin="0 -1 0 10"/>
 
                 <!--Tab buttons-->
-                <StackPanel x:Name="TabButtonGroup" Grid.Row="2" Orientation="Horizontal" Margin="0 10 0 0">
+                <StackPanel x:Name="TabButtonGroup" Grid.Row="2" Orientation="Horizontal" Margin="0 10 0 0" Width="830">
                     <Button x:Name="TabButton_SelectedFiles" Style="{StaticResource tabButton}" Content="已选择文件列表" Foreground="#784FF2" Width="100" HorizontalAlignment="Left" BorderBrush="#784FF2" Click="TabButton_SeletedFile_Click"/>
                     <Button Style="{StaticResource tabButton}" Content="" Width="20" IsEnabled="False"/>
                     <Button x:Name="TabButton_AddedWaterMarkFiles" Style="{StaticResource tabButton}" Content="已转换文件列表" Width="100" Click="TabButton_AddedWaterMarkFile_Click"/>
@@ -258,11 +258,28 @@
                     <TextBox x:Name="AddingWaterMark_TextBox" BorderThickness="0" Background="Transparent"  Text="请稍等，正在添加水印中...(1/3)" VerticalAlignment="Top" TextAlignment="Center" Foreground="#FF5F5F5F" FontSize="32" FontWeight="SemiBold" Margin="0,329,0,0"/>
                 </Border>
                 <Icon:PackIconMaterial x:Name="AddingWaterMark_Icon" Kind="CircleEditOutline" Style="{StaticResource pagingButtonIcon}" Height="37" Width="62" Grid.Row="5" Foreground="#FF5F5F5F" Visibility="Collapsed" Margin="124,335,0,0" VerticalAlignment="Top"/>
+                
+                <!--大小写转换Panel-->
+                <Border x:Name="A2a_Panel" BorderBrush="#FFEFF2F7" BorderThickness="1" Grid.Row="2" Grid.RowSpan="5" Background="#FFEFF2F7" Visibility="Collapsed">
+                    <Grid Width="830" Height="250" HorizontalAlignment="Center" Margin="0 0 0 100">
 
-                <!--<Border x:Name="AddingWaterMark_Mask" BorderBrush="#FFBBBBEC"  BorderThickness="3" CornerRadius="10"  Grid.Row="5" Background="#7FCFCDE8" Visibility="Visible" Grid.RowSpan="2" Margin="-13,382,356,0">
-                    <TextBox x:Name="AddingWaterMark_TextBox" BorderThickness="0" Background="Transparent"  Text="请稍等，正在添加水印中...(1/3)" VerticalAlignment="Center" TextAlignment="Center" Foreground="#FF5F5F5F" FontSize="20" FontWeight="SemiBold" Margin="0,0,60,0" />
+                        <TextBlock Margin="215,24,215,0" VerticalAlignment="Top" Foreground="#B0B9C6" IsHitTestVisible="False" Width="400" FontSize="17"
+                           Panel.ZIndex="1" Text="请在此处输入金额数值 ..."
+                           Visibility="{Binding ElementName=TextBox_a, Path=Text.IsEmpty, Converter={StaticResource BoolToVis}}" />
+                        <TextBox x:Name="TextBox_a" Style="{StaticResource searchTextbox}" VerticalAlignment="Top" Width="440" Height="50" TextChanged="TextBox_a_TextChanged" FontSize="17" VerticalContentAlignment="Center"/>
+
+                        <Icon:PackIconMaterial Kind="CapsLock" Style="{StaticResource pagingButtonIcon}" Height="64" Width="109" Grid.Row="5" Foreground="#FFA5A5A5" Visibility="Visible" HorizontalAlignment="Center"/>
+
+                        <TextBox x:Name="TextBox_A" Style="{StaticResource searchTextbox}" VerticalAlignment="Bottom" Width="440" Height="50" IsEnabled="False" IsReadOnly="True" Text="" FontSize="17" VerticalContentAlignment="Center"/>
+
+                        <Button x:Name="Copy_A_Value_Button" Style="{StaticResource addButton}" HorizontalAlignment="Center" Margin="0,232,0,-100" Click="Copy_A_Value_Button_Click" >
+                            <StackPanel Orientation="Horizontal">
+                                <Icon:PackIconMaterial Kind="ContentCopy" VerticalAlignment="Center" Margin="0 0 8 0" Width="20" Height="20"/>
+                                <TextBlock Text="复制文本" FontSize="15" TextAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
                 </Border>
-                <Icon:PackIconMaterial Kind="CircleEditOutline" Style="{StaticResource pagingButtonIcon}" Height="38" Width="64" Grid.Row="6" Foreground="#FF5F5F5F" Visibility="Visible" Margin="0,0,0,0"/>-->
 
             </Grid>
 
