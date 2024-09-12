@@ -98,10 +98,10 @@ namespace DataGrid
                 button_AddFile.Visibility = Visibility.Visible;
                 title_TextBlock.Text = "添加水印";
                 a2a_Panel.Visibility = Visibility.Collapsed;
-                menuButton_AddWaterMark.Background = (System.Windows.Media.Brush)converter.ConvertFromString("#7B5CD6"); 
-                menuButton_AddWaterMark.Foreground = (System.Windows.Media.Brush)converter.ConvertFromString("#FFFFFFFF");
-                menuButton_A2a.Background = (System.Windows.Media.Brush)converter.ConvertFromString("#007B5CD6");
-                menuButton_A2a.Foreground = (System.Windows.Media.Brush)converter.ConvertFromString("#FFD0C0FF");
+                //menuButton_AddWaterMark.Background = (System.Windows.Media.Brush)converter.ConvertFromString("#7B5CD6"); 
+                //menuButton_AddWaterMark.Foreground = (System.Windows.Media.Brush)converter.ConvertFromString("#FFFFFFFF");
+                //menuButton_A2a.Background = (System.Windows.Media.Brush)converter.ConvertFromString("#007B5CD6");
+                //menuButton_A2a.Foreground = (System.Windows.Media.Brush)converter.ConvertFromString("#FFD0C0FF");
             }));
         }
         private void MenuButton_A2a_Click(object sender, RoutedEventArgs e)
@@ -111,10 +111,10 @@ namespace DataGrid
                 button_AddFile.Visibility = Visibility.Collapsed;
                 title_TextBlock.Text = "大小写转换";
                 a2a_Panel.Visibility = Visibility.Visible;
-                menuButton_A2a.Background = (System.Windows.Media.Brush)converter.ConvertFromString("#7B5CD6");
-                menuButton_A2a.Foreground = (System.Windows.Media.Brush)converter.ConvertFromString("#FFFFFFFF");
-                menuButton_AddWaterMark.Background = (System.Windows.Media.Brush)converter.ConvertFromString("#007B5CD6");
-                menuButton_AddWaterMark.Foreground = (System.Windows.Media.Brush)converter.ConvertFromString("#FFD0C0FF");
+                //menuButton_A2a.Background = (System.Windows.Media.Brush)converter.ConvertFromString("#7B5CD6");
+                //menuButton_A2a.Foreground = (System.Windows.Media.Brush)converter.ConvertFromString("#FFFFFFFF");
+                //menuButton_AddWaterMark.Background = (System.Windows.Media.Brush)converter.ConvertFromString("#007B5CD6");
+                //menuButton_AddWaterMark.Foreground = (System.Windows.Media.Brush)converter.ConvertFromString("#FFD0C0FF");
             }));
         }
             private void GetFilePathButton_Click(object sender, RoutedEventArgs e)
@@ -331,44 +331,12 @@ namespace DataGrid
         //已选择文件夹TabButton点击事件
         private void TabButton_SeletedFile_Click(object sender, RoutedEventArgs e)
         {
-            System.Windows.Controls.Button tabButton_SelectedFiles = (System.Windows.Controls.Button)TabButtonGroup.FindName("TabButton_SelectedFiles");
-            System.Windows.Controls.Button tabButton_AddedWaterMarkFiles = (System.Windows.Controls.Button)TabButtonGroup.FindName("TabButton_AddedWaterMarkFiles");
-            System.Windows.Media.Brush TabButtonBgColor;
-            System.Windows.Media.Brush TabButtonForeground;
-            System.Windows.Media.Brush TabButtonFontBlack;
-            var converter = new System.Windows.Media.BrushConverter();
-            TabButtonBgColor = (System.Windows.Media.Brush)converter.ConvertFromString("#784FF2");
-            TabButtonForeground = (System.Windows.Media.Brush)converter.ConvertFromString("#784FF2");//#FF459ACD
-            TabButtonFontBlack = (System.Windows.Media.Brush)converter.ConvertFromString("#FF121518");
-
-            if (TabButtonSelect)
-            {
-                tabButton_SelectedFiles.BorderBrush = TabButtonBgColor;
-                tabButton_SelectedFiles.Foreground = TabButtonForeground;
-                tabButton_AddedWaterMarkFiles.BorderBrush = null;
-                tabButton_AddedWaterMarkFiles.Foreground = TabButtonFontBlack;
-            }
+            
         }
         //已添加水印文件夹TabButton点击事件
         private void TabButton_AddedWaterMarkFile_Click(object sender, RoutedEventArgs e)
         {
-            System.Windows.Controls.Button tabButton_SelectedFiles = (System.Windows.Controls.Button)TabButtonGroup.FindName("TabButton_SelectedFiles");
-            System.Windows.Controls.Button tabButton_AddedWaterMarkFiles = (System.Windows.Controls.Button)TabButtonGroup.FindName("TabButton_AddedWaterMarkFiles");
-            System.Windows.Media.Brush TabButtonBgColor;
-            System.Windows.Media.Brush TabButtonForeground;
-            System.Windows.Media.Brush TabButtonFontBlack;
-            var converter = new System.Windows.Media.BrushConverter();
-            TabButtonBgColor = (System.Windows.Media.Brush)converter.ConvertFromString("#784FF2");
-            TabButtonForeground = (System.Windows.Media.Brush)converter.ConvertFromString("#784FF2");
-            TabButtonFontBlack = (System.Windows.Media.Brush)converter.ConvertFromString("#FF121518");
-            if (TabButtonSelect)
-            {
-                tabButton_SelectedFiles.BorderBrush = null;
-                tabButton_SelectedFiles.Foreground = TabButtonFontBlack;
-                
-                tabButton_AddedWaterMarkFiles.BorderBrush = TabButtonBgColor;
-                tabButton_AddedWaterMarkFiles.Foreground = TabButtonForeground;
-            }
+            
         }
         private void PageUpButton_Click(object sender, RoutedEventArgs e)
         {

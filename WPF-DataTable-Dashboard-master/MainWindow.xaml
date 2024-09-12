@@ -8,7 +8,7 @@
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
     </Window.Resources>
-    
+
     <Border CornerRadius="30" Background="#EFF2F7" MouseDown="Border_MouseDown" MouseLeftButtonDown="Border_MouseLeftButtonDown">
         <Grid x:Name="FatherGrid">
             <Grid.ColumnDefinitions>
@@ -47,35 +47,35 @@
 
                         <!--Menu Buttons-->
                         <StackPanel x:Name="MenuButton_List" DockPanel.Dock="Top" >
-                            <Button x:Name="MenuButton_AddWaterMark" Style="{StaticResource menuButton}" Background="#7B5CD6" Foreground="White" Click="MenuButton_AddWaterMark_Click">
+                            <Button x:Name="MenuButton_AddWaterMark" Style="{StaticResource menuButton}" Click="MenuButton_AddWaterMark_Click">
                                 <StackPanel Orientation="Horizontal">
                                     <Icon:PackIconMaterial Kind="Watermark" Style="{StaticResource menuButtonIcon}"/>
                                     <TextBlock Text="添加水印"/>
                                 </StackPanel>
                             </Button>
 
-                            <Button Style="{StaticResource menuButton}" IsEnabled="False">
+                            <Button Style="{StaticResource menuButton}">
                                 <StackPanel Orientation="Horizontal">
                                     <Icon:PackIconMaterial Kind="WashingMachineOff" Style="{StaticResource menuButtonIcon}"/>
-                                    <TextBlock Text="去除水印(无权限)"/>
+                                    <TextBlock Text="文档转换"/>
                                 </StackPanel>
                             </Button>
 
-                            <Button Style="{StaticResource menuButton}" IsEnabled="False" >
+                            <Button Style="{StaticResource menuButton}" >
                                 <StackPanel Orientation="Horizontal">
                                     <Icon:PackIconMaterial Kind="Lock" Style="{StaticResource menuButtonIcon}"/>
-                                    <TextBlock Text="PDF加密(无权限)"/>
+                                    <TextBlock Text="压缩PDF"/>
                                 </StackPanel>
                             </Button>
 
-                            <Button Style="{StaticResource menuButton}" IsEnabled="False">
+                            <Button Style="{StaticResource menuButton}">
                                 <StackPanel Orientation="Horizontal">
                                     <Icon:PackIconMaterial Kind="LockOff" Style="{StaticResource menuButtonIcon}"/>
-                                    <TextBlock Text="PDF解锁(无权限)"/>
+                                    <TextBlock Text="文档比较"/>
                                 </StackPanel>
                             </Button>
 
-                            <Button Style="{StaticResource menuButton}" IsEnabled="False">
+                            <Button Style="{StaticResource menuButton}">
                                 <StackPanel Orientation="Horizontal">
                                     <Icon:PackIconMaterial Kind="ArrowSplitHorizontal" Style="{StaticResource menuButtonIcon}"/>
                                     <TextBlock Text="文档拆分(无权限)"/>
@@ -83,16 +83,16 @@
                             </Button>
                             <!--Menu Seprator-->
                             <Separator Margin="10" Background="#7E5FDC" DockPanel.Dock="Top" Height="0.8"/>
-                            <Button x:Name="MenuButton_A2a" Style="{StaticResource menuButton}" Click="MenuButton_A2a_Click">
+                            <Button x:Name="MenuButton_A2a" Style="{StaticResource menuButton}" Click="MenuButton_A2a_Click" >
                                 <StackPanel Orientation="Horizontal">
                                     <Icon:PackIconMaterial Kind="CabinAFrame" Style="{StaticResource menuButtonIcon}"/>
                                     <TextBlock Text="大小写转换"/>
                                 </StackPanel>
                             </Button>
-                            <Button Style="{StaticResource menuButton}" IsEnabled="False">
+                            <Button Style="{StaticResource menuButton}">
                                 <StackPanel Orientation="Horizontal">
                                     <Icon:PackIconMaterial Kind="CodeArray" Style="{StaticResource menuButtonIcon}"/>
-                                    <TextBlock Text="二维码生成(无权限)"/>
+                                    <TextBlock Text="二维码生成"/>
                                 </StackPanel>
                             </Button>
 
@@ -160,7 +160,7 @@
 
                 <!--Tab buttons-->
                 <StackPanel x:Name="TabButtonGroup" Grid.Row="2" Orientation="Horizontal" Margin="0 10 0 0" Width="830">
-                    <Button x:Name="TabButton_SelectedFiles" Style="{StaticResource tabButton}" Content="已选择文件列表" Foreground="#784FF2" Width="100" HorizontalAlignment="Left" BorderBrush="#784FF2" Click="TabButton_SeletedFile_Click"/>
+                    <Button x:Name="TabButton_SelectedFiles" Style="{StaticResource tabButton}" Content="已选择文件列表" Width="100" HorizontalAlignment="Left" Click="TabButton_SeletedFile_Click"/>
                     <Button Style="{StaticResource tabButton}" Content="" Width="20" IsEnabled="False"/>
                     <Button x:Name="TabButton_AddedWaterMarkFiles" Style="{StaticResource tabButton}" Content="已转换文件列表" Width="100" Click="TabButton_AddedWaterMarkFile_Click"/>
                 </StackPanel>
@@ -258,7 +258,7 @@
                     <TextBox x:Name="AddingWaterMark_TextBox" BorderThickness="0" Background="Transparent"  Text="请稍等，正在添加水印中...(1/3)" VerticalAlignment="Top" TextAlignment="Center" Foreground="#FF5F5F5F" FontSize="32" FontWeight="SemiBold" Margin="0,329,0,0"/>
                 </Border>
                 <Icon:PackIconMaterial x:Name="AddingWaterMark_Icon" Kind="CircleEditOutline" Style="{StaticResource pagingButtonIcon}" Height="37" Width="62" Grid.Row="5" Foreground="#FF5F5F5F" Visibility="Collapsed" Margin="124,335,0,0" VerticalAlignment="Top"/>
-                
+
                 <!--大小写转换Panel-->
                 <Border x:Name="A2a_Panel" BorderBrush="#FFEFF2F7" BorderThickness="1" Grid.Row="2" Grid.RowSpan="5" Background="#FFEFF2F7" Visibility="Collapsed">
                     <Grid Width="830" Height="250" HorizontalAlignment="Center" Margin="0 0 0 100">
@@ -273,6 +273,25 @@
                         <TextBox x:Name="TextBox_A" Style="{StaticResource searchTextbox}" VerticalAlignment="Bottom" Width="440" Height="50" IsEnabled="False" IsReadOnly="True" Text="" FontSize="17" VerticalContentAlignment="Center"/>
 
                         <Button x:Name="Copy_A_Value_Button" Style="{StaticResource addButton}" HorizontalAlignment="Center" Margin="0,232,0,-100" Click="Copy_A_Value_Button_Click" >
+                            <StackPanel Orientation="Horizontal">
+                                <Icon:PackIconMaterial Kind="ContentCopy" VerticalAlignment="Center" Margin="0 0 8 0" Width="20" Height="20"/>
+                                <TextBlock Text="复制文本" FontSize="15" TextAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                </Border>
+                <!--二维码生成Panel-->
+                <Border BorderBrush="#FFEFF2F7" BorderThickness="1" Grid.Row="2" Grid.RowSpan="5" Background="#FFEFF2F7" Visibility="Visible">
+                    <Grid Width="830" Height="400" HorizontalAlignment="Center" Margin="0 0 0 100">
+
+                        <TextBlock Margin="215,62,215,0" VerticalAlignment="Top" Foreground="#B0B9C6" IsHitTestVisible="False" Width="400" FontSize="17"
+                           Panel.ZIndex="1" Text="请在此处输入需要生成二维码的文本或者链接 ..."
+                           Visibility="{Binding ElementName=TextBox_a, Path=Text.IsEmpty, Converter={StaticResource BoolToVis}}" />
+                        <TextBox Style="{StaticResource searchTextbox}" VerticalAlignment="Top" Width="440" Height="50" TextChanged="TextBox_a_TextChanged" FontSize="17" VerticalContentAlignment="Center" Margin="195,48,195,0"/>
+
+                        <Image HorizontalAlignment="Left" Height="193" Margin="316,121,0,0" VerticalAlignment="Top" Width="193" Source="/左侧图.jpg"/>
+
+                        <Button Style="{StaticResource addButton}" HorizontalAlignment="Center" Margin="0,337,0,28" Click="Copy_A_Value_Button_Click" >
                             <StackPanel Orientation="Horizontal">
                                 <Icon:PackIconMaterial Kind="ContentCopy" VerticalAlignment="Center" Margin="0 0 8 0" Width="20" Height="20"/>
                                 <TextBlock Text="复制文本" FontSize="15" TextAlignment="Center"/>

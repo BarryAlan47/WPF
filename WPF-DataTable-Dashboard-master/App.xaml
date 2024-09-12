@@ -59,6 +59,10 @@
                     <Setter Property="Background" Value="#7B5CD6" />
                     <Setter Property="Foreground" Value="#ffffff" />
                 </Trigger>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="Background" Value="#7B5CD6" />
+                    <Setter Property="Foreground" Value="#ffffff" />
+                </Trigger>
             </Style.Triggers>
         </Style>
 
@@ -116,6 +120,11 @@
             <Setter Property="FontSize" Value="13" />
             <Setter Property="HorizontalAlignment" Value="Right" />
             <Setter Property="Grid.Row" Value="1" />
+            <!--<Setter Property="Effect" >
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="2" Opacity="0.1" ShadowDepth="1"/>
+                </Setter.Value>
+            </Setter>-->
             <Setter Property="Template" >
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -131,6 +140,10 @@
                     <Setter Property="Background" Value="#7B5CD6" />
                     <Setter Property="Foreground" Value="#ffffff" />
                 </Trigger>
+                <!--<Trigger Property="IsFocused" Value="True">
+                    <Setter Property="Background" Value="#FF68BBED" />
+                    <Setter Property="Foreground" Value="#ffffff" />
+                </Trigger>-->
             </Style.Triggers>
         </Style>
 
@@ -159,6 +172,10 @@
                     <Setter Property="Background" Value="#FF68BBED" />
                     <Setter Property="Foreground" Value="#ffffff" />
                 </Trigger>
+                <!--<Trigger Property="IsFocused" Value="True">
+                    <Setter Property="Background" Value="#FF68BBED" />
+                    <Setter Property="Foreground" Value="#ffffff" />
+                </Trigger>-->
             </Style.Triggers>
         </Style>
 
@@ -185,6 +202,10 @@
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="BorderBrush" Value="#784FF2" />
+                </Trigger>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="BorderBrush" Value="#784FF2" />
+                    <Setter Property="Foreground" Value="#784FF2" />
                 </Trigger>
             </Style.Triggers>
         </Style>
