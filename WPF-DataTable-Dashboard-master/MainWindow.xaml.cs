@@ -11,14 +11,11 @@ using System.Windows.Controls;
 using iText.IO.Image;
 using iText.Kernel.Pdf.Extgstate;
 using iText.Kernel.Pdf;
-using System.Diagnostics;
-using System.Threading;
 using System.Threading.Tasks;
-using static System.Resources.ResXFileRef;
 using System.Windows.Media;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Text.RegularExpressions;
-using Spire.Doc.Fields;
+using System.Drawing;
+using System.Windows.Media.Imaging;
 
 namespace DataGrid
 {
@@ -32,7 +29,9 @@ namespace DataGrid
         System.Windows.Controls.Button button_AddFile;
         System.Windows.Controls.Button menuButton_AddWaterMark;
         System.Windows.Controls.Button menuButton_A2a;
+        System.Windows.Controls.Button menuButton_QRCodeGenerated;
         Border a2a_Panel;
+        Border qRCode_Panel;
         System.Windows.Controls.TextBox textBox_a;
         System.Windows.Controls.TextBox textBox_A;
         System.Windows.Media.BrushConverter converter = new System.Windows.Media.BrushConverter();//改变首字符圈圈颜色用的
@@ -44,7 +43,9 @@ namespace DataGrid
             button_AddFile = (System.Windows.Controls.Button)MainGrid.FindName("Button_AddFile");
             menuButton_AddWaterMark = (System.Windows.Controls.Button)MenuButton_Grid.FindName("MenuButton_AddWaterMark");
             menuButton_A2a = (System.Windows.Controls.Button)MenuButton_Grid.FindName("MenuButton_A2a");
+            menuButton_QRCodeGenerated = (System.Windows.Controls.Button)MenuButton_Grid.FindName("MenuButton_QRCodeGenerated");
             a2a_Panel = (Border)MainGrid.FindName("A2a_Panel");
+            qRCode_Panel = (Border)MainGrid.FindName("QRCode_Panel");
             textBox_a = (System.Windows.Controls.TextBox)a2a_Panel.FindName("TextBox_a");
             textBox_A = (System.Windows.Controls.TextBox)a2a_Panel.FindName("TextBox_A");
         }
@@ -98,10 +99,7 @@ namespace DataGrid
                 button_AddFile.Visibility = Visibility.Visible;
                 title_TextBlock.Text = "添加水印";
                 a2a_Panel.Visibility = Visibility.Collapsed;
-                //menuButton_AddWaterMark.Background = (System.Windows.Media.Brush)converter.ConvertFromString("#7B5CD6"); 
-                //menuButton_AddWaterMark.Foreground = (System.Windows.Media.Brush)converter.ConvertFromString("#FFFFFFFF");
-                //menuButton_A2a.Background = (System.Windows.Media.Brush)converter.ConvertFromString("#007B5CD6");
-                //menuButton_A2a.Foreground = (System.Windows.Media.Brush)converter.ConvertFromString("#FFD0C0FF");
+                qRCode_Panel.Visibility = Visibility.Collapsed;
             }));
         }
         private void MenuButton_A2a_Click(object sender, RoutedEventArgs e)
@@ -111,13 +109,20 @@ namespace DataGrid
                 button_AddFile.Visibility = Visibility.Collapsed;
                 title_TextBlock.Text = "大小写转换";
                 a2a_Panel.Visibility = Visibility.Visible;
-                //menuButton_A2a.Background = (System.Windows.Media.Brush)converter.ConvertFromString("#7B5CD6");
-                //menuButton_A2a.Foreground = (System.Windows.Media.Brush)converter.ConvertFromString("#FFFFFFFF");
-                //menuButton_AddWaterMark.Background = (System.Windows.Media.Brush)converter.ConvertFromString("#007B5CD6");
-                //menuButton_AddWaterMark.Foreground = (System.Windows.Media.Brush)converter.ConvertFromString("#FFD0C0FF");
+                qRCode_Panel.Visibility = Visibility.Collapsed;
             }));
         }
-            private void GetFilePathButton_Click(object sender, RoutedEventArgs e)
+        private void MenuButton_QRCodeGenerated_Click(object sender, RoutedEventArgs e)
+        {
+            this.Dispatcher.Invoke(new Action(() =>
+            {
+                button_AddFile.Visibility = Visibility.Collapsed;
+                title_TextBlock.Text = "二维码生成器";
+                a2a_Panel.Visibility = Visibility.Collapsed;
+                qRCode_Panel.Visibility = Visibility.Visible;
+            }));
+        }
+        private void GetFilePathButton_Click(object sender, RoutedEventArgs e)
         {
             //获取文件前的fileList的数量
             int BeforeAddFile = file_list.Count;
@@ -175,9 +180,6 @@ namespace DataGrid
             Border addingWaterMark_Mask = (Border)MainGrid.FindName("AddingWaterMark_Mask");
             System.Windows.Controls.TextBox addingWaterMark_TextBox = (System.Windows.Controls.TextBox)AddingWaterMark_Mask.FindName("AddingWaterMark_TextBox");
             MahApps.Metro.IconPacks.PackIconMaterial addingWaterMark_Icon = (MahApps.Metro.IconPacks.PackIconMaterial)MainGrid.FindName("AddingWaterMark_Icon");
-
-            //var converter = new System.Windows.Media.BrushConverter();//改变首字符圈圈颜色用的
-            //bool TaskisOver = false;
 
             membersDataGrid.ItemsSource = members;
             if (members.Count != 0)
@@ -254,39 +256,6 @@ namespace DataGrid
                         
                         this.Dispatcher.Invoke(new Action(() => 
                         {
-                            
-                            //Trace.WriteLine("----------- cp---------------:" + VisualTreeHelper.GetChildrenCount(cp));
-                            //if (cp != null && VisualTreeHelper.GetChildrenCount(cp) > 0)
-                            //{
-                            //    Trace.WriteLine("-----------找到了ContentPresenter---------------");
-                            //    //找到StackPanel
-                            //    StackPanel stackPanel = VisualTreeHelper.GetChild(cp, 0) as StackPanel;
-                            //    if (stackPanel != null)
-                            //    {
-                            //        Trace.WriteLine("-----------找到了stackPanel---------------");
-                            //    }
-                            //    else
-                            //    {
-                            //        Trace.WriteLine("-----------没找到stackPanel---------------");
-                            //    }
-                            //    //再找到按钮
-                            //    System.Windows.Controls.Button removeFile_Button = (System.Windows.Controls.Button)VisualTreeHelper.GetChild(stackPanel, 1);
-                            //    if (removeFile_Button != null)
-                            //    {
-                            //        removeFile_Button.Visibility = Visibility.Collapsed;
-                            //    }
-                            //    else
-                            //    {
-                            //        Trace.WriteLine("-----------没找到removeFile_Button---------------");
-                            //    }
-                            //}
-                            //else 
-                            //{
-                            //    Trace.WriteLine("-----------没找到ContentPresenter---------------");
-                            //}
-                            Trace.WriteLine("----------- membersDataGrid.Columns[" + i + "]---------------" + membersDataGrid.Columns[i].GetCellContent(membersDataGrid.Items[i]));
-                            Trace.WriteLine("----------- membersDataGrid.ColumnsNum:" + membersDataGrid.Columns[i].GetCellContent(membersDataGrid.Items[i]));
-                            
                             addingWaterMark_TextBox.Text = "请稍等，正在添加水印中...(" + (i + 1) + "/" + file_list.Count + ")"; 
                         })
                         );
@@ -326,8 +295,6 @@ namespace DataGrid
         {
             
         }
-        //此Boolean值仅供TabButton改变样式使用
-        Boolean TabButtonSelect = true;
         //已选择文件夹TabButton点击事件
         private void TabButton_SeletedFile_Click(object sender, RoutedEventArgs e)
         {
@@ -378,6 +345,55 @@ namespace DataGrid
         {
             System.Windows.Clipboard.SetDataObject(textBox_A.Text); 
         }
+
+        private void QRCode_Generate_Button_Click(object sender, RoutedEventArgs e)
+        {
+            int version = Convert.ToInt16(5);
+
+            int pixel = Convert.ToInt16(100);
+
+            System.Windows.Controls.TextBox qRCode_URL = (System.Windows.Controls.TextBox)QRCode_Panel.FindName("QRCode_URL");
+
+            string str_msg = qRCode_URL.Text;
+
+            int int_icon_size = Convert.ToInt16(20);
+
+            int int_icon_border = Convert.ToInt16(1);
+
+            bool b_we = true;
+            if (qRCode_URL.Text == "") 
+            {
+                str_msg = "您未输入任何文字或链接";
+            }
+            Bitmap bmp = QRCodeGenerated.QRCode_Generate(str_msg, version, pixel, Environment.CurrentDirectory + "\\WaterMarkPic\\QRCode_Icon.jpg", int_icon_size, int_icon_border, b_we);
+
+            IntPtr hBitmap = bmp.GetHbitmap();
+            ImageSource wpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+                hBitmap,
+                IntPtr.Zero,
+                Int32Rect.Empty,
+                BitmapSizeOptions.FromEmptyOptions());
+
+            System.Windows.Controls.Image qRCode_Image = (System.Windows.Controls.Image)QRCode_Panel.FindName("QRCode_Image");
+
+            qRCode_Image.Source = wpfBitmap;
+        }
+
+        private void SaveQRCode_Button_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Controls.Image qRCode_Image = (System.Windows.Controls.Image)QRCode_Panel.FindName("QRCode_Image");
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "Image Files (*.bmp, *.png, *.jpg)|*.bmp;*.png;*.jpg | All Files | *.*";
+            sfd.RestoreDirectory = true;//保存对话框是否记忆上次打开的目录 
+            if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                var encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create((BitmapSource)qRCode_Image.Source));
+                using (FileStream stream = new FileStream(sfd.FileName, FileMode.Create))
+                encoder.Save(stream);
+            }
+        }
+
     }
 
     public class Member
@@ -406,7 +422,7 @@ namespace DataGrid
             Spire.Doc.Document document = new Spire.Doc.Document();
             //从磁盘加载 Word 文档
             document.LoadFromFile(filePath);
-            
+
             picture.Scaling = 150;
             picture.IsWashout = false;
             picture.SetPicture(fileStream);
@@ -417,7 +433,28 @@ namespace DataGrid
             string fileNameWithoutExt = System.IO.Path.GetFileNameWithoutExtension(filePath);
             string fileExtension = System.IO.Path.GetExtension(filePath);
             document.SaveToFile(fileDir + "\\" + fileNameWithoutExt + "(已添加水印)" + fileExtension);
-            return;
+            // 创建水印
+            //Watermarker watermarker = new Watermarker(filePath);
+
+            //// 创建水印对象
+            //ImageWatermark watermark = new ImageWatermark(Environment.CurrentDirectory + "\\WaterMarkPic\\WordWaterMark.png");
+
+            //// 设置水印对齐
+            //watermark.HorizontalAlignment = GroupDocs.Watermark.Common.HorizontalAlignment.Center;
+            //watermark.VerticalAlignment = GroupDocs.Watermark.Common.VerticalAlignment.Center;
+
+            //// 设置水印大小
+            //watermark.Width = 100;
+            //watermark.Height = 100;
+
+            //// 加水印
+            //watermarker.Add(watermark);
+
+            //// 保存输出文件
+            //string fileNameWithoutExt = System.IO.Path.GetFileNameWithoutExtension(filePath);
+            //string fileExtension = System.IO.Path.GetExtension(filePath);
+            //watermarker.Save(fileDir + "\\" + fileNameWithoutExt + "(已添加水印)" + fileExtension);
+
         }
         public void XLSWaterMark(string filePath, string fileDir)
         {

@@ -17,7 +17,7 @@
             </Grid.ColumnDefinitions>
 
             <!--Left Menu-->
-            <Grid x:Name="MenuButton_Grid">
+            <Grid x:Name="MenuButton_Grid" FocusManager.FocusedElement="{Binding ElementName=MenuButton_AddWaterMark}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="*"/>
@@ -40,7 +40,7 @@
                         </Border>
 
                         <!--Menu Titles-->
-                        <TextBlock Text="文档操作工具" Foreground="White" FontSize="22" FontWeight="SemiBold" DockPanel.Dock="Top" Margin="0 25 0 10" TextAlignment="Center"/>
+                        <TextBlock Text="功能列表" Foreground="White" FontSize="22" FontWeight="SemiBold" DockPanel.Dock="Top" Margin="0 25 0 10" TextAlignment="Center"/>
                         <!--<TextBlock Text="________________________" Foreground="#D0BFFF" FontSize="14" FontWeight="SemiBold" DockPanel.Dock="Top" TextAlignment="Center"/>-->
                         <!--Menu Seprator-->
                         <Separator Margin="10" Background="#7E5FDC" DockPanel.Dock="Top" Height="0.8"/>
@@ -54,31 +54,31 @@
                                 </StackPanel>
                             </Button>
 
-                            <Button Style="{StaticResource menuButton}">
+                            <Button Style="{StaticResource menuButton}" Visibility="Collapsed">
                                 <StackPanel Orientation="Horizontal">
                                     <Icon:PackIconMaterial Kind="WashingMachineOff" Style="{StaticResource menuButtonIcon}"/>
                                     <TextBlock Text="文档转换"/>
                                 </StackPanel>
                             </Button>
 
-                            <Button Style="{StaticResource menuButton}" >
+                            <Button Style="{StaticResource menuButton}" Visibility="Collapsed">
                                 <StackPanel Orientation="Horizontal">
                                     <Icon:PackIconMaterial Kind="Lock" Style="{StaticResource menuButtonIcon}"/>
                                     <TextBlock Text="压缩PDF"/>
                                 </StackPanel>
                             </Button>
 
-                            <Button Style="{StaticResource menuButton}">
+                            <Button Style="{StaticResource menuButton}" Visibility="Collapsed">
                                 <StackPanel Orientation="Horizontal">
                                     <Icon:PackIconMaterial Kind="LockOff" Style="{StaticResource menuButtonIcon}"/>
                                     <TextBlock Text="文档比较"/>
                                 </StackPanel>
                             </Button>
 
-                            <Button Style="{StaticResource menuButton}">
+                            <Button Style="{StaticResource menuButton}" Visibility="Collapsed">
                                 <StackPanel Orientation="Horizontal">
                                     <Icon:PackIconMaterial Kind="ArrowSplitHorizontal" Style="{StaticResource menuButtonIcon}"/>
-                                    <TextBlock Text="文档拆分(无权限)"/>
+                                    <TextBlock Text="文档拆分"/>
                                 </StackPanel>
                             </Button>
                             <!--Menu Seprator-->
@@ -89,10 +89,10 @@
                                     <TextBlock Text="大小写转换"/>
                                 </StackPanel>
                             </Button>
-                            <Button Style="{StaticResource menuButton}">
+                            <Button x:Name="MenuButton_QRCodeGenerated" Style="{StaticResource menuButton}" Click="MenuButton_QRCodeGenerated_Click">
                                 <StackPanel Orientation="Horizontal">
                                     <Icon:PackIconMaterial Kind="CodeArray" Style="{StaticResource menuButtonIcon}"/>
-                                    <TextBlock Text="二维码生成"/>
+                                    <TextBlock Text="二维码生成器"/>
                                 </StackPanel>
                             </Button>
 
@@ -281,20 +281,26 @@
                     </Grid>
                 </Border>
                 <!--二维码生成Panel-->
-                <Border BorderBrush="#FFEFF2F7" BorderThickness="1" Grid.Row="2" Grid.RowSpan="5" Background="#FFEFF2F7" Visibility="Visible">
+                <Border x:Name="QRCode_Panel" BorderBrush="#FFEFF2F7" BorderThickness="1" Grid.Row="2" Grid.RowSpan="5" Background="#FFEFF2F7" Visibility="Collapsed">
                     <Grid Width="830" Height="400" HorizontalAlignment="Center" Margin="0 0 0 100">
 
                         <TextBlock Margin="215,62,215,0" VerticalAlignment="Top" Foreground="#B0B9C6" IsHitTestVisible="False" Width="400" FontSize="17"
-                           Panel.ZIndex="1" Text="请在此处输入需要生成二维码的文本或者链接 ..."
-                           Visibility="{Binding ElementName=TextBox_a, Path=Text.IsEmpty, Converter={StaticResource BoolToVis}}" />
-                        <TextBox Style="{StaticResource searchTextbox}" VerticalAlignment="Top" Width="440" Height="50" TextChanged="TextBox_a_TextChanged" FontSize="17" VerticalContentAlignment="Center" Margin="195,48,195,0"/>
+                           Panel.ZIndex="1" Text="请在此处输入需要生成二维码的[文本/链接] ..."
+                           Visibility="{Binding ElementName=QRCode_URL, Path=Text.IsEmpty, Converter={StaticResource BoolToVis}}" />
+                        <TextBox x:Name="QRCode_URL" Style="{StaticResource searchTextbox}" VerticalAlignment="Top" Width="440" Height="50" FontSize="17" VerticalContentAlignment="Center" Margin="195,48,195,0"/>
 
-                        <Image HorizontalAlignment="Left" Height="193" Margin="316,121,0,0" VerticalAlignment="Top" Width="193" Source="/左侧图.jpg"/>
+                        <Image x:Name="QRCode_Image" HorizontalAlignment="Left" Height="193" Margin="316,121,0,0" VerticalAlignment="Top" Width="193" Source="/左侧图.jpg"/>
 
-                        <Button Style="{StaticResource addButton}" HorizontalAlignment="Center" Margin="0,337,0,28" Click="Copy_A_Value_Button_Click" >
+                        <Button x:Name="QRCode_Generate_Button" Style="{StaticResource addButton}" HorizontalAlignment="Center" Margin="0,337,0,28" Click="QRCode_Generate_Button_Click" >
                             <StackPanel Orientation="Horizontal">
-                                <Icon:PackIconMaterial Kind="ContentCopy" VerticalAlignment="Center" Margin="0 0 8 0" Width="20" Height="20"/>
-                                <TextBlock Text="复制文本" FontSize="15" TextAlignment="Center"/>
+                                <Icon:PackIconMaterial Kind="QrcodeEdit" VerticalAlignment="Center" Margin="0 0 8 0" Width="20" Height="20"/>
+                                <TextBlock Text="生成二维码" FontSize="15" TextAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="SaveQRCode_Button"  Style="{StaticResource SaveQRCodeButton}" HorizontalAlignment="Center" Margin="0,395,0,-30" Click="SaveQRCode_Button_Click"  >
+                            <StackPanel Orientation="Horizontal">
+                                <Icon:PackIconMaterial Kind="Download" VerticalAlignment="Center" Margin="0 0 8 0" Width="20" Height="20"/>
+                                <TextBlock Text="保存二维码" FontSize="15" TextAlignment="Center"/>
                             </StackPanel>
                         </Button>
                     </Grid>

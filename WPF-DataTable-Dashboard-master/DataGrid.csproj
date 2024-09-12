@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <None Remove="Images\p1.jpg" />
+    <None Remove="左侧图.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,12 +18,14 @@
     <PackageReference Include="itext7" Version="8.0.5" />
     <PackageReference Include="itext7.bouncy-castle-adapter" Version="8.0.5" />
     <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="4.11.0" />
+    <PackageReference Include="QRCoder" Version="1.6.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Images\p1.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="左侧图.jpg" />
   </ItemGroup>
 
 </Project>
