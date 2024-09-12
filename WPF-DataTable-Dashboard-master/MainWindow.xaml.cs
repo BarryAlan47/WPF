@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Text.RegularExpressions;
 using System.Drawing;
 using System.Windows.Media.Imaging;
+using System.Collections;
 
 namespace DataGrid
 {
@@ -433,28 +434,6 @@ namespace DataGrid
             string fileNameWithoutExt = System.IO.Path.GetFileNameWithoutExtension(filePath);
             string fileExtension = System.IO.Path.GetExtension(filePath);
             document.SaveToFile(fileDir + "\\" + fileNameWithoutExt + "(已添加水印)" + fileExtension);
-            // 创建水印
-            //Watermarker watermarker = new Watermarker(filePath);
-
-            //// 创建水印对象
-            //ImageWatermark watermark = new ImageWatermark(Environment.CurrentDirectory + "\\WaterMarkPic\\WordWaterMark.png");
-
-            //// 设置水印对齐
-            //watermark.HorizontalAlignment = GroupDocs.Watermark.Common.HorizontalAlignment.Center;
-            //watermark.VerticalAlignment = GroupDocs.Watermark.Common.VerticalAlignment.Center;
-
-            //// 设置水印大小
-            //watermark.Width = 100;
-            //watermark.Height = 100;
-
-            //// 加水印
-            //watermarker.Add(watermark);
-
-            //// 保存输出文件
-            //string fileNameWithoutExt = System.IO.Path.GetFileNameWithoutExtension(filePath);
-            //string fileExtension = System.IO.Path.GetExtension(filePath);
-            //watermarker.Save(fileDir + "\\" + fileNameWithoutExt + "(已添加水印)" + fileExtension);
-
         }
         public void XLSWaterMark(string filePath, string fileDir)
         {
@@ -469,7 +448,6 @@ namespace DataGrid
             string fileNameWithoutExt = System.IO.Path.GetFileNameWithoutExtension(filePath);
             string fileExtension = System.IO.Path.GetExtension(filePath);
             workbook.SaveToFile(fileDir + "\\" + fileNameWithoutExt + "(已添加水印)" + fileExtension);
-
         }
 
         public void PDFWatermark(string filePath, string fileDir)
@@ -503,13 +481,66 @@ namespace DataGrid
             }
 
             doc.Close();
-            return ;
         }
-        public void PDFSplit()
+        /**
+        * 在指定目录等分pdf
+        * @param fileName  要分割的文档
+        * @param pageNum   分割尺寸
+        * @param desDir    分割后存储路径
+        * @throws IOException
+        */
+        public void PDFSplitterByEquipartition(string fileName, int pageNum, string desDir)
         {
-            //SetPDFWatermark("a","b");
+            PdfReader pdfReader = new PdfReader(fileName);
+            PdfDocument pdf = new PdfDocument(pdfReader);
+            string name;
+            PdfWriter pdfWriter = null;
+            PdfDocument pdfWriterDoc = null;
+
+            for (int i = 1; i <= pdf.GetNumberOfPages() ; i +=  pageNum) 
+            {
+                name = desDir+"/"+i+".pdf";
+                pdfWriter = new PdfWriter(name);
+                pdfWriterDoc = new PdfDocument(pdfWriter);
+                int start = i;
+                int end = Math.Min((start + pageNum - 1), pdf.GetNumberOfPages());
+                //从页数第一页开始，
+                pdf.CopyPagesTo(start, end, pdfWriterDoc);
+                pdfWriterDoc.Close();
+                pdfWriter.Close();
+            }
+
+            //关闭
+            pdf.Close();
+            pdfReader.Close();
         }
-    }
+        /**
+         * 返回自定义片段大小的文件，UUID名称命名。
+         * @param fileName
+         * @param startPage
+         * @param endPage
+         * @throws IOException
+         */
+        public void PDFSplitterByCustomize(string fileName, Hashtable hashtable)
+        {
+            //源文档
+            PdfReader pdfReader = new PdfReader(fileName);
+            PdfDocument pdf = new PdfDocument(pdfReader);
+            //目标文档名
+            string desDir = "";
+            //生成目标文档
+            PdfWriter pdfWriter = new PdfWriter(desDir);
+            PdfDocument outPdfDocument = new PdfDocument(pdfWriter);
+            int startPage = 0;
+            int endPage = 0;
+            //从页数第一页开始，
+            pdf.CopyPagesTo(startPage, endPage, outPdfDocument);
+            //关闭
+            outPdfDocument.Close();
+            pdfWriter.Close();
+            pdf.Close();
+            pdfReader.Close();
+        }
     public class File
     {
         public List<string> list = new List<string>();

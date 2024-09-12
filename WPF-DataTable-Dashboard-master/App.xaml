@@ -146,7 +146,42 @@
                 </Trigger>-->
             </Style.Triggers>
         </Style>
+        <Style x:Key="DocumentSplit_Button" TargetType="Button">
+            <Setter Property="Background" Value="#FF51C4F8" />
+            <Setter Property="Foreground" Value="#ffffff" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Height" Value="50" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="Margin" Value="0 20 0 0" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="Grid.Row" Value="1" />
+            <!--<Setter Property="Effect" >
+        <Setter.Value>
+            <DropShadowEffect BlurRadius="2" Opacity="0.1" ShadowDepth="1"/>
+        </Setter.Value>
+    </Setter>-->
+            <Setter Property="Template" >
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="7">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
 
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#7B5CD6" />
+                    <Setter Property="Foreground" Value="#ffffff" />
+                </Trigger>
+                <!--<Trigger Property="IsFocused" Value="True">
+            <Setter Property="Background" Value="#FF68BBED" />
+            <Setter Property="Foreground" Value="#ffffff" />
+        </Trigger>-->
+            </Style.Triggers>
+        </Style>
         <Style x:Key="addWaterMarkButton" TargetType="Button">
             <Setter Property="Background" Value="#FF459ACD" />
             <Setter Property="Foreground" Value="#ffffff" />

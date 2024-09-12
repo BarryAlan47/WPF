@@ -85,13 +85,13 @@
                             <Separator Margin="10" Background="#7E5FDC" DockPanel.Dock="Top" Height="0.8"/>
                             <Button x:Name="MenuButton_A2a" Style="{StaticResource menuButton}" Click="MenuButton_A2a_Click" >
                                 <StackPanel Orientation="Horizontal">
-                                    <Icon:PackIconMaterial Kind="CabinAFrame" Style="{StaticResource menuButtonIcon}"/>
+                                    <Icon:PackIconMaterial Kind="FormatFont" Style="{StaticResource menuButtonIcon}"/>
                                     <TextBlock Text="大小写转换"/>
                                 </StackPanel>
                             </Button>
                             <Button x:Name="MenuButton_QRCodeGenerated" Style="{StaticResource menuButton}" Click="MenuButton_QRCodeGenerated_Click">
                                 <StackPanel Orientation="Horizontal">
-                                    <Icon:PackIconMaterial Kind="CodeArray" Style="{StaticResource menuButtonIcon}"/>
+                                    <Icon:PackIconMaterial Kind="Qrcode" Style="{StaticResource menuButtonIcon}"/>
                                     <TextBlock Text="二维码生成器"/>
                                 </StackPanel>
                             </Button>
@@ -115,12 +115,12 @@
             <!--Main Section-->
             <Grid x:Name="MainGrid" Grid.Column="1" Margin="30 20 20 20">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="57*"/>
+                    <RowDefinition Height="56.981"/>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
-                    <RowDefinition Height="383*"/>
+                    <RowDefinition/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
 
@@ -305,7 +305,20 @@
                         </Button>
                     </Grid>
                 </Border>
+                <!--文档拆分Panel-->
+                <Border x:Name="DocumentSplit_Panel" BorderBrush="#EFF2F7" BorderThickness="2,2,2,2" Grid.Row="2" Grid.RowSpan="5" Background="#FFEFF2F7" Visibility="Collapsed" AllowDrop="True">
+                    <Grid Width="830" Height="500" HorizontalAlignment="Center" Margin="0 0 0 0">
+                        <TextBox  Style="{StaticResource searchTextbox}" Height="443" Text="*将文件拖放至此处" FontSize="17" TextAlignment="Right" VerticalContentAlignment="Bottom" Margin="10,10,10,0" VerticalAlignment="Top" BorderBrush="#FFEFF2F7" Background="White" BorderThickness="0,0,50,0"/>
 
+                        <Button  Style="{StaticResource DocumentSplit_Button}" HorizontalAlignment="Center" Margin="0,206,0,244" Click="QRCode_Generate_Button_Click" >
+                            <StackPanel Orientation="Horizontal">
+                                <Icon:PackIconMaterial Kind="FolderMarker" VerticalAlignment="Center" Margin="0 0 8 0" Width="30" Height="30"/>
+                                <TextBlock Text="浏览文件" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <TextBox  Style="{StaticResource searchTextbox}" Text="支持的文件格式有：.doc | .docx | .xls | .xlsx | .pdf" TextAlignment="Center" VerticalAlignment="Top" Height="50" FontSize="17" VerticalContentAlignment="Center" Margin="0,280,0,0" Background="#FFF9F9F9" HorizontalAlignment="Center" Width="432"/>
+                    </Grid>
+                </Border>
             </Grid>
 
         </Grid>
