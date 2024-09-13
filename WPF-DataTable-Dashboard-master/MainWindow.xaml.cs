@@ -17,13 +17,15 @@ using System.Text.RegularExpressions;
 using System.Drawing;
 using System.Windows.Media.Imaging;
 using System.Collections;
+using System.Diagnostics;
 
 namespace DataGrid
 {
-    public partial class MainWindow :System.Windows.Window
+    public partial class MainWindow : System.Windows.Window
     {
         ObservableCollection<Member> members = new ObservableCollection<Member>();
-        File file = new File();
+        ObservableCollection<Member> addedWaterMarkFileList = new ObservableCollection<Member>();
+        GetFileInfo getFileInfo = new GetFileInfo();
         FileOperate fileOperate = new FileOperate();
         List<string> file_list = new List<string>();
         TextBlock title_TextBlock;
@@ -80,19 +82,28 @@ namespace DataGrid
                 this.DragMove();
             }
         }
-        public void show_NoFile_Text(Boolean flag) 
+        /// <summary>
+        /// 暂时没有选择任何文件文字展示
+        /// </summary>
+        /// <param name="flag"></param>
+        public void show_NoFile_Text(Boolean flag)
         {
             TextBlock text_NoFile = (TextBlock)FatherGrid.FindName("Text_NoFiles");
             if (flag)
             {
                 text_NoFile.Visibility = Visibility.Visible;
             }
-            else 
+            else
             {
                 text_NoFile.Visibility = Visibility.Collapsed;
             }
-            
+
         }
+        /// <summary>
+        /// 菜单栏：添加水印按钮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MenuButton_AddWaterMark_Click(object sender, RoutedEventArgs e)
         {
             this.Dispatcher.Invoke(new Action(() =>
@@ -103,9 +114,14 @@ namespace DataGrid
                 qRCode_Panel.Visibility = Visibility.Collapsed;
             }));
         }
+        /// <summary>
+        /// 菜单栏：人民币大小写转换
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MenuButton_A2a_Click(object sender, RoutedEventArgs e)
         {
-            this.Dispatcher.Invoke(new Action(() => 
+            this.Dispatcher.Invoke(new Action(() =>
             {
                 button_AddFile.Visibility = Visibility.Collapsed;
                 title_TextBlock.Text = "大小写转换";
@@ -113,6 +129,11 @@ namespace DataGrid
                 qRCode_Panel.Visibility = Visibility.Collapsed;
             }));
         }
+        /// <summary>
+        /// 菜单栏：生成二维码
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MenuButton_QRCodeGenerated_Click(object sender, RoutedEventArgs e)
         {
             this.Dispatcher.Invoke(new Action(() =>
@@ -123,12 +144,18 @@ namespace DataGrid
                 qRCode_Panel.Visibility = Visibility.Visible;
             }));
         }
+        /// <summary>
+        /// 获取文件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void GetFilePathButton_Click(object sender, RoutedEventArgs e)
         {
+            int loglines = fileOperate.GetLogFileLines();
             //获取文件前的fileList的数量
             int BeforeAddFile = file_list.Count;
             //获取选择的文件列表
-            file_list = file.GetFilePath();
+            file_list = getFileInfo.GetFilePath();
             //改变首字符圈圈颜色用的
             var converter = new System.Windows.Media.BrushConverter();
 
@@ -137,8 +164,8 @@ namespace DataGrid
 
             for (int i = 0; i < file_list.Count; i++)
             {
-                string fileName = file.getFileName(file_list[i]);
-                string fileDir = file.getFileDir(file_list[i]);
+                string fileName = getFileInfo.GetFileName(file_list[i]);
+                string fileDir = getFileInfo.GetFileDir(file_list[i]);
                 string fileType = "";
                 System.Windows.Media.Brush bgColor;
                 if (System.IO.Path.GetExtension(file_list[i]) == ".pdf")
@@ -162,26 +189,31 @@ namespace DataGrid
                     bgColor = (System.Windows.Media.Brush)converter.ConvertFromString("#D3D3D3");
                 }
 
-                members.Add(new Member { Number = (i + 1).ToString(), Character = fileName.Substring(0, 1), BgColor = bgColor, Name = fileName, Position = fileDir, Email = "", Phone = fileType });
+                members.Add(new Member { Number = (loglines + i + 1).ToString(), Character = fileName.Substring(0, 1), BgColor = bgColor, Name = fileName, Position = fileDir, Email = "", Phone = fileType });
             }
-            
+
             membersDataGrid.ItemsSource = members;
 
             if (members.Count != 0)
             {
                 show_NoFile_Text(false);
             }
-            else 
+            else
             {
                 show_NoFile_Text(true);
             }
         }
-        private void AddWaterMarkButton_Click(object sender, RoutedEventArgs e) 
+        /// <summary>
+        /// 开始添加水印
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AddWaterMarkButton_Click(object sender, RoutedEventArgs e)
         {
             Border addingWaterMark_Mask = (Border)MainGrid.FindName("AddingWaterMark_Mask");
             System.Windows.Controls.TextBox addingWaterMark_TextBox = (System.Windows.Controls.TextBox)AddingWaterMark_Mask.FindName("AddingWaterMark_TextBox");
             MahApps.Metro.IconPacks.PackIconMaterial addingWaterMark_Icon = (MahApps.Metro.IconPacks.PackIconMaterial)MainGrid.FindName("AddingWaterMark_Icon");
-
+            int loglines = fileOperate.GetLogFileLines();
             membersDataGrid.ItemsSource = members;
             if (members.Count != 0)
             {
@@ -203,15 +235,15 @@ namespace DataGrid
                         // User pressed Yes
                         int BeforeAddFile = file_list.Count;
 
-                        file_list = file.GetFilePath();
+                        file_list = getFileInfo.GetFilePath();
 
                         members.Clear();
                         membersDataGrid.ItemsSource = null;
 
                         for (int i = 0; i < file_list.Count; i++)
                         {
-                            string fileName = file.getFileName(file_list[i]);
-                            string fileDir = file.getFileDir(file_list[i]);
+                            string fileName = getFileInfo.GetFileName(file_list[i]);
+                            string fileDir = getFileInfo.GetFileDir(file_list[i]);
                             string fileType = "";
                             System.Windows.Media.Brush bgColor;
                             if (System.IO.Path.GetExtension(file_list[i]) == ".pdf")
@@ -234,8 +266,7 @@ namespace DataGrid
                                 fileType = "未知类型文件";
                                 bgColor = (System.Windows.Media.Brush)converter.ConvertFromString("#D3D3D3");
                             }
-
-                            members.Add(new Member { Number = (i + 1).ToString(), Character = fileName.Substring(0, 1), BgColor = bgColor, Name = fileName, Position = fileDir, Email = "", Phone = fileType });
+                            members.Add(new Member { Number = (loglines + i + 1).ToString(), Character = fileName.Substring(0, 1), BgColor = bgColor, Name = fileName, Position = fileDir, Email = "", Phone = fileType });
                         }
                         membersDataGrid.ItemsSource = members;
                         break;
@@ -243,36 +274,76 @@ namespace DataGrid
             }
             else
             {
-                this.Dispatcher.Invoke(new Action(() => { addingWaterMark_Mask.Visibility = Visibility.Visible; addingWaterMark_Icon.Visibility = Visibility.Visible; }));
                 Task task = Task.Run(() =>
                 {
-                    this.Dispatcher.Invoke(new Action(() => { addingWaterMark_TextBox.Text = "请稍等，正在添加水印中...(0"  + "/" + file_list.Count + ")"; }));
+                    this.Dispatcher.Invoke(new Action(() => {
+                        addingWaterMark_Mask.Visibility = Visibility.Visible;
+                        addingWaterMark_Icon.Visibility = Visibility.Visible;
+                        addingWaterMark_TextBox.Text = "请稍等，正在添加水印中...(0" + "/" + file_list.Count + ")";
+                    }));
                     for (int i = 0; i < file_list.Count; i++)
                     {
                         string filePath = file_list[i];
-                        string fileDir = file.getFileDir(filePath);
-                        string fileName = file.getFileName(filePath);
+                        string fileDir = getFileInfo.GetFileDir(filePath);
+                        string fileName = getFileInfo.GetFileName(filePath);
                         string fileExtension = System.IO.Path.GetExtension(file_list[i]);
-                        file.StartAddWaterMark(fileOperate, filePath, fileDir, fileName, fileExtension);
-                        
-                        this.Dispatcher.Invoke(new Action(() => 
+                        string fileType = "";
+                        System.Windows.Media.Brush bgColor;
+                        if (System.IO.Path.GetExtension(file_list[i]) == ".pdf")
                         {
-                            addingWaterMark_TextBox.Text = "请稍等，正在添加水印中...(" + (i + 1) + "/" + file_list.Count + ")"; 
+                            fileType = "PDF文件";
+                            bgColor = (System.Windows.Media.Brush)converter.ConvertFromString("#FF5252");
+                        }
+                        else if (System.IO.Path.GetExtension(file_list[i]) == ".doc" || System.IO.Path.GetExtension(file_list[i]) == ".docx")
+                        {
+                            fileType = "Word文档";
+                            bgColor = (System.Windows.Media.Brush)converter.ConvertFromString("#1E88E5");
+                        }
+                        else if (System.IO.Path.GetExtension(file_list[i]) == ".xls" || System.IO.Path.GetExtension(file_list[i]) == ".xlsx")
+                        {
+                            fileType = "Excel表格";
+                            bgColor = (System.Windows.Media.Brush)converter.ConvertFromString("#0CA678");
+                        }
+                        else
+                        {
+                            fileType = "未知类型文件";
+                            bgColor = (System.Windows.Media.Brush)converter.ConvertFromString("#D3D3D3");
+                        }
+
+                        fileOperate.StartAddWaterMark(fileOperate, filePath, fileDir, fileName, fileExtension);
+
+                        this.Dispatcher.Invoke(new Action(() =>
+                        {
+                            addingWaterMark_TextBox.Text = "请稍等，正在添加水印中...(" + (i + 1) + "/" + file_list.Count + ")";
                         })
                         );
+                        addedWaterMarkFileList.Add(new Member { Number = (loglines + i + 1).ToString(), Character = fileName.Substring(0, 1), BgColor = members[i].BgColor, Name = fileName, Position = fileDir, Email = System.DateTime.Now.ToString("d"), Phone = fileType });
+                        string logInfo = (loglines + i + 1) + "|"+ fileName.Substring(0, 1)  + "|" + fileName + "|" + fileDir + "|" + System.DateTime.Now.ToString("d") + "|"+ fileType + "|"+ filePath;
+                        fileOperate.LogsWriter(logInfo);
                     }
-                    this.Dispatcher.Invoke(new Action(() => 
+                    this.Dispatcher.Invoke(new Action(() =>
                     {
                         addingWaterMark_TextBox.Text = "文件已全部添加水印！";
                         addingWaterMark_Icon.Kind = MahApps.Metro.IconPacks.PackIconMaterialKind.CheckBold;
-                        addingWaterMark_Icon.Foreground = (System.Windows.Media.Brush)converter.ConvertFromString("#FF42D12F"); 
+                        addingWaterMark_Icon.Foreground = (System.Windows.Media.Brush)converter.ConvertFromString("#FF42D12F");
+                        TimeDelay.Delay(1000);
+                        //AddedWatermarkFile_Grid.ItemsSource = addedWaterMarkFileList;
+                        addingWaterMark_Mask.Visibility = Visibility.Collapsed; 
+                        addingWaterMark_Icon.Visibility = Visibility.Collapsed;
+                        members.Clear();
+                        membersDataGrid.ItemsSource = members;
                     })
-                    );
+                    ); 
                 }
                 );
             }
         }
-        private void RemoveFileButton_Click(object sender, RoutedEventArgs e) 
+        /// <summary>
+        /// 移除已经添加的文件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RemoveFileButton_Click(object sender, RoutedEventArgs e)
         {
             int selectedRowIndex = membersDataGrid.SelectedIndex;
             for (int i = selectedRowIndex; i < members.Count; i++)
@@ -292,19 +363,73 @@ namespace DataGrid
                 show_NoFile_Text(true);
             }
         }
-        private void FileCheck_Button_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// 打开已添加水印的文件路径
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PositionFileButton_Click(object sender, RoutedEventArgs e)
         {
-            
+            string filePath_Old = fileOperate.ReadLogInfoByLine()[AddedWatermarkFile_Grid.SelectedIndex].Split('|')[6];
+            Trace.WriteLine("-------------filePath_Old-----------:" + filePath_Old);
+            string fileDir = getFileInfo.GetFileDir(filePath_Old);
+            string fileName = getFileInfo.GetFileName(filePath_Old);
+            string fileExtension = System.IO.Path.GetExtension(filePath_Old);
+            string filePath = fileDir + "\\" + fileName + "(已添加水印)" + fileExtension;
+            Trace.WriteLine("-------------filePath-----------:" + filePath);
+            if (!System.IO.File.Exists(filePath)) 
+            {
+                Trace.WriteLine("所选的文件已被移动至其他地方");
+            }
+            System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo("Explorer.exe");
+            //string file = @"c:/ windows/notepad.exe"; 
+            psi.Arguments = " /select," + filePath;
+            System.Diagnostics.Process.Start(psi); 
         }
-        //已选择文件夹TabButton点击事件
+        /// <summary>
+        /// 已选择文件夹TabButton点击事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TabButton_SeletedFile_Click(object sender, RoutedEventArgs e)
         {
-            
+            membersDataGrid.Visibility = Visibility.Visible;
+            AddedWatermarkFile_Grid.Visibility = Visibility.Collapsed;
         }
-        //已添加水印文件夹TabButton点击事件
+        /// <summary>
+        /// 已添加水印文件夹TabButton点击事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TabButton_AddedWaterMarkFile_Click(object sender, RoutedEventArgs e)
         {
-            
+            addedWaterMarkFileList.Clear();
+            string[] list_LogInfo = fileOperate.ReadLogInfoByLine();
+            System.Windows.Media.Brush bgColor;
+            foreach (var item in list_LogInfo)
+            {
+                string[] logInfo = item.Split('|');
+                if (logInfo[5] == "PDF文件")
+                {
+                    bgColor = (System.Windows.Media.Brush)converter.ConvertFromString("#FF5252");
+                }
+                else if (logInfo[5] == "Word文档")
+                {
+                    bgColor = (System.Windows.Media.Brush)converter.ConvertFromString("#1E88E5");
+                }
+                else if (logInfo[5] == "Excel表格")
+                {
+                    bgColor = (System.Windows.Media.Brush)converter.ConvertFromString("#0CA678");
+                }
+                else
+                {
+                    bgColor = (System.Windows.Media.Brush)converter.ConvertFromString("#D3D3D3");
+                }
+                addedWaterMarkFileList.Add(new Member { Number = logInfo[0], Character = logInfo[1], BgColor = bgColor, Name = logInfo[2], Position = logInfo[3], Email = logInfo[4], Phone = logInfo[5] });
+            }
+            AddedWatermarkFile_Grid.ItemsSource = addedWaterMarkFileList;
+            membersDataGrid.Visibility = Visibility.Collapsed;
+            AddedWatermarkFile_Grid.Visibility = Visibility.Visible;
         }
         private void PageUpButton_Click(object sender, RoutedEventArgs e)
         {
@@ -314,9 +439,9 @@ namespace DataGrid
         {
             System.Windows.MessageBox.Show("已经是最后一页");
         }
-        private void HelpButton_Click(object sender, RoutedEventArgs e) 
+        private void HelpButton_Click(object sender, RoutedEventArgs e)
         {
-            fileOperate.PDFSplit();
+            //fileOperate.LogsOperate();
         }
 
 
@@ -336,7 +461,7 @@ namespace DataGrid
                 var final_text = "人民币" + r + "整";
                 textBox_A.Text = final_text;
             }
-            else 
+            else
             {
                 textBox_A.Text = "";
             }
@@ -344,7 +469,7 @@ namespace DataGrid
 
         private void Copy_A_Value_Button_Click(object sender, RoutedEventArgs e)
         {
-            System.Windows.Clipboard.SetDataObject(textBox_A.Text); 
+            System.Windows.Clipboard.SetDataObject(textBox_A.Text);
         }
 
         private void QRCode_Generate_Button_Click(object sender, RoutedEventArgs e)
@@ -362,7 +487,7 @@ namespace DataGrid
             int int_icon_border = Convert.ToInt16(1);
 
             bool b_we = true;
-            if (qRCode_URL.Text == "") 
+            if (qRCode_URL.Text == "")
             {
                 str_msg = "您未输入任何文字或链接";
             }
@@ -391,7 +516,7 @@ namespace DataGrid
                 var encoder = new PngBitmapEncoder();
                 encoder.Frames.Add(BitmapFrame.Create((BitmapSource)qRCode_Image.Source));
                 using (FileStream stream = new FileStream(sfd.FileName, FileMode.Create))
-                encoder.Save(stream);
+                    encoder.Save(stream);
             }
         }
 
@@ -406,225 +531,5 @@ namespace DataGrid
         public string Position { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
-    }
-    public class FileOperate
-    {
-        //加载PDF水印图片
-        System.Drawing.Image image = System.Drawing.Image.FromFile(Environment.CurrentDirectory + "\\WaterMarkPic\\PDFWaterMark.png");
-        FileStream fs = new System.IO.FileStream(Environment.CurrentDirectory + "\\WaterMarkPic\\PDFWaterMark.png", System.IO.FileMode.Open, System.IO.FileAccess.Read);
-        //加载Doc水印图片
-        PictureWatermark picture = new PictureWatermark();
-        FileStream fileStream = new System.IO.FileStream(Environment.CurrentDirectory + "\\WaterMarkPic\\WordWaterMark.png", System.IO.FileMode.Open, System.IO.FileAccess.Read);
-        //加载Excel水印图片
-        SkiaSharp.SKBitmap bm = SkiaSharp.SKBitmap.Decode(Environment.CurrentDirectory + "\\WaterMarkPic\\ExcelWaterMark.png");
-
-        public void DOCWaterMark(string filePath, string fileDir)
-        {
-            Spire.Doc.Document document = new Spire.Doc.Document();
-            //从磁盘加载 Word 文档
-            document.LoadFromFile(filePath);
-
-            picture.Scaling = 150;
-            picture.IsWashout = false;
-            picture.SetPicture(fileStream);
-
-            document.Watermark = picture;
-
-            //保存文档
-            string fileNameWithoutExt = System.IO.Path.GetFileNameWithoutExtension(filePath);
-            string fileExtension = System.IO.Path.GetExtension(filePath);
-            document.SaveToFile(fileDir + "\\" + fileNameWithoutExt + "(已添加水印)" + fileExtension);
-        }
-        public void XLSWaterMark(string filePath, string fileDir)
-        {
-            //加载Excel文档并获取第一个工作表
-            Workbook workbook = new Workbook();
-            workbook.LoadFromFile(filePath);
-            foreach (var sheet in workbook.Worksheets)
-            {
-                sheet.PageSetup.BackgoundImage = bm;
-            }
-            //保存文档
-            string fileNameWithoutExt = System.IO.Path.GetFileNameWithoutExtension(filePath);
-            string fileExtension = System.IO.Path.GetExtension(filePath);
-            workbook.SaveToFile(fileDir + "\\" + fileNameWithoutExt + "(已添加水印)" + fileExtension);
-        }
-
-        public void PDFWatermark(string filePath, string fileDir)
-        {
-            string fileNameWithoutExt = System.IO.Path.GetFileNameWithoutExtension(filePath);
-            string fileExtension = System.IO.Path.GetExtension(filePath);
-            String DEST = (fileDir + "\\" + fileNameWithoutExt + "(已添加水印)" + fileExtension);
-            String IMG = Environment.CurrentDirectory + "\\WaterMarkPic\\PDFWaterMark.png";
-            String SRC = filePath;
-            iText.Kernel.Pdf.PdfDocument pdfDoc = new iText.Kernel.Pdf.PdfDocument(new PdfReader(SRC), new PdfWriter(DEST));
-            iText.Layout.Document doc = new iText.Layout.Document(pdfDoc);
-            ImageData img = ImageDataFactory.Create(IMG);
-
-            float w = img.GetWidth() / 4.3f;
-            float h = img.GetHeight() / 4.3f;
-
-            PdfExtGState gs1 = new PdfExtGState().SetFillOpacity(0.5f);
-
-            // Implement transformation matrix usage in order to scale image
-            for (int i = 1; i <= pdfDoc.GetNumberOfPages(); i++)
-            {
-                PdfPage pdfPage = pdfDoc.GetPage(i);
-                iText.Kernel.Geom.Rectangle pageSize = pdfPage.GetPageSize();
-                float x = (pageSize.GetLeft() + pageSize.GetRight()) / 2;
-                float y = (pageSize.GetTop() + pageSize.GetBottom()) / 2;
-                iText.Kernel.Pdf.Canvas.PdfCanvas over = new iText.Kernel.Pdf.Canvas.PdfCanvas(pdfPage);
-                over.SaveState();
-                over.SetExtGState(gs1);
-                over.AddImageWithTransformationMatrix(img, w, 0, 0, h, x - (w / 2), y - (h / 2), true);
-                over.RestoreState();
-            }
-
-            doc.Close();
-        }
-        /**
-        * 在指定目录等分pdf
-        * @param fileName  要分割的文档
-        * @param pageNum   分割尺寸
-        * @param desDir    分割后存储路径
-        * @throws IOException
-        */
-        public void PDFSplitterByEquipartition(string fileName, int pageNum, string desDir)
-        {
-            PdfReader pdfReader = new PdfReader(fileName);
-            PdfDocument pdf = new PdfDocument(pdfReader);
-            string name;
-            PdfWriter pdfWriter = null;
-            PdfDocument pdfWriterDoc = null;
-
-            for (int i = 1; i <= pdf.GetNumberOfPages() ; i +=  pageNum) 
-            {
-                name = desDir+"/"+i+".pdf";
-                pdfWriter = new PdfWriter(name);
-                pdfWriterDoc = new PdfDocument(pdfWriter);
-                int start = i;
-                int end = Math.Min((start + pageNum - 1), pdf.GetNumberOfPages());
-                //从页数第一页开始，
-                pdf.CopyPagesTo(start, end, pdfWriterDoc);
-                pdfWriterDoc.Close();
-                pdfWriter.Close();
-            }
-
-            //关闭
-            pdf.Close();
-            pdfReader.Close();
-        }
-        /**
-         * 返回自定义片段大小的文件，UUID名称命名。
-         * @param fileName
-         * @param startPage
-         * @param endPage
-         * @throws IOException
-         */
-        public void PDFSplitterByCustomize(string fileName, Hashtable hashtable)
-        {
-            //源文档
-            PdfReader pdfReader = new PdfReader(fileName);
-            PdfDocument pdf = new PdfDocument(pdfReader);
-            //目标文档名
-            string desDir = "";
-            //生成目标文档
-            PdfWriter pdfWriter = new PdfWriter(desDir);
-            PdfDocument outPdfDocument = new PdfDocument(pdfWriter);
-            int startPage = 0;
-            int endPage = 0;
-            //从页数第一页开始，
-            pdf.CopyPagesTo(startPage, endPage, outPdfDocument);
-            //关闭
-            outPdfDocument.Close();
-            pdfWriter.Close();
-            pdf.Close();
-            pdfReader.Close();
-        }
-    public class File
-    {
-        public List<string> list = new List<string>();
-        //选取文件，并获得路径
-        public List<string> GetFilePath()
-        {
-            System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog
-            {
-                Multiselect = true,
-                Filter = "Office Files|*.doc;*.docx;*.xls;*.xlsx;*.pdf" //删选、设定文件显示类型
-            }; 
-            if (ofd.ShowDialog() == DialogResult.OK)
-            {
-                foreach (string filePath in ofd.FileNames)
-                {
-                    bool flag = true;
-                    foreach (var item in list)
-                    {
-                        if(item == filePath) { flag = false; break; }
-                    }
-                    if (flag)
-                    {
-                        list.Add(filePath);
-                    }
-                }
-            }
-            return list;
-        }
-        public string getFileDir(string filePath)
-        {
-            string fileDir = System.IO.Path.GetDirectoryName(filePath);
-            return fileDir;
-        }
-        public string getFileName(string filePath)
-        {
-            // 使用Path.GetFileNameWithoutExtension获取不带扩展名的文件名
-            string fileNameWithoutExt = System.IO.Path.GetFileNameWithoutExtension(filePath);
-
-            // 使用Path.GetExtension获取文件扩展名（包括点）
-            string fileExtension = System.IO.Path.GetExtension(filePath);
-
-            //return fileNameWithoutExt + fileExtension;
-            return fileNameWithoutExt;
-        }
-        public string SetSavePath()
-        {
-            FolderBrowserDialog fbd = new FolderBrowserDialog();
-            fbd.ShowDialog();
-            string savePath = fbd.SelectedPath; //获得选择的文件夹路径
-            return savePath;
-        }
-        public void StartAddWaterMark(FileOperate fileOperate, string filePath, string fileDir, string fileName, string fileExtension)
-        {
-            // string fileExtension = Path.GetExtension(fileName);  
-            switch (fileExtension)
-            {
-                case ".pdf":
-                    Console.WriteLine("ExtensionCheck(): .pdf");
-                    fileOperate.PDFWatermark(filePath, fileDir);
-                    break;
-                case ".doc":
-                    Console.WriteLine("ExtensionCheck(): .doc");
-                    fileOperate.DOCWaterMark(filePath, fileDir);
-                    break;
-                case ".docx":
-                    Console.WriteLine("ExtensionCheck(): .docx");
-                    fileOperate.DOCWaterMark(filePath, fileDir);
-                    break;
-                case ".xls":
-                    Console.WriteLine("ExtensionCheck(): .xls");
-                    fileOperate.XLSWaterMark(filePath, fileDir);
-                    break;
-                case ".xlsx":
-                    Console.WriteLine("ExtensionCheck(): .xlsx");
-                    fileOperate.XLSWaterMark(filePath, fileDir);
-                    break;
-                default:
-                    Console.WriteLine("default");
-                    break;
-            }
-        }
-        public string getExecutablePath()
-        {
-            return Environment.CurrentDirectory;
-        }
     }
 }
