@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using QRCoder;
 
 namespace DataGrid
@@ -16,8 +17,24 @@ namespace DataGrid
         /// <param name="icon_border">图标边框厚度</param>
         /// <param name="white_edge">二维码白边</param>
         /// <returns>位图</returns>
-        public static Bitmap QRCode_Generate(string msg, int version, int pixel, string icon_path, int icon_size, int icon_border, bool white_edge)
+        public static Bitmap QRCode_Generate(string msg)
         {
+            int version = Convert.ToInt16(5);
+
+            int pixel = Convert.ToInt16(100);
+
+            int icon_size = Convert.ToInt16(20);
+
+            int icon_border = Convert.ToInt16(1);
+
+            string icon_path = Environment.CurrentDirectory + "\\WaterMarkPic\\QRCode_Icon.jpg";
+
+            bool white_edge = true;
+
+            if (msg == "")
+            {
+                msg = "您未输入任何文字或链接";
+            }
 
             QRCoder.QRCodeGenerator code_generator = new QRCoder.QRCodeGenerator();
 
