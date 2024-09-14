@@ -452,7 +452,7 @@ namespace DataGrid
         }
         private void HelpButton_Click(object sender, RoutedEventArgs e)
         {
-            DataGridTemplateColumn templeColumn = membersDataGrid.Columns[0] as DataGridTemplateColumn;
+            DataGridTemplateColumn templeColumn = membersDataGrid.Columns[4] as DataGridTemplateColumn;
             if (templeColumn == null)
             {
                 Trace.WriteLine("---------------------templeColumn == null------------------");
