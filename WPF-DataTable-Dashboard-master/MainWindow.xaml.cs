@@ -19,6 +19,7 @@ using System.Windows.Media.Imaging;
 using System.Collections;
 using System.Diagnostics;
 using Spire.Doc.Fields.Shapes;
+using System.Linq;
 
 namespace DataGrid
 {
@@ -30,6 +31,7 @@ namespace DataGrid
         FileOperate fileOperate = new FileOperate();//初始化操作文件的类
         List<string> file_list = new List<string>();//声明一个列表，用于保存待添加水印的文件列表
         TextBlock title_TextBlock;//标题文字
+        TextBlock text_NoFile;//暂未选择任何文件、暂无任何添加水印记录
         System.Windows.Controls.Button button_AddFile;//
         System.Windows.Controls.Button menuButton_AddWaterMark;
         System.Windows.Controls.Button menuButton_A2a;
@@ -45,6 +47,7 @@ namespace DataGrid
         {
             InitializeComponent();
             title_TextBlock = (TextBlock)MainGrid.FindName("Title_TextBlock");
+            text_NoFile = (TextBlock)FatherGrid.FindName("Text_NoFiles");
             button_AddFile = (System.Windows.Controls.Button)MainGrid.FindName("Button_AddFile");
             menuButton_AddWaterMark = (System.Windows.Controls.Button)MenuButton_Grid.FindName("MenuButton_AddWaterMark");
             menuButton_A2a = (System.Windows.Controls.Button)MenuButton_Grid.FindName("MenuButton_A2a");
@@ -101,7 +104,6 @@ namespace DataGrid
         /// <param name="flag"></param>
         public void show_NoFile_Text(Boolean flag)
         {
-            TextBlock text_NoFile = (TextBlock)FatherGrid.FindName("Text_NoFiles");
             if (flag)
             {
                 text_NoFile.Visibility = Visibility.Visible;
@@ -248,9 +250,9 @@ namespace DataGrid
                 }
             }
             waitForAddWaterMarkFileStartIndex = members.Count - waitForAddWaterMarkFileCount;
-            Trace.WriteLine("------------------------file_list.Count:" + file_list.Count);
-            Trace.WriteLine("------------------------waitForAddWaterMarkFileStartIndex:" + waitForAddWaterMarkFileStartIndex);
-            Trace.WriteLine("------------------------waitForAddWaterMarkFileCount:" + waitForAddWaterMarkFileCount);
+            //Trace.WriteLine("------------------------file_list.Count:" + file_list.Count);
+            //Trace.WriteLine("------------------------waitForAddWaterMarkFileStartIndex:" + waitForAddWaterMarkFileStartIndex);
+            //Trace.WriteLine("------------------------waitForAddWaterMarkFileCount:" + waitForAddWaterMarkFileCount);
             if (file_list.Count == 0)
             {
                 var result = System.Windows.MessageBox.Show("尚未选择任何文件,您是否希望前往选择需要添加水印的文件?", "提示", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
@@ -299,21 +301,6 @@ namespace DataGrid
                             addingWaterMark_TextBox.Text = "请稍等，正在添加水印中...(" + AddedWaterMarkFileCount + "/" + waitForAddWaterMarkFileCount + ")";
                         })
                         );
-                        //修改待添加水印列表中的数据的Flag bool值
-                        //members[i].Flag = true;
-                        //addedWaterMarkRowIndex.Add(i);
-                        //已添加水印的列表数据填充
-                        //addedWaterMarkFileList.Add(new Member {
-                        //    FilePath = filePath,
-                        //    Number = (loglines + AddedWaterMarkFileCount).ToString(),
-                        //    Character = fileName[..1],
-                        //    BgColor = bgColor,
-                        //    FileName = fileName,
-                        //    FileDir = fileDir,
-                        //    AddWaterMarkDate = fileFullInfo["addWaterMarkDate"].ToString(),
-                        //    FileType = fileType,
-                        //    Flag = true
-                        //});
                         members[i].Flag = true;
                         Trace.WriteLine("members[" + i + "].Flag:" + members[i].Flag);
                         string logInfo = (loglines + AddedWaterMarkFileCount) + "|"+ fileName.Substring(0, 1)  + "|" + fileName + "|" + fileDir + "|" + fileFullInfo["addWaterMarkDate"].ToString() + "|"+ fileType + "|"+ filePath;
@@ -366,12 +353,10 @@ namespace DataGrid
         private void PositionFileButton_Click(object sender, RoutedEventArgs e)
         {
             string filePath_Old = fileOperate.ReadLogInfoByLine()[AddedWatermarkFile_Grid.SelectedIndex].Split('|')[6];
-            Trace.WriteLine("-------------filePath_Old-----------:" + filePath_Old);
             string fileDir = getFileInfo.GetFileDir(filePath_Old);
             string fileName = getFileInfo.GetFileName(filePath_Old);
             string fileExtension = System.IO.Path.GetExtension(filePath_Old);
             string filePath = fileDir + "\\" + fileName + "(已添加水印)" + fileExtension;
-            Trace.WriteLine("-------------filePath-----------:" + filePath);
             if (!System.IO.File.Exists(filePath)) 
             {
                 Trace.WriteLine("所选的文件已被移动至其他地方");
@@ -390,6 +375,15 @@ namespace DataGrid
         {
             membersDataGrid.Visibility = Visibility.Visible;
             AddedWatermarkFile_Grid.Visibility = Visibility.Collapsed;
+            text_NoFile.Text = "暂未选择任何文件";
+            if (members.Count != 0)
+            {
+                show_NoFile_Text(false);
+            }
+            else
+            {
+                show_NoFile_Text(true);
+            }
         }
         /// <summary>
         /// 已添加水印文件夹TabButton点击事件
@@ -399,40 +393,54 @@ namespace DataGrid
         private void TabButton_AddedWaterMarkFile_Click(object sender, RoutedEventArgs e)
         {
             addedWaterMarkFileList.Clear();
+            string LogContent = fileOperate.LogsReader();
             string[] list_LogInfo = fileOperate.ReadLogInfoByLine();
             System.Windows.Media.Brush bgColor;
-            foreach (var item in list_LogInfo)
+            if (LogContent != "\n") 
             {
-                string[] logInfo = item.Split('|');
-                if (logInfo[5] == "PDF文件")
+                foreach (var item in list_LogInfo)
                 {
-                    bgColor = (System.Windows.Media.Brush)converter.ConvertFromString("#FF5252");
+                    string[] logInfo = item.Split('|');
+                    if (logInfo[5] == "PDF文件")
+                    {
+                        bgColor = (System.Windows.Media.Brush)converter.ConvertFromString("#FF5252");
+                    }
+                    else if (logInfo[5] == "Word文档")
+                    {
+                        bgColor = (System.Windows.Media.Brush)converter.ConvertFromString("#1E88E5");
+                    }
+                    else if (logInfo[5] == "Excel表格")
+                    {
+                        bgColor = (System.Windows.Media.Brush)converter.ConvertFromString("#0CA678");
+                    }
+                    else
+                    {
+                        bgColor = (System.Windows.Media.Brush)converter.ConvertFromString("#D3D3D3");
+                    }
+                    addedWaterMarkFileList.Add(new Member
+                    {
+                        Number = logInfo[0],
+                        Character = logInfo[1],
+                        BgColor = bgColor,
+                        FileName = logInfo[2],
+                        FileDir = logInfo[3],
+                        AddWaterMarkDate = logInfo[4],
+                        FileType = logInfo[5]
+                    });
                 }
-                else if (logInfo[5] == "Word文档")
-                {
-                    bgColor = (System.Windows.Media.Brush)converter.ConvertFromString("#1E88E5");
-                }
-                else if (logInfo[5] == "Excel表格")
-                {
-                    bgColor = (System.Windows.Media.Brush)converter.ConvertFromString("#0CA678");
-                }
-                else
-                {
-                    bgColor = (System.Windows.Media.Brush)converter.ConvertFromString("#D3D3D3");
-                }
-                addedWaterMarkFileList.Add(new Member { 
-                    Number = logInfo[0], 
-                    Character = logInfo[1], 
-                    BgColor = bgColor, 
-                    FileName = logInfo[2], 
-                    FileDir = logInfo[3], 
-                    AddWaterMarkDate = logInfo[4], 
-                    FileType = logInfo[5] 
-                });
             }
             AddedWatermarkFile_Grid.ItemsSource = addedWaterMarkFileList;
             membersDataGrid.Visibility = Visibility.Collapsed;
             AddedWatermarkFile_Grid.Visibility = Visibility.Visible;
+            text_NoFile.Text = "暂无任何添加水印的操作记录";
+            if (addedWaterMarkFileList.Count != 0)
+            {
+                show_NoFile_Text(false);
+            }
+            else 
+            {
+                show_NoFile_Text(true);
+            }
         }
         private void PageUpButton_Click(object sender, RoutedEventArgs e)
         {
@@ -444,12 +452,23 @@ namespace DataGrid
         }
         private void HelpButton_Click(object sender, RoutedEventArgs e)
         {
-            //fileOperate.LogsOperate();
-            foreach (var item in members)
+            DataGridTemplateColumn templeColumn = membersDataGrid.Columns[0] as DataGridTemplateColumn;
+            if (templeColumn == null)
             {
-                Trace.WriteLine("----------------------------memberIten.Flag:"+item.Flag);
+                Trace.WriteLine("---------------------templeColumn == null------------------");
             }
-            
+            else 
+            {
+                Trace.WriteLine("---------------------templeColumn is not null------------------");
+            }
+            object item = membersDataGrid.CurrentCell.Item;
+            FrameworkElement element = templeColumn.GetCellContent(item);
+            System.Windows.Controls.Button expander = (System.Windows.Controls.Button)templeColumn.CellTemplate.FindName("System.Windows.Controls.Button", element);
+            //expander.Visibility = Visibility.Collapsed;
+            this.Dispatcher.Invoke(new Action(() =>
+            {
+                expander.Visibility = Visibility.Collapsed;
+            }));
         }
 
 

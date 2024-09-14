@@ -27,10 +27,11 @@ namespace DataGrid
         //加载Excel水印图片
         SkiaSharp.SKBitmap bm = SkiaSharp.SKBitmap.Decode(Environment.CurrentDirectory + "\\WaterMarkPic\\ExcelWaterMark.png");
         //获取Log文件内容
-        public void LogsReader()
+        public string LogsReader()
         {
             string content = File.ReadAllText(log_FilePath);
             Trace.WriteLine(content);
+            return content;
         }
         public string[] ReadLogInfoByLine() 
         {
