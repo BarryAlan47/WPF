@@ -141,7 +141,7 @@
                         <BeginStoryboard>
                             <Storyboard>
                                 <!--故事板，可以让改变从小逐渐变大，而不是突然变大-->
-                                <ColorAnimation From="#7B5CD6" To="#7B5CD6" Duration="00:00:0.01" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"/>
+                                <!--<ColorAnimation From="#7B5CD6" To="#7B5CD6" Duration="00:00:0.01" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"/>-->
                                 <!--Duration表示花多少时间改变-->
                             </Storyboard>
                         </BeginStoryboard>
@@ -400,7 +400,7 @@
                                 <!--故事板，可以让改变从小逐渐变大，而不是突然变大-->
                                 <DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Width" To="105"/>
                                 <DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="FontSize" To="15"/>
-                                <!--<DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Height" To="47.25"/>-->
+                                <!--<ColorAnimation From="#FF459ACD" To="#FF459ACD" Duration="00:00:0.01" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"/>-->
                                 <!--Duration表示花多少时间改变-->
                             </Storyboard>
                         </BeginStoryboard>
@@ -412,7 +412,7 @@
                                 <!--故事板，可以让改变从小逐渐变大，而不是突然变大-->
                                 <DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Width" To="100"/>
                                 <DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="FontSize" To="14"/>
-                                <!--<DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Height" To="45"/>-->
+                                <!--<ColorAnimation From="#DAE2EA" To="#DAE2EA" Duration="00:00:0.01" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"/>-->
                                 <!--Duration表示花多少时间改变-->
                             </Storyboard>
                         </BeginStoryboard>

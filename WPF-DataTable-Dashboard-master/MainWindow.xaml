@@ -167,7 +167,7 @@
                 <StackPanel x:Name="TabButtonGroup" Grid.Row="2" Orientation="Horizontal" Margin="0 10 0 0" Width="auto">
                     <Button x:Name="TabButton_SelectedFiles" Style="{StaticResource tabButton}" Content="已选择文件列表" Width="100" HorizontalAlignment="Left" BorderBrush="#784FF2" Foreground="#784FF2" Click="TabButton_SeletedFile_Click"/>
                     <Button Style="{StaticResource tabButton}" Content="" Width="20" IsEnabled="False"/>
-                    <Button x:Name="TabButton_AddedWaterMarkFiles" Style="{StaticResource tabButton}" Content="已转换文件列表" Width="100" Click="TabButton_AddedWaterMarkFile_Click"/>
+                    <Button x:Name="TabButton_AddedWaterMarkFiles" Style="{StaticResource tabButton}" Content="水印添加记录" Width="100" Click="TabButton_AddedWaterMarkFile_Click"/>
                 </StackPanel>
 
                 <!--Counter Title-->
