@@ -55,6 +55,10 @@ namespace DataGrid
         MahApps.Metro.IconPacks.PackIconMaterial _a2A_Icon;
         System.Windows.Media.Brush a2AIcon_bgColor_Default;
         System.Windows.Media.Brush a2AIcon_bgColor_Truning;
+        WaveProgressBar myWaveProgressBar;
+        CircleProgressBar myCircleProgressBar;
+        //GifImage myGifImage;
+        MahApps.Metro.IconPacks.PackIconMaterial addingWaterMark_Icon;
 
         public MainWindow()
         {
@@ -77,10 +81,15 @@ namespace DataGrid
             _a2A_Icon = (MahApps.Metro.IconPacks.PackIconMaterial)MainGrid.FindName("a2A_Icon");
             a2AIcon_bgColor_Default = (System.Windows.Media.Brush)converter.ConvertFromString("#FFA5A5A5");
             a2AIcon_bgColor_Truning = (System.Windows.Media.Brush)converter.ConvertFromString("#FF6EA1F3");
-            tabButton_BorderBrush_Color_Default = (System.Windows.Media.Brush)converter.ConvertFromString("#FF121518");
+            tabButton_BorderBrush_Color_Default = (System.Windows.Media.Brush)converter.ConvertFromString("#DAE2EA");
             tabButton_BorderBrush_Color_Seleted = (System.Windows.Media.Brush)converter.ConvertFromString("#784FF2");
             tabButton_Foreground_Color_Default = (System.Windows.Media.Brush)converter.ConvertFromString("#FF121518");
             tabButton_Foreground_Color_Seleted = (System.Windows.Media.Brush)converter.ConvertFromString("#784FF2");
+            myWaveProgressBar = (WaveProgressBar)MainGrid.FindName("MyWaveProgressBar");
+            myCircleProgressBar = (CircleProgressBar)MainGrid.FindName("MyCircleProgressBar");
+            //myGifImage = (GifImage)MainGrid.FindName("MyGifImage");
+            //myGifImage.Uri = new Uri("pack://siteoforigin:,,,/C:\\Git\\WPF\\WPF-DataTable-Dashboard-master\\Images\\3.gif");
+            addingWaterMark_Icon = (MahApps.Metro.IconPacks.PackIconMaterial)MainGrid.FindName("AddingWaterMark_Icon");
         }
 
         private bool IsMaximize = false;
@@ -269,7 +278,7 @@ namespace DataGrid
         {
             Border addingWaterMark_Mask = (Border)MainGrid.FindName("AddingWaterMark_Mask");
             System.Windows.Controls.TextBox addingWaterMark_TextBox = (System.Windows.Controls.TextBox)AddingWaterMark_Mask.FindName("AddingWaterMark_TextBox");
-            MahApps.Metro.IconPacks.PackIconMaterial addingWaterMark_Icon = (MahApps.Metro.IconPacks.PackIconMaterial)MainGrid.FindName("AddingWaterMark_Icon");
+            //MahApps.Metro.IconPacks.PackIconMaterial addingWaterMark_Icon = (MahApps.Metro.IconPacks.PackIconMaterial)MainGrid.FindName("AddingWaterMark_Icon");
             int loglines = fileOperate.GetLogFileLines();
 
             int waitForAddWaterMarkFileStartIndex = 0;
@@ -299,16 +308,26 @@ namespace DataGrid
             }
             else
             {
+                //myWaveProgressBar.Value = 0;
                 Task task = Task.Run(() =>
                 {
                     this.Dispatcher.Invoke(new Action(() =>
                     {
                         addingWaterMark_Mask.Visibility = Visibility.Visible;
-                        addingWaterMark_Icon.Visibility = Visibility.Visible;
+                        addingWaterMark_Icon.Visibility = Visibility.Collapsed;
+                        myWaveProgressBar.Value = 0;
+                        myCircleProgressBar.Value = 0;
+                        myCircleProgressBar.Text = "0";
                         addingWaterMark_TextBox.Text = "请稍等，正在添加水印中...(0" + "/" + waitForAddWaterMarkFileCount + ")";
+                        myWaveProgressBar.Maximum = waitForAddWaterMarkFileCount;
+                        myCircleProgressBar.Maximum = waitForAddWaterMarkFileCount;
+                        //myWaveProgressBar.Value = 0;
                     }));
-
+                    //myWaveProgressBar.Value = 0;
                     int AddedWaterMarkFileCount = 0;
+                    float WaveProgressBar_CurrentValue = 0f;
+                    float ProgressBar_CurrentValue = 0f;
+                    //float ProgressBar_IntervalValue = 100/waitForAddWaterMarkFileCount;
                     //DataGridTemplateColumn templeColumn2 = membersDataGrid.Columns[4] as DataGridTemplateColumn;
                     for (int i = waitForAddWaterMarkFileStartIndex; i < members.Count; i++)
                     {
@@ -331,6 +350,26 @@ namespace DataGrid
                             addingWaterMark_TextBox.Text = "请稍等，正在添加水印中...(" + AddedWaterMarkFileCount + "/" + waitForAddWaterMarkFileCount + ")";
                         })
                         );
+                        //if (i == members.Count - 1)
+                        //{
+                        //    WaveProgressBar_CurrentValue = 100;
+                        //    ProgressBar_CurrentValue = 100;
+                        //}
+                        //else 
+                        //{
+                        //    WaveProgressBar_CurrentValue += 1;
+                        //    ProgressBar_CurrentValue += 1;
+                        //}
+                        WaveProgressBar_CurrentValue += 1;
+                        ProgressBar_CurrentValue += 1;
+                        this.Dispatcher.Invoke(new Action(() =>
+                        {
+                            myWaveProgressBar.Value = WaveProgressBar_CurrentValue;
+                            //myWaveProgressBar.Text = "(" + AddedWaterMarkFileCount + "/" + waitForAddWaterMarkFileCount + ")";
+                            myCircleProgressBar.Value = ProgressBar_CurrentValue;
+                            myCircleProgressBar.Text = (i + 1).ToString();
+                        })
+                        );
                         members[i].Flag = true;
                         Trace.WriteLine("members[" + i + "].Flag:" + members[i].Flag);
                         string logInfo = (loglines + AddedWaterMarkFileCount) + "|"+ fileName.Substring(0, 1)  + "|" + fileName + "|" + fileDir + "|" + fileFullInfo["addWaterMarkDate"].ToString() + "|"+ fileType + "|"+ filePath;
@@ -340,8 +379,8 @@ namespace DataGrid
                     this.Dispatcher.Invoke(new Action(() =>
                     {
                         addingWaterMark_TextBox.Text = "文件已全部添加水印！";
-                        addingWaterMark_Icon.Kind = MahApps.Metro.IconPacks.PackIconMaterialKind.CheckBold;
-                        addingWaterMark_Icon.Foreground = (System.Windows.Media.Brush)converter.ConvertFromString("#FF42D12F");
+                        addingWaterMark_Icon.Visibility = Visibility.Visible;
+                        myWaveProgressBar.Visibility = Visibility.Collapsed;
                         TimeDelay.Delay(1000);
                         addingWaterMark_Mask.Visibility = Visibility.Collapsed;
                         addingWaterMark_Icon.Visibility = Visibility.Collapsed;
@@ -398,7 +437,7 @@ namespace DataGrid
             System.Diagnostics.Process.Start(psi); 
         }
         /// <summary>
-        /// 已选择文件夹TabButton点击事件
+        /// 已选择文件TabButton点击事件
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
