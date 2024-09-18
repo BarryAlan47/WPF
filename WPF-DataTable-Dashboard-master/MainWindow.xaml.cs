@@ -20,6 +20,9 @@ using System.Collections;
 using System.Diagnostics;
 using Spire.Doc.Fields.Shapes;
 using System.Linq;
+using HandyControl.Controls;
+using System.Threading;
+using static System.Resources.ResXFileRef;
 
 namespace DataGrid
 {
@@ -36,12 +39,22 @@ namespace DataGrid
         System.Windows.Controls.Button menuButton_AddWaterMark;
         System.Windows.Controls.Button menuButton_A2a;
         System.Windows.Controls.Button menuButton_QRCodeGenerated;
+        System.Windows.Controls.Button tabButton_SelectedFiles;
+        System.Windows.Controls.Button tabButton_AddedWaterMarkFiles;
+        System.Windows.Media.Brush tabButton_BorderBrush_Color_Default;
+        System.Windows.Media.Brush tabButton_BorderBrush_Color_Seleted;
+        System.Windows.Media.Brush tabButton_Foreground_Color_Default;
+        System.Windows.Media.Brush tabButton_Foreground_Color_Seleted;
         Border a2a_Panel;
         Border qRCode_Panel;
         System.Windows.Controls.TextBox textBox_a;
         System.Windows.Controls.TextBox textBox_A;
         System.Windows.Controls.Image qRCode_Image;
         System.Windows.Media.BrushConverter converter = new System.Windows.Media.BrushConverter();//改变首字符圈圈颜色用的
+        DataGridTemplateColumn templeColumn;//动态生成的列表
+        MahApps.Metro.IconPacks.PackIconMaterial _a2A_Icon;
+        System.Windows.Media.Brush a2AIcon_bgColor_Default;
+        System.Windows.Media.Brush a2AIcon_bgColor_Truning;
 
         public MainWindow()
         {
@@ -52,12 +65,22 @@ namespace DataGrid
             menuButton_AddWaterMark = (System.Windows.Controls.Button)MenuButton_Grid.FindName("MenuButton_AddWaterMark");
             menuButton_A2a = (System.Windows.Controls.Button)MenuButton_Grid.FindName("MenuButton_A2a");
             menuButton_QRCodeGenerated = (System.Windows.Controls.Button)MenuButton_Grid.FindName("MenuButton_QRCodeGenerated");
+            tabButton_SelectedFiles = (System.Windows.Controls.Button)MenuButton_Grid.FindName("TabButton_SelectedFiles");
+            tabButton_AddedWaterMarkFiles = (System.Windows.Controls.Button)MenuButton_Grid.FindName("TabButton_AddedWaterMarkFiles");
             a2a_Panel = (Border)MainGrid.FindName("A2a_Panel");
             qRCode_Panel = (Border)MainGrid.FindName("QRCode_Panel");
             textBox_a = (System.Windows.Controls.TextBox)a2a_Panel.FindName("TextBox_a");
             textBox_A = (System.Windows.Controls.TextBox)a2a_Panel.FindName("TextBox_A");
             qRCode_Image = (System.Windows.Controls.Image)QRCode_Panel.FindName("QRCode_Image");
             file_list.Clear();
+            templeColumn = membersDataGrid.Columns[4] as DataGridTemplateColumn;
+            _a2A_Icon = (MahApps.Metro.IconPacks.PackIconMaterial)MainGrid.FindName("a2A_Icon");
+            a2AIcon_bgColor_Default = (System.Windows.Media.Brush)converter.ConvertFromString("#FFA5A5A5");
+            a2AIcon_bgColor_Truning = (System.Windows.Media.Brush)converter.ConvertFromString("#FF6EA1F3");
+            tabButton_BorderBrush_Color_Default = (System.Windows.Media.Brush)converter.ConvertFromString("#FF121518");
+            tabButton_BorderBrush_Color_Seleted = (System.Windows.Media.Brush)converter.ConvertFromString("#784FF2");
+            tabButton_Foreground_Color_Default = (System.Windows.Media.Brush)converter.ConvertFromString("#FF121518");
+            tabButton_Foreground_Color_Seleted = (System.Windows.Media.Brush)converter.ConvertFromString("#784FF2");
         }
 
         private bool IsMaximize = false;
@@ -159,6 +182,9 @@ namespace DataGrid
                 qRCode_Panel.Visibility = Visibility.Visible;
             }));
         }
+        /// <summary>
+        /// 填充已选择文件列表
+        /// </summary>
         private void FillGridData() 
         {
             //获取日志行数
@@ -176,7 +202,7 @@ namespace DataGrid
 
             //打开系统窗口获取文件路径列表，相同的文件则忽略
             file_list = getFileInfo.GetFilePath();
-
+            int CurrentFileCount = members.Count;
             for (int i = 0; i < file_list.Count; i++)
             {
                 bool flag = true;
@@ -195,7 +221,7 @@ namespace DataGrid
                     members.Add(new Member
                     {
                         FilePath = fileFullInfo["filePath"].ToString(),
-                        Number = (members.Count + i + 1).ToString(),
+                        Number = (CurrentFileCount + i + 1).ToString(),
                         Character = fileFullInfo["fileName"].ToString()[..1],
                         BgColor = (System.Windows.Media.Brush)fileFullInfo["bgColor"],
                         FileName = fileFullInfo["fileName"].ToString(),
@@ -227,8 +253,15 @@ namespace DataGrid
         {
             FillGridData();
         }
+        private void testFunc() 
+        {
+            Trace.WriteLine("-----------------------------testFunc开始执行");
+            DataGridTemplateColumn templeColumn3 = membersDataGrid.Columns[4] as DataGridTemplateColumn;
+            Trace.WriteLine("-----------------------------testFunc已执行");
+
+        }
         /// <summary>
-        /// 开始添加水印
+        /// 点击开始添加水印
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -250,9 +283,6 @@ namespace DataGrid
                 }
             }
             waitForAddWaterMarkFileStartIndex = members.Count - waitForAddWaterMarkFileCount;
-            //Trace.WriteLine("------------------------file_list.Count:" + file_list.Count);
-            //Trace.WriteLine("------------------------waitForAddWaterMarkFileStartIndex:" + waitForAddWaterMarkFileStartIndex);
-            //Trace.WriteLine("------------------------waitForAddWaterMarkFileCount:" + waitForAddWaterMarkFileCount);
             if (file_list.Count == 0)
             {
                 var result = System.Windows.MessageBox.Show("尚未选择任何文件,您是否希望前往选择需要添加水印的文件?", "提示", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
@@ -269,21 +299,21 @@ namespace DataGrid
             }
             else
             {
-                List<int> addedWaterMarkRowIndex = new List<int>();
-                addedWaterMarkRowIndex.Clear();
                 Task task = Task.Run(() =>
                 {
-                    this.Dispatcher.Invoke(new Action(() => {
+                    this.Dispatcher.Invoke(new Action(() =>
+                    {
                         addingWaterMark_Mask.Visibility = Visibility.Visible;
                         addingWaterMark_Icon.Visibility = Visibility.Visible;
                         addingWaterMark_TextBox.Text = "请稍等，正在添加水印中...(0" + "/" + waitForAddWaterMarkFileCount + ")";
                     }));
 
                     int AddedWaterMarkFileCount = 0;
-
+                    //DataGridTemplateColumn templeColumn2 = membersDataGrid.Columns[4] as DataGridTemplateColumn;
                     for (int i = waitForAddWaterMarkFileStartIndex; i < members.Count; i++)
                     {
                         AddedWaterMarkFileCount++;
+                        ShowProgressBar(i);
 
                         Hashtable fileFullInfo = getFileInfo.GetFileFullInfo(members[i].FilePath);
 
@@ -305,6 +335,7 @@ namespace DataGrid
                         Trace.WriteLine("members[" + i + "].Flag:" + members[i].Flag);
                         string logInfo = (loglines + AddedWaterMarkFileCount) + "|"+ fileName.Substring(0, 1)  + "|" + fileName + "|" + fileDir + "|" + fileFullInfo["addWaterMarkDate"].ToString() + "|"+ fileType + "|"+ filePath;
                         fileOperate.LogsWriter(logInfo);
+                        ShowOpenFileButton(i);
                     }
                     this.Dispatcher.Invoke(new Action(() =>
                     {
@@ -312,10 +343,10 @@ namespace DataGrid
                         addingWaterMark_Icon.Kind = MahApps.Metro.IconPacks.PackIconMaterialKind.CheckBold;
                         addingWaterMark_Icon.Foreground = (System.Windows.Media.Brush)converter.ConvertFromString("#FF42D12F");
                         TimeDelay.Delay(1000);
-                        addingWaterMark_Mask.Visibility = Visibility.Collapsed; 
+                        addingWaterMark_Mask.Visibility = Visibility.Collapsed;
                         addingWaterMark_Icon.Visibility = Visibility.Collapsed;
                     })
-                    ); 
+                    );
                 }
                 );
             }
@@ -384,6 +415,14 @@ namespace DataGrid
             {
                 show_NoFile_Text(true);
             }
+            this.Dispatcher.Invoke(new Action(() =>
+            {
+                tabButton_SelectedFiles.BorderBrush = tabButton_BorderBrush_Color_Seleted;
+                tabButton_AddedWaterMarkFiles.BorderBrush = tabButton_BorderBrush_Color_Default;
+                tabButton_SelectedFiles.Foreground = tabButton_Foreground_Color_Seleted;
+                tabButton_AddedWaterMarkFiles.Foreground = tabButton_Foreground_Color_Default;
+            })
+            );
         }
         /// <summary>
         /// 已添加水印文件夹TabButton点击事件
@@ -432,6 +471,14 @@ namespace DataGrid
             AddedWatermarkFile_Grid.ItemsSource = addedWaterMarkFileList;
             membersDataGrid.Visibility = Visibility.Collapsed;
             AddedWatermarkFile_Grid.Visibility = Visibility.Visible;
+            this.Dispatcher.Invoke(new Action(() =>
+            {
+                tabButton_SelectedFiles.BorderBrush = tabButton_BorderBrush_Color_Default;
+                tabButton_AddedWaterMarkFiles.BorderBrush = tabButton_BorderBrush_Color_Seleted;
+                tabButton_SelectedFiles.Foreground = tabButton_Foreground_Color_Default;
+                tabButton_AddedWaterMarkFiles.Foreground = tabButton_Foreground_Color_Seleted;
+            })
+            );
             text_NoFile.Text = "暂无任何添加水印的操作记录";
             if (addedWaterMarkFileList.Count != 0)
             {
@@ -450,25 +497,81 @@ namespace DataGrid
         {
             System.Windows.MessageBox.Show("已经是最后一页");
         }
-        private void HelpButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// 展示文件正在添加水印的处理动效
+        /// </summary>
+        private void ShowProgressBar(int GridIndex) 
         {
-            DataGridTemplateColumn templeColumn = membersDataGrid.Columns[4] as DataGridTemplateColumn;
-            if (templeColumn == null)
-            {
-                Trace.WriteLine("---------------------templeColumn == null------------------");
-            }
-            else 
-            {
-                Trace.WriteLine("---------------------templeColumn is not null------------------");
-            }
-            object item = membersDataGrid.CurrentCell.Item;
-            FrameworkElement element = templeColumn.GetCellContent(item);
-            System.Windows.Controls.Button expander = (System.Windows.Controls.Button)templeColumn.CellTemplate.FindName("System.Windows.Controls.Button", element);
-            //expander.Visibility = Visibility.Collapsed;
             this.Dispatcher.Invoke(new Action(() =>
             {
-                expander.Visibility = Visibility.Collapsed;
-            }));
+                FrameworkElement element = templeColumn.GetCellContent(membersDataGrid.Items[GridIndex]);
+                if (element != null)
+                {
+                    System.Windows.Controls.Button removeFileButton = (System.Windows.Controls.Button)templeColumn.CellTemplate.FindName("RemoveFile_Button", element);
+                    LoadingCircle loadingCircle = (LoadingCircle)templeColumn.CellTemplate.FindName("FileLoadingCircle", element);
+                    System.Windows.Controls.Button openFileButton = (System.Windows.Controls.Button)templeColumn.CellTemplate.FindName("OpenFileButton", element);
+                    if (removeFileButton != null)
+                    {
+                        removeFileButton.Visibility = Visibility.Collapsed;
+                        loadingCircle.Visibility = Visibility.Visible;
+                        openFileButton.Visibility = Visibility.Collapsed;
+                    }
+                }
+            })
+            );
+        }
+        /// <summary>
+        /// 水印添加完毕后，将移除文件按钮替换为打开文件按钮
+        /// </summary>
+        private void ShowOpenFileButton(int GridIndex) 
+        {
+            this.Dispatcher.Invoke(new Action(() =>
+            {
+                FrameworkElement element = templeColumn.GetCellContent(membersDataGrid.Items[GridIndex]);
+                if (element != null)
+                {
+                    System.Windows.Controls.Button removeFileButton = (System.Windows.Controls.Button)templeColumn.CellTemplate.FindName("RemoveFile_Button", element);
+                    LoadingCircle loadingCircle = (LoadingCircle)templeColumn.CellTemplate.FindName("FileLoadingCircle", element);
+                    System.Windows.Controls.Button openFileButton = (System.Windows.Controls.Button)templeColumn.CellTemplate.FindName("OpenFileButton", element);
+                    if (removeFileButton != null)
+                    {
+                        this.Dispatcher.Invoke(new Action(() =>
+                        {
+                            removeFileButton.Visibility = Visibility.Collapsed;
+                            loadingCircle.Visibility = Visibility.Collapsed;
+                            openFileButton.Visibility = Visibility.Visible;
+                        }));
+                    }
+                }
+            })
+            );
+            
+        }
+        /// <summary>
+        /// 点击已选择文件列表界面内的已添加水印的打开文件按钮,调用系统窗口定位文件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OpenFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            //string filePath_Old = fileOperate.ReadLogInfoByLine()[AddedWatermarkFile_Grid.SelectedIndex].Split('|')[6];
+            //string fileDir = getFileInfo.GetFileDir(filePath_Old);
+            //string fileName = getFileInfo.GetFileName(filePath_Old);
+            //string fileExtension = System.IO.Path.GetExtension(filePath_Old);
+            //string filePath = fileDir + "\\" + fileName + "(已添加水印)" + fileExtension;
+            //if (!System.IO.File.Exists(filePath))
+            //{
+            //    Trace.WriteLine("所选的文件已被移动至其他地方");
+            //}
+            //System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo("Explorer.exe");
+            ////string file = @"c:/ windows/notepad.exe"; 
+            //psi.Arguments = " /select," + filePath;
+            //System.Diagnostics.Process.Start(psi);
+        }
+        private void HelpButton_Click(object sender, RoutedEventArgs e)
+        {
+            ShowProgressBar(0);
+            
         }
 
 
@@ -487,6 +590,12 @@ namespace DataGrid
                 var r = Regex.Replace(d, ".", m => "负元空零壹贰叁肆伍陆柒捌玖空空空空空空空分角拾佰仟万亿兆京垓秭穰"[m.Value[0] - '-'].ToString());
                 var final_text = "人民币" + r + "整";
                 textBox_A.Text = final_text;
+                this.Dispatcher.Invoke(new Action(() =>
+                {
+                    _a2A_Icon.Foreground = a2AIcon_bgColor_Truning;
+                    TimeDelay.Delay(50);
+                    _a2A_Icon.Foreground = a2AIcon_bgColor_Default;
+                }));
             }
             else
             {
@@ -543,7 +652,7 @@ namespace DataGrid
                 var encoder = new PngBitmapEncoder();
                 encoder.Frames.Add(BitmapFrame.Create((BitmapSource)qRCode_Image.Source));
                 using (FileStream stream = new FileStream(sfd.FileName, FileMode.Create))
-                    encoder.Save(stream);
+                encoder.Save(stream);
             }
         }
 

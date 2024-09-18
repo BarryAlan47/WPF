@@ -25,14 +25,14 @@
                 </Grid.RowDefinitions>
 
                 <!--Menu Icon-->
-                <Button Style="{StaticResource topButton}" HorizontalAlignment="Left" Margin="20 28 0 35" Click="HelpButton_Click">
+                <Button Style="{StaticResource HelpButton}" HorizontalAlignment="Left" Margin="20 28 0 35" Click="HelpButton_Click">
                     <Icon:PackIconMaterial Kind="HelpCircleOutline" Width="25" Height="25" Visibility="Visible" />
                 </Button>
 
                 <Border Grid.Row="1" Background="#623ED0" CornerRadius="0 50 0 30">
                     <DockPanel>
                         <!--Menu Logo-->
-                        <Border Width="80" Height="80" Padding="3" Background="White" CornerRadius="100" DockPanel.Dock="Top" HorizontalAlignment="Left" Margin="20 -30 0 0">
+                        <Border Width="80" Height="80" Padding="2" Background="White" CornerRadius="100" DockPanel.Dock="Top" HorizontalAlignment="Left" Margin="20 -30 0 0">
                             <Ellipse>
                                 <Ellipse.Fill>
                                     <ImageBrush ImageSource="/Images/p1.jpg"/>
@@ -154,7 +154,7 @@
                 <!--Add Button-->
                 <Button x:Name="Button_AddFile" Style="{StaticResource addButton}" Click="GetFilePathButton_Click">
                     <StackPanel Orientation="Horizontal">
-                        <Icon:PackIconMaterial Kind="Plus" VerticalAlignment="Center" Margin="0 1 8 0" Width="11" Height="11"/>
+                        <Icon:PackIconMaterial Kind="PlusBoxOutline" VerticalAlignment="Center" Margin="0 1 8 0" Width="15" Height="15"/>
                         <TextBlock Text="添加文件..."/>
                     </StackPanel>
                 </Button>
@@ -173,14 +173,14 @@
                 <TextBlock Text="文件信息" Grid.Row="4" FontSize="18" FontWeight="SemiBold" Foreground="#121518" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
                 <!--Filter Textbox-->
-                <Grid Width="200" HorizontalAlignment="Right" Grid.Row="4">
+                <Grid Width="400" HorizontalAlignment="Right" Grid.Row="4" Height="40">
                     <!--<TextBlock Margin="15 0" VerticalAlignment="Center" Foreground="#B0B9C6" IsHitTestVisible="False"
                            Panel.ZIndex="1" Text="Search in Members ..."
                            Visibility="{Binding ElementName=textBoxFilter, Path=Text.IsEmpty, Converter={StaticResource BoolToVis}}" />
 
                     <TextBox Name="textBoxFilter" Style="{StaticResource filterTextBox}"/>-->
                     <!--AddWaterMark Button-->
-                    <Button Style="{StaticResource addWaterMarkButton}" Click="AddWaterMarkButton_Click" HorizontalAlignment="Left" Margin="50,10,0,10">
+                    <Button Style="{StaticResource addWaterMarkButton}" Click="AddWaterMarkButton_Click"  Margin="0,0,0,0">
                         <StackPanel Orientation="Horizontal">
                             <Icon:PackIconMaterial Kind="Play" VerticalAlignment="Center" Margin="0 0 8 0" Width="15" Height="15"/>
                             <TextBlock Text="开始添加水印"/>
@@ -198,30 +198,31 @@
                                 </DataTemplate>
                             </DataGridCheckBoxColumn.HeaderTemplate>
                         </DataGridCheckBoxColumn>-->
-                        <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding Number}"/>
+                        <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding Number}" />
                         <DataGridTemplateColumn Header="文件名" IsReadOnly="True" Width="*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
                                         <Border Width="25" Height="25" CornerRadius="50" Margin="0 0 10 0" Background="{Binding BgColor}">
-                                            <TextBlock Text="{Binding Character}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" Margin="0 0 0 1"/>
+                                            <TextBlock Text="{Binding Character}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" Margin="0 0 0 1" IsHitTestVisible="False"/>
                                         </Border>
-                                        <TextBlock Text="{Binding FileName}" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding FileName}" VerticalAlignment="Center" IsHitTestVisible="False"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="文件路径" Binding="{Binding FileDir}" IsReadOnly="True" Width="*"/>
-                        <!--<DataGridTextColumn Header="Email Address" Binding="{Binding Email}" IsReadOnly="True" Width="*"/>-->
+                        <DataGridTextColumn Header="文件路径" Binding="{Binding FileDir}" IsReadOnly="True" Width="*" />
                         <DataGridTextColumn Header="文件类型" Binding="{Binding FileType}" IsReadOnly="True" Width="*"/>
                         <DataGridTemplateColumn x:Name="EditButtonPanel" Header="" IsReadOnly="True" Width="auto">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel x:Name="StackPanel_EditButton" Orientation="Horizontal">
-                                        <!--<hc:CircleProgressBar Width="25" Height="25" Margin="0 0 5 0" FontSize="7"/>-->
-                                        <hc:LoadingCircle HorizontalAlignment="Left" Margin="0,0,5,0" VerticalAlignment="Center" Width="25" Height="25"/>
+                                        <hc:LoadingCircle x:Name="FileLoadingCircle" HorizontalAlignment="Left" Margin="0,0,-24,0" VerticalAlignment="Center" Width="24" Height="24" Visibility="Collapsed"/>
                                         <Button x:Name="RemoveFile_Button" Margin="0 0 0 0" Style="{StaticResource gridRemoveButton}" Click="RemoveFileButton_Click">
-                                            <Icon:PackIconMaterial x:Name="RemoveFileButton_Icon" Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}" />
+                                            <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}" />
+                                        </Button>
+                                        <Button x:Name="OpenFileButton" Margin="0 0 0 0" Style="{StaticResource gridCheckButton}" Click="OpenFileButton_Click" Visibility="Collapsed">
+                                            <Icon:PackIconMaterial Kind="Folder" Style="{StaticResource gridButtonIcon}" />
                                         </Button>
                                     </StackPanel>
                                 </DataTemplate>
@@ -305,14 +306,14 @@
                 <Border x:Name="A2a_Panel" BorderBrush="#FFEFF2F7" BorderThickness="1" Grid.Row="2" Grid.RowSpan="5" Background="#FFEFF2F7" Visibility="Collapsed">
                     <Grid Width="830" Height="250" HorizontalAlignment="Center" Margin="0 0 0 100">
 
-                        <TextBlock Margin="215,24,215,0" VerticalAlignment="Top" Foreground="#B0B9C6" IsHitTestVisible="False" Width="400" FontSize="17"
+                        <TextBlock Margin="-20,24,215,0" VerticalAlignment="Top" Foreground="#B0B9C6" IsHitTestVisible="False" Width="400" FontSize="17"
                            Panel.ZIndex="1" Text="请在此处输入金额数值 ..."
                            Visibility="{Binding Text.IsEmpty, Converter={StaticResource BoolToVis}, ElementName=TextBox_a}" />
-                        <TextBox x:Name="TextBox_a" Style="{StaticResource searchTextbox}" VerticalAlignment="Top" Width="440" Height="50" TextChanged="TextBox_a_TextChanged" FontSize="17" VerticalContentAlignment="Center"/>
+                        <TextBox x:Name="TextBox_a" Style="{StaticResource searchTextbox}" VerticalAlignment="Top" Width="auto" Height="50" TextChanged="TextBox_a_TextChanged" FontSize="17" VerticalContentAlignment="Center" Margin="75,10,75,0"/>
 
-                        <Icon:PackIconMaterial Kind="CapsLock" Style="{StaticResource pagingButtonIcon}" Height="64" Width="109" Grid.Row="5" Foreground="#FFA5A5A5" Visibility="Visible" HorizontalAlignment="Center"/>
+                        <Icon:PackIconMaterial x:Name="a2A_Icon" Kind="CapsLock" Style="{StaticResource pagingButtonIcon}" Height="64" Width="109" Grid.Row="5" Foreground="#FFA5A5A5" Visibility="Visible" HorizontalAlignment="Center"/>
 
-                        <TextBox x:Name="TextBox_A" Style="{StaticResource searchTextbox}" VerticalAlignment="Bottom" Width="440" Height="50" IsEnabled="False" IsReadOnly="True" Text="" FontSize="17" VerticalContentAlignment="Center"/>
+                        <TextBox x:Name="TextBox_A" Style="{StaticResource searchTextbox}" VerticalAlignment="Bottom" Width="auto" Height="50" IsEnabled="False" IsReadOnly="True" Text="" FontSize="17" VerticalContentAlignment="Center" Margin="75,10,75,0"/>
 
                         <Button x:Name="Copy_A_Value_Button" Style="{StaticResource addButton}" HorizontalAlignment="Center" Margin="0,232,0,-100" Click="Copy_A_Value_Button_Click" >
                             <StackPanel Orientation="Horizontal">
@@ -326,12 +327,12 @@
                 <Border x:Name="QRCode_Panel" BorderBrush="#FFEFF2F7" BorderThickness="1" Grid.Row="2" Grid.RowSpan="5" Background="#FFEFF2F7" Visibility="Collapsed">
                     <Grid Width="830" Height="400" HorizontalAlignment="Center" Margin="0 0 0 100">
 
-                        <TextBlock Margin="215,62,215,0" VerticalAlignment="Top" Foreground="#B0B9C6" IsHitTestVisible="False" Width="400" FontSize="17"
+                        <TextBlock Margin="10,62,215,0" VerticalAlignment="Top" Foreground="#B0B9C6" IsHitTestVisible="False" Width="400" FontSize="17"
                            Panel.ZIndex="1" Text="请在此处输入需要生成二维码的[文本/链接] ..."
                            Visibility="{Binding Text.IsEmpty, Converter={StaticResource BoolToVis}, ElementName=QRCode_URL}" />
-                        <TextBox x:Name="QRCode_URL" Style="{StaticResource searchTextbox}" VerticalAlignment="Top" Width="440" Height="50" FontSize="17" VerticalContentAlignment="Center" Margin="195,48,195,0"/>
+                        <TextBox x:Name="QRCode_URL" Style="{StaticResource searchTextbox}" VerticalAlignment="Top" Width="auto" Height="50" FontSize="17" VerticalContentAlignment="Center" Margin="75,48,75,0"/>
 
-                        <Image x:Name="QRCode_Image" HorizontalAlignment="Left" Height="193" Margin="316,121,0,0" VerticalAlignment="Top" Width="193" Source="/左侧图.jpg"/>
+                        <Image x:Name="QRCode_Image" HorizontalAlignment="Center" Height="193" VerticalAlignment="Top" Width="193" Source="/左侧图.jpg" Margin="0,121,0,0"/>
 
                         <Button x:Name="QRCode_Generate_Button" Style="{StaticResource addButton}" HorizontalAlignment="Center" Margin="0,337,0,28" Click="QRCode_Generate_Button_Click" >
                             <StackPanel Orientation="Horizontal">

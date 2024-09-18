@@ -36,9 +36,55 @@
                         <Setter Property="Background" Value="#dcdcdc" />
                         <Setter Property="Background" Value="#dcdcdc" />
                     </Trigger>
+                    <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                        <!--事件触发器-->
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <!--故事板，可以让改变从小逐渐变大，而不是突然变大-->
+                                <DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Width" To="31.5"/>
+                                <DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Height" To="31.5"/>
+                                <!--Duration表示花多少时间改变-->
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                        <!--事件触发器-->
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <!--故事板，可以让改变从小逐渐变大，而不是突然变大-->
+                                <DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Width" To="30"/>
+                                <DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Height" To="30"/>
+                                <!--Duration表示花多少时间改变-->
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
                 </Style.Triggers>
             </Style>
+            <Style x:Key="HelpButton" TargetType="Button">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="Foreground" Value="#6E7783" />
+                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                <Setter Property="Height" Value="30" />
+                <Setter Property="Width" Value="30" />
+                <Setter Property="HorizontalAlignment" Value="Right" />
+                <Setter Property="Template" >
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" CornerRadius="50">
+                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
 
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#dcdcdc" />
+                        <Setter Property="Background" Value="#dcdcdc" />
+                    </Trigger>
+                    
+                </Style.Triggers>
+            </Style>
 
             <Style x:Key="menuButton" TargetType="Button">
                 <Setter Property="Background" Value="Transparent" />
@@ -147,10 +193,29 @@
                         <Setter Property="Background" Value="#7B5CD6" />
                         <Setter Property="Foreground" Value="#ffffff" />
                     </Trigger>
-                    <!--<Trigger Property="IsFocused" Value="True">
-                    <Setter Property="Background" Value="#FF68BBED" />
-                    <Setter Property="Foreground" Value="#ffffff" />
-                </Trigger>-->
+
+                    <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                        <!--事件触发器-->
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <!--故事板，可以让改变从小逐渐变大，而不是突然变大-->
+                                <DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Width" To="157.5"/>
+                                <DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Height" To="36.75"/>
+                                <!--Duration表示花多少时间改变-->
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                        <!--事件触发器-->
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <!--故事板，可以让改变从小逐渐变大，而不是突然变大-->
+                                <DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Width" To="150"/>
+                                <DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Height" To="35"/>
+                                <!--Duration表示花多少时间改变-->
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
                 </Style.Triggers>
             </Style>
             <Style x:Key="DocumentSplit_Button" TargetType="Button">
@@ -184,9 +249,9 @@
                         <Setter Property="Foreground" Value="#ffffff" />
                     </Trigger>
                     <!--<Trigger Property="IsFocused" Value="True">
-            <Setter Property="Background" Value="#FF68BBED" />
-            <Setter Property="Foreground" Value="#ffffff" />
-        </Trigger>-->
+                    <Setter Property="Background" Value="#FF68BBED" />
+                    <Setter Property="Foreground" Value="#ffffff" />
+                    </Trigger>-->  
                 </Style.Triggers>
             </Style>
             <Style x:Key="addWaterMarkButton" TargetType="Button">
@@ -214,10 +279,28 @@
                         <Setter Property="Background" Value="#FF68BBED" />
                         <Setter Property="Foreground" Value="#ffffff" />
                     </Trigger>
-                    <!--<Trigger Property="IsFocused" Value="True">
-                    <Setter Property="Background" Value="#FF68BBED" />
-                    <Setter Property="Foreground" Value="#ffffff" />
-                </Trigger>-->
+                    <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                        <!--事件触发器-->
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <!--故事板，可以让改变从小逐渐变大，而不是突然变大-->
+                                <DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Width" To="157.5"/>
+                                <DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Height" To="36.75"/>
+                                <!--Duration表示花多少时间改变-->
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                        <!--事件触发器-->
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <!--故事板，可以让改变从小逐渐变大，而不是突然变大-->
+                                <DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Width" To="150"/>
+                                <DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Height" To="35"/>
+                                <!--Duration表示花多少时间改变-->
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
                 </Style.Triggers>
             </Style>
 
@@ -280,6 +363,30 @@
                         <Setter Property="BorderBrush" Value="#784FF2" />
                         <Setter Property="Foreground" Value="#784FF2" />
                     </Trigger>
+                    <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                        <!--事件触发器-->
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <!--故事板，可以让改变从小逐渐变大，而不是突然变大-->
+                                <DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Width" To="105"/>
+                                <DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="FontSize" To="15"/>
+                                <!--<DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Height" To="47.25"/>-->
+                                <!--Duration表示花多少时间改变-->
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                        <!--事件触发器-->
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <!--故事板，可以让改变从小逐渐变大，而不是突然变大-->
+                                <DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Width" To="100"/>
+                                <DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="FontSize" To="14"/>
+                                <!--<DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Height" To="45"/>-->
+                                <!--Duration表示花多少时间改变-->
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
                 </Style.Triggers>
             </Style>
 
