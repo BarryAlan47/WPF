@@ -26,7 +26,7 @@
 
                 <!--Menu Icon-->
                 <Button Style="{StaticResource HelpButton}" HorizontalAlignment="Left" Margin="20 28 0 35" Click="HelpButton_Click">
-                    <Icon:PackIconMaterial Kind="HelpCircleOutline" Width="25" Height="25" Visibility="Visible" />
+                    <Icon:PackIconMaterial Kind="HelpCircleOutline" Width="25" Height="0" Visibility="Visible" />
                 </Button>
 
                 <Border Grid.Row="1" Background="#623ED0" CornerRadius="0 50 0 30">
@@ -100,10 +100,10 @@
 
                         </StackPanel>
 
-                        <Button Style="{StaticResource menuButton}" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Margin="15 0 15 20" IsEnabled="False">
-                            <StackPanel Orientation="Horizontal">
+                        <Button Style="{StaticResource menuButton}" HorizontalAlignment="Center" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Margin="15 0 15 20" IsEnabled="False">
+                            <StackPanel Orientation="Horizontal" >
                                 <!--<Icon:PackIconMaterial Kind="Logout" Style="{StaticResource menuButtonIcon}"/>-->
-                                <TextBlock Text="——   网络和信息中心   ——"/>
+                                <TextBlock Text="———   Ver 1.0.0   ———"/>
                             </StackPanel>
                         </Button>
 
@@ -190,7 +190,7 @@
                 </Grid>
 
                 <!--Members Data Grid：待添加水印的文件列表-->
-                <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="membersDataGrid" Style="{DynamicResource DataGridStyle1}" Visibility="Visible">
+                <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="membersDataGrid" Style="{DynamicResource DataGridStyle1}" Visibility="Visible" EnableRowVirtualization="False">
                     <DataGrid.Columns>
                         <!--<DataGridCheckBoxColumn Header="C" CanUserResize="False" Width="auto" ElementStyle="{StaticResource CheckBoxStyle1}">
                             <DataGridCheckBoxColumn.HeaderTemplate>
@@ -234,7 +234,7 @@
                     </DataGrid.Columns>
                 </DataGrid>
                 <!--Members Data Grid:已添加水印的文件列表-->
-                <DataGrid x:Name="AddedWatermarkFile_Grid" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" Style="{DynamicResource DataGridStyle1}" Visibility="Collapsed">
+                <DataGrid x:Name="AddedWatermarkFile_Grid" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" Style="{DynamicResource DataGridStyle1}" Visibility="Collapsed" EnableRowVirtualization="False">
                     <DataGrid.Columns>
                         <!--<DataGridCheckBoxColumn Header="C" CanUserResize="False" Width="auto" ElementStyle="{StaticResource CheckBoxStyle1}">
                             <DataGridCheckBoxColumn.HeaderTemplate>
@@ -362,7 +362,7 @@
                 </Border>
             </Grid>
             <!--正在添加水印遮罩-->
-            <Border x:Name="AddingWaterMark_Mask" BorderBrush="#FFBBBBEC"  BorderThickness="3" CornerRadius="0,30,30,0" Background="#7FCFCDE8" Visibility="Collapsed" Height="60" VerticalAlignment="Bottom" Margin="0,0,290,20" Grid.Column="1">
+            <Border x:Name="AddingWaterMark_Mask" BorderBrush="#FFBBBBEC"  BorderThickness="3" CornerRadius="0,30,30,0" Background="#7FCFCDE8" Visibility="Collapsed" Height="60" VerticalAlignment="Bottom" Margin="0,0,880,20" Grid.Column="1">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
                     <hc:CircleProgressBar x:Name="MyCircleProgressBar" Height="40" Width="40" Margin="10 0 0 0" Value="0" ArcThickness ="5" Text="0"  FontSize="12"/>
                     <Icon:PackIconMaterial x:Name="AddingWaterMark_Icon" Kind="CheckboxMarked" Style="{StaticResource pagingButtonIcon}" Height="33" Width="33" Foreground="#FF28B30F" Visibility="Collapsed" VerticalAlignment="Center" Margin="10 0 0 0" />

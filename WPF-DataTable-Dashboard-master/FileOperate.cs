@@ -30,7 +30,7 @@ namespace DataGrid
         public string LogsReader()
         {
             string content = File.ReadAllText(log_FilePath);
-            Trace.WriteLine(content);
+            //Trace.WriteLine(content);
             return content;
         }
         public string[] ReadLogInfoByLine() 

@@ -239,8 +239,8 @@ namespace DataGrid
                     });
                 }
             }
-            Trace.WriteLine("--------------------file_list.Count:" + file_list.Count);
-            Trace.WriteLine("--------------------members.Count:" + members.Count);
+            //Trace.WriteLine("--------------------file_list.Count:" + file_list.Count);
+            //Trace.WriteLine("--------------------members.Count:" + members.Count);
             //membersDataGrid.ItemsSource = null;
             membersDataGrid.ItemsSource = members;
             if (members.Count != 0)
@@ -329,18 +329,19 @@ namespace DataGrid
                         })
                         );
                         members[i].Flag = true;
-                        Trace.WriteLine("members[" + i + "].Flag:" + members[i].Flag);
+                        //Trace.WriteLine("members[" + i + "].Flag:" + members[i].Flag);
                         string logInfo = (loglines + AddedWaterMarkFileCount) + "|" + fileName.Substring(0, 1) + "|" + fileName + "|" + fileDir + "|" + fileFullInfo["addWaterMarkDate"].ToString() + "|" + fileType + "|" + filePath;
                         fileOperate.LogsWriter(logInfo);
                         ShowOpenFileButton(i);
                     }
-                    ShowAddingWaterMarkMask(false);
                     this.Dispatcher.Invoke(new Action(() =>
                     {
                         addingWaterMark_TextBox.Text = "文件已全部添加水印！";
                         addingWaterMark_Icon.Visibility = Visibility.Visible;
                         myCircleProgressBar.Visibility = Visibility.Collapsed;
                         TimeDelay.Delay(1000);
+                        ShowAddingWaterMarkMask(false);
+                        TimeDelay.Delay(300);
                         addingWaterMark_Mask.Visibility = Visibility.Collapsed;
                         addingWaterMark_Icon.Visibility = Visibility.Collapsed;
                     })
@@ -419,7 +420,7 @@ namespace DataGrid
             string filePath = fileDir + "\\" + fileName + "(已添加水印)" + fileExtension;
             if (!System.IO.File.Exists(filePath))
             {
-                Trace.WriteLine("所选的文件已被移动至其他地方");
+                //Trace.WriteLine("所选的文件已被移动至其他地方");
             }
             System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo("Explorer.exe");
             //string file = @"c:/ windows/notepad.exe"; 
@@ -586,21 +587,30 @@ namespace DataGrid
         /// <param name="needShow"></param>
         private void ShowAddingWaterMarkMask(bool needShow) 
         {
+            
             if (needShow)
             {
-                ThicknessAnimation marginAnimation = new ThicknessAnimation();
-                marginAnimation.From = new Thickness(0, 0, 290, 20);
-                marginAnimation.To = new Thickness(0, 0, 880, 20);
-                marginAnimation.Duration = TimeSpan.FromSeconds(0.3);
-                AddingWaterMark_Mask.BeginAnimation(Border.MarginProperty, marginAnimation);
+                this.Dispatcher.Invoke(new Action(() =>
+                {
+                    ThicknessAnimation marginAnimation = new ThicknessAnimation();
+                    marginAnimation.From = new Thickness(0, 0, 880, 20);
+                    marginAnimation.To = new Thickness(0, 0, 290, 20);
+                    marginAnimation.Duration = TimeSpan.FromSeconds(0.3);
+                    AddingWaterMark_Mask.BeginAnimation(Border.MarginProperty, marginAnimation);
+                })
+                );
             }
             else
             {
-                ThicknessAnimation marginAnimation = new ThicknessAnimation();
-                marginAnimation.From = new Thickness(0, 0, 880, 20);
-                marginAnimation.To = new Thickness(0, 0, 290, 20);
-                marginAnimation.Duration = TimeSpan.FromSeconds(0.3);
-                AddingWaterMark_Mask.BeginAnimation(Border.MarginProperty, marginAnimation);
+                this.Dispatcher.Invoke(new Action(() =>
+                {
+                    ThicknessAnimation marginAnimation = new ThicknessAnimation();
+                    marginAnimation.From = new Thickness(0, 0, 290, 20);
+                    marginAnimation.To = new Thickness(0, 0, 880, 20);
+                    marginAnimation.Duration = TimeSpan.FromSeconds(0.3);
+                    AddingWaterMark_Mask.BeginAnimation(Border.MarginProperty, marginAnimation);
+                })
+                );
             }
         }
         /// <summary>
@@ -610,19 +620,16 @@ namespace DataGrid
         /// <param name="e"></param>
         private void OpenFileButton_Click(object sender, RoutedEventArgs e)
         {
-            //string filePath_Old = fileOperate.ReadLogInfoByLine()[AddedWatermarkFile_Grid.SelectedIndex].Split('|')[6];
-            //string fileDir = getFileInfo.GetFileDir(filePath_Old);
-            //string fileName = getFileInfo.GetFileName(filePath_Old);
-            //string fileExtension = System.IO.Path.GetExtension(filePath_Old);
-            //string filePath = fileDir + "\\" + fileName + "(已添加水印)" + fileExtension;
-            //if (!System.IO.File.Exists(filePath))
-            //{
-            //    Trace.WriteLine("所选的文件已被移动至其他地方");
-            //}
-            //System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo("Explorer.exe");
-            ////string file = @"c:/ windows/notepad.exe"; 
-            //psi.Arguments = " /select," + filePath;
-            //System.Diagnostics.Process.Start(psi);
+            int selectedRowIndex = membersDataGrid.SelectedIndex;
+            string fileExtension = System.IO.Path.GetExtension(members[selectedRowIndex].FilePath);
+            string filePath = members[selectedRowIndex].FileDir + "\\" + members[selectedRowIndex].FileName + "(已添加水印)" + fileExtension;
+            if (!System.IO.File.Exists(filePath))
+            {
+                //Trace.WriteLine("所选的文件已被移动至其他地方");
+            }
+            System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo("Explorer.exe");
+            psi.Arguments = " /select," + filePath;
+            System.Diagnostics.Process.Start(psi);
         }
         private void HelpButton_Click(object sender, RoutedEventArgs e)
         {
