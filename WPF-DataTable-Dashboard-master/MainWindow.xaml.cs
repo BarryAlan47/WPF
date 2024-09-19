@@ -23,6 +23,7 @@ using System.Linq;
 using HandyControl.Controls;
 using System.Threading;
 using static System.Resources.ResXFileRef;
+using System.Windows.Media.Animation;
 
 namespace DataGrid
 {
@@ -55,9 +56,7 @@ namespace DataGrid
         MahApps.Metro.IconPacks.PackIconMaterial _a2A_Icon;
         System.Windows.Media.Brush a2AIcon_bgColor_Default;
         System.Windows.Media.Brush a2AIcon_bgColor_Truning;
-        WaveProgressBar myWaveProgressBar;
         CircleProgressBar myCircleProgressBar;
-        //GifImage myGifImage;
         MahApps.Metro.IconPacks.PackIconMaterial addingWaterMark_Icon;
 
         public MainWindow()
@@ -85,7 +84,6 @@ namespace DataGrid
             tabButton_BorderBrush_Color_Seleted = (System.Windows.Media.Brush)converter.ConvertFromString("#784FF2");
             tabButton_Foreground_Color_Default = (System.Windows.Media.Brush)converter.ConvertFromString("#FF121518");
             tabButton_Foreground_Color_Seleted = (System.Windows.Media.Brush)converter.ConvertFromString("#784FF2");
-            myWaveProgressBar = (WaveProgressBar)MainGrid.FindName("MyWaveProgressBar");
             myCircleProgressBar = (CircleProgressBar)MainGrid.FindName("MyCircleProgressBar");
             //myGifImage = (GifImage)MainGrid.FindName("MyGifImage");
             //myGifImage.Uri = new Uri("pack://siteoforigin:,,,/C:\\Git\\WPF\\WPF-DataTable-Dashboard-master\\Images\\3.gif");
@@ -194,7 +192,7 @@ namespace DataGrid
         /// <summary>
         /// 填充已选择文件列表
         /// </summary>
-        private void FillGridData() 
+        private void FillGridData()
         {
             //获取日志行数
             int loglines = fileOperate.GetLogFileLines();
@@ -242,7 +240,8 @@ namespace DataGrid
                 }
             }
             Trace.WriteLine("--------------------file_list.Count:" + file_list.Count);
-            membersDataGrid.ItemsSource = null;
+            Trace.WriteLine("--------------------members.Count:" + members.Count);
+            //membersDataGrid.ItemsSource = null;
             membersDataGrid.ItemsSource = members;
             if (members.Count != 0)
             {
@@ -262,13 +261,6 @@ namespace DataGrid
         {
             FillGridData();
         }
-        private void testFunc() 
-        {
-            Trace.WriteLine("-----------------------------testFunc开始执行");
-            DataGridTemplateColumn templeColumn3 = membersDataGrid.Columns[4] as DataGridTemplateColumn;
-            Trace.WriteLine("-----------------------------testFunc已执行");
-
-        }
         /// <summary>
         /// 点击开始添加水印
         /// </summary>
@@ -286,49 +278,28 @@ namespace DataGrid
 
             foreach (var file in members)
             {
-                if (!file.Flag) 
+                if (!file.Flag)
                 {
                     waitForAddWaterMarkFileCount++;
                 }
             }
             waitForAddWaterMarkFileStartIndex = members.Count - waitForAddWaterMarkFileCount;
-            if (file_list.Count == 0)
+            if (waitForAddWaterMarkFileCount != 0)
             {
-                var result = System.Windows.MessageBox.Show("尚未选择任何文件,您是否希望前往选择需要添加水印的文件?", "提示", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
-                switch (result)
-                {
-                    case MessageBoxResult.Cancel:
-                        // User pressed Cancel
-                        break;
-                    case MessageBoxResult.OK:
-                        // User pressed Yes
-                        FillGridData();
-                        break;
-                }
-            }
-            else
-            {
-                //myWaveProgressBar.Value = 0;
                 Task task = Task.Run(() =>
                 {
                     this.Dispatcher.Invoke(new Action(() =>
                     {
                         addingWaterMark_Mask.Visibility = Visibility.Visible;
                         addingWaterMark_Icon.Visibility = Visibility.Collapsed;
-                        myWaveProgressBar.Value = 0;
                         myCircleProgressBar.Value = 0;
                         myCircleProgressBar.Text = "0";
                         addingWaterMark_TextBox.Text = "请稍等，正在添加水印中...(0" + "/" + waitForAddWaterMarkFileCount + ")";
-                        myWaveProgressBar.Maximum = waitForAddWaterMarkFileCount;
                         myCircleProgressBar.Maximum = waitForAddWaterMarkFileCount;
-                        //myWaveProgressBar.Value = 0;
                     }));
-                    //myWaveProgressBar.Value = 0;
                     int AddedWaterMarkFileCount = 0;
-                    float WaveProgressBar_CurrentValue = 0f;
                     float ProgressBar_CurrentValue = 0f;
-                    //float ProgressBar_IntervalValue = 100/waitForAddWaterMarkFileCount;
-                    //DataGridTemplateColumn templeColumn2 = membersDataGrid.Columns[4] as DataGridTemplateColumn;
+                    ShowAddingWaterMarkMask(true);
                     for (int i = waitForAddWaterMarkFileStartIndex; i < members.Count; i++)
                     {
                         AddedWaterMarkFileCount++;
@@ -350,37 +321,25 @@ namespace DataGrid
                             addingWaterMark_TextBox.Text = "请稍等，正在添加水印中...(" + AddedWaterMarkFileCount + "/" + waitForAddWaterMarkFileCount + ")";
                         })
                         );
-                        //if (i == members.Count - 1)
-                        //{
-                        //    WaveProgressBar_CurrentValue = 100;
-                        //    ProgressBar_CurrentValue = 100;
-                        //}
-                        //else 
-                        //{
-                        //    WaveProgressBar_CurrentValue += 1;
-                        //    ProgressBar_CurrentValue += 1;
-                        //}
-                        WaveProgressBar_CurrentValue += 1;
                         ProgressBar_CurrentValue += 1;
                         this.Dispatcher.Invoke(new Action(() =>
                         {
-                            myWaveProgressBar.Value = WaveProgressBar_CurrentValue;
-                            //myWaveProgressBar.Text = "(" + AddedWaterMarkFileCount + "/" + waitForAddWaterMarkFileCount + ")";
                             myCircleProgressBar.Value = ProgressBar_CurrentValue;
                             myCircleProgressBar.Text = (i + 1).ToString();
                         })
                         );
                         members[i].Flag = true;
                         Trace.WriteLine("members[" + i + "].Flag:" + members[i].Flag);
-                        string logInfo = (loglines + AddedWaterMarkFileCount) + "|"+ fileName.Substring(0, 1)  + "|" + fileName + "|" + fileDir + "|" + fileFullInfo["addWaterMarkDate"].ToString() + "|"+ fileType + "|"+ filePath;
+                        string logInfo = (loglines + AddedWaterMarkFileCount) + "|" + fileName.Substring(0, 1) + "|" + fileName + "|" + fileDir + "|" + fileFullInfo["addWaterMarkDate"].ToString() + "|" + fileType + "|" + filePath;
                         fileOperate.LogsWriter(logInfo);
                         ShowOpenFileButton(i);
                     }
+                    ShowAddingWaterMarkMask(false);
                     this.Dispatcher.Invoke(new Action(() =>
                     {
                         addingWaterMark_TextBox.Text = "文件已全部添加水印！";
                         addingWaterMark_Icon.Visibility = Visibility.Visible;
-                        myWaveProgressBar.Visibility = Visibility.Collapsed;
+                        myCircleProgressBar.Visibility = Visibility.Collapsed;
                         TimeDelay.Delay(1000);
                         addingWaterMark_Mask.Visibility = Visibility.Collapsed;
                         addingWaterMark_Icon.Visibility = Visibility.Collapsed;
@@ -388,6 +347,37 @@ namespace DataGrid
                     );
                 }
                 );
+            }
+            else
+            {
+                if (members.Count == 0)
+                {
+                    var result = System.Windows.MessageBox.Show("尚未选择任何文件,您是否希望前往选择需要添加水印的文件?", "提示", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+                    switch (result)
+                    {
+                        case MessageBoxResult.Cancel:
+                            // User pressed Cancel
+                            break;
+                        case MessageBoxResult.OK:
+                            // User pressed Yes
+                            FillGridData();
+                            break;
+                    }
+                }
+                else
+                {
+                    var result = System.Windows.MessageBox.Show("当前列表的文件均已添加水印,您是否希望前往选择需要新的需要添加水印的文件?", "提示", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+                    switch (result)
+                    {
+                        case MessageBoxResult.Cancel:
+                            // User pressed Cancel
+                            break;
+                        case MessageBoxResult.OK:
+                            // User pressed Yes
+                            FillGridData();
+                            break;
+                    }
+                }
             }
         }
         /// <summary>
@@ -427,14 +417,14 @@ namespace DataGrid
             string fileName = getFileInfo.GetFileName(filePath_Old);
             string fileExtension = System.IO.Path.GetExtension(filePath_Old);
             string filePath = fileDir + "\\" + fileName + "(已添加水印)" + fileExtension;
-            if (!System.IO.File.Exists(filePath)) 
+            if (!System.IO.File.Exists(filePath))
             {
                 Trace.WriteLine("所选的文件已被移动至其他地方");
             }
             System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo("Explorer.exe");
             //string file = @"c:/ windows/notepad.exe"; 
             psi.Arguments = " /select," + filePath;
-            System.Diagnostics.Process.Start(psi); 
+            System.Diagnostics.Process.Start(psi);
         }
         /// <summary>
         /// 已选择文件TabButton点击事件
@@ -474,7 +464,7 @@ namespace DataGrid
             string LogContent = fileOperate.LogsReader();
             string[] list_LogInfo = fileOperate.ReadLogInfoByLine();
             System.Windows.Media.Brush bgColor;
-            if (LogContent != "\n") 
+            if (LogContent != "\n")
             {
                 foreach (var item in list_LogInfo)
                 {
@@ -523,7 +513,7 @@ namespace DataGrid
             {
                 show_NoFile_Text(false);
             }
-            else 
+            else
             {
                 show_NoFile_Text(true);
             }
@@ -539,7 +529,7 @@ namespace DataGrid
         /// <summary>
         /// 展示文件正在添加水印的处理动效
         /// </summary>
-        private void ShowProgressBar(int GridIndex) 
+        private void ShowProgressBar(int GridIndex)
         {
             this.Dispatcher.Invoke(new Action(() =>
             {
@@ -562,7 +552,7 @@ namespace DataGrid
         /// <summary>
         /// 水印添加完毕后，将移除文件按钮替换为打开文件按钮
         /// </summary>
-        private void ShowOpenFileButton(int GridIndex) 
+        private void ShowOpenFileButton(int GridIndex)
         {
             this.Dispatcher.Invoke(new Action(() =>
             {
@@ -570,6 +560,8 @@ namespace DataGrid
                 if (element != null)
                 {
                     System.Windows.Controls.Button removeFileButton = (System.Windows.Controls.Button)templeColumn.CellTemplate.FindName("RemoveFile_Button", element);
+                    MahApps.Metro.IconPacks.PackIconMaterial checkIcon = (MahApps.Metro.IconPacks.PackIconMaterial)templeColumn.CellTemplate.FindName("Check_Icon", element);
+                    System.Windows.Controls.TextBox addedWaterMark_TextBox = (System.Windows.Controls.TextBox)templeColumn.CellTemplate.FindName("AddedWaterMark_TextBox", element);
                     LoadingCircle loadingCircle = (LoadingCircle)templeColumn.CellTemplate.FindName("FileLoadingCircle", element);
                     System.Windows.Controls.Button openFileButton = (System.Windows.Controls.Button)templeColumn.CellTemplate.FindName("OpenFileButton", element);
                     if (removeFileButton != null)
@@ -578,13 +570,38 @@ namespace DataGrid
                         {
                             removeFileButton.Visibility = Visibility.Collapsed;
                             loadingCircle.Visibility = Visibility.Collapsed;
+                            checkIcon.Visibility = Visibility.Visible;
+                            addedWaterMark_TextBox.Visibility = Visibility.Visible;
                             openFileButton.Visibility = Visibility.Visible;
                         }));
                     }
                 }
             })
             );
-            
+
+        }
+        /// <summary>
+        /// 展开或收起正在添加水印的提示遮罩
+        /// </summary>
+        /// <param name="needShow"></param>
+        private void ShowAddingWaterMarkMask(bool needShow) 
+        {
+            if (needShow)
+            {
+                ThicknessAnimation marginAnimation = new ThicknessAnimation();
+                marginAnimation.From = new Thickness(0, 0, 290, 20);
+                marginAnimation.To = new Thickness(0, 0, 880, 20);
+                marginAnimation.Duration = TimeSpan.FromSeconds(0.3);
+                AddingWaterMark_Mask.BeginAnimation(Border.MarginProperty, marginAnimation);
+            }
+            else
+            {
+                ThicknessAnimation marginAnimation = new ThicknessAnimation();
+                marginAnimation.From = new Thickness(0, 0, 880, 20);
+                marginAnimation.To = new Thickness(0, 0, 290, 20);
+                marginAnimation.Duration = TimeSpan.FromSeconds(0.3);
+                AddingWaterMark_Mask.BeginAnimation(Border.MarginProperty, marginAnimation);
+            }
         }
         /// <summary>
         /// 点击已选择文件列表界面内的已添加水印的打开文件按钮,调用系统窗口定位文件
@@ -609,7 +626,6 @@ namespace DataGrid
         }
         private void HelpButton_Click(object sender, RoutedEventArgs e)
         {
-            ShowProgressBar(0);
             
         }
 

@@ -214,15 +214,17 @@
                         </DataGridTemplateColumn>
                         <DataGridTextColumn Header="文件路径" Binding="{Binding FileDir}" IsReadOnly="True" Width="*" />
                         <DataGridTextColumn Header="文件类型" Binding="{Binding FileType}" IsReadOnly="True" Width="*"/>
-                        <DataGridTemplateColumn x:Name="EditButtonPanel" Header="" IsReadOnly="True" Width="auto">
+                        <DataGridTemplateColumn x:Name="EditButtonPanel" Header="" IsReadOnly="True" Width="150">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <StackPanel x:Name="StackPanel_EditButton" Orientation="Horizontal">
-                                        <hc:LoadingCircle x:Name="FileLoadingCircle" HorizontalAlignment="Left" Margin="0,0,-24,0" VerticalAlignment="Center" Width="24" Height="24" Visibility="Collapsed"/>
-                                        <Button x:Name="RemoveFile_Button" Margin="0 0 0 0" Style="{StaticResource gridRemoveButton}" Width="24" Height="24" Click="RemoveFileButton_Click">
+                                    <StackPanel x:Name="StackPanel_EditButton" Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Icon:PackIconMaterial x:Name="Check_Icon" Kind="CheckBold" Style="{StaticResource gridButtonIcon}" Width="20" Height="20" Foreground="Green" Visibility="Collapsed"/>
+                                        <TextBox x:Name="AddedWaterMark_TextBox" BorderThickness="0" Background="Transparent"  Text="已添加水印" TextAlignment="Center" Foreground="#FF5F5F5F" FontSize="12" FontWeight="SemiBold" IsEnabled="False" Visibility="Collapsed"/>
+                                        <hc:LoadingCircle x:Name="FileLoadingCircle" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Width="24" Height="24" Visibility="Collapsed"/>
+                                        <Button x:Name="RemoveFile_Button" Margin="0 0 0 0" Style="{StaticResource gridRemoveButton}" Width="24" Height="24" Click="RemoveFileButton_Click" Visibility="Visible">
                                             <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}" />
                                         </Button>
-                                        <Button x:Name="OpenFileButton" Margin="0 0 0 0" Style="{StaticResource gridCheckButton}" Click="OpenFileButton_Click" Visibility="Collapsed">
+                                        <Button x:Name="OpenFileButton" Margin="0 0 0 0" Style="{StaticResource gridOpenFileButton}" Click="OpenFileButton_Click" Visibility="Collapsed">
                                             <Icon:PackIconMaterial Kind="Folder" Style="{StaticResource gridButtonIcon}" />
                                         </Button>
                                     </StackPanel>
@@ -297,17 +299,6 @@
                         </Button>
                     </StackPanel>
                 </Border>
-                <!--正在添加水印遮罩-->
-                <Border x:Name="AddingWaterMark_Mask" BorderBrush="#FFBBBBEC"  BorderThickness="3" CornerRadius="10"  Grid.Row="5" Background="#7FCFCDE8" Visibility="Collapsed" Margin="0,397,147,0" Grid.RowSpan="2">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <!--<hc:GifImage x:Name="MyGifImage" Height="40" Width="40"/>-->
-                        <hc:CircleProgressBar x:Name="MyCircleProgressBar" Height="40" Width="40" Margin="10 0 0 0" Value="0" ArcThickness ="5" Text="0"  FontSize="12"/>
-                        <Icon:PackIconMaterial x:Name="AddingWaterMark_Icon" Kind="CheckboxMarked" Style="{StaticResource pagingButtonIcon}" Height="33" Width="33" Foreground="#FF28B30F" Visibility="Collapsed" VerticalAlignment="Center" Margin="10 0 0 0" />
-                        <hc:WaveProgressBar x:Name="MyWaveProgressBar" VerticalAlignment="Center" Height="40" Width="40" Value="0" Foreground="{DynamicResource OptionMark.Static.Glyph}" Background="{DynamicResource OptionMark.Disabled.Border}" Margin="10 0 0 0" Visibility="Visible"/>
-                        <TextBox x:Name="AddingWaterMark_TextBox" BorderThickness="0" Background="Transparent"  Text="请稍等，正在添加水印中...(1/3)" TextAlignment="Center" Foreground="#FF5F5F5F" FontSize="32" FontWeight="SemiBold"/>
-                    </StackPanel>
-                </Border>
-
 
                 <!--大小写转换Panel-->
                 <Border x:Name="A2a_Panel" BorderBrush="#FFEFF2F7" BorderThickness="1" Grid.Row="2" Grid.RowSpan="5" Background="#FFEFF2F7" Visibility="Collapsed">
@@ -370,8 +361,30 @@
                     </Grid>
                 </Border>
             </Grid>
-
-
+            <!--正在添加水印遮罩-->
+            <Border x:Name="AddingWaterMark_Mask" BorderBrush="#FFBBBBEC"  BorderThickness="3" CornerRadius="0,30,30,0" Background="#7FCFCDE8" Visibility="Collapsed" Height="60" VerticalAlignment="Bottom" Margin="0,0,290,20" Grid.Column="1">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <hc:CircleProgressBar x:Name="MyCircleProgressBar" Height="40" Width="40" Margin="10 0 0 0" Value="0" ArcThickness ="5" Text="0"  FontSize="12"/>
+                    <Icon:PackIconMaterial x:Name="AddingWaterMark_Icon" Kind="CheckboxMarked" Style="{StaticResource pagingButtonIcon}" Height="33" Width="33" Foreground="#FF28B30F" Visibility="Collapsed" VerticalAlignment="Center" Margin="10 0 0 0" />
+                    <TextBox x:Name="AddingWaterMark_TextBox" BorderThickness="0" Background="Transparent"  Text="请稍等，正在添加水印中...(1/3)" TextAlignment="Center" Foreground="#FF5F5F5F" FontSize="32" FontWeight="SemiBold"/>
+                </StackPanel>
+                <Border.Triggers>
+                    <EventTrigger RoutedEvent="Page.Loaded">
+                        <BeginStoryboard>
+                            <Storyboard x:Name="Storyboard">
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Border.Triggers>
+            </Border>
         </Grid>
     </Border>
+    <!--正在添加水印遮罩-->
+    <!--<Border x:Name="AddingWaterMark_Mask" BorderBrush="#FFBBBBEC"  BorderThickness="3" CornerRadius="0,30,30,0"  Grid.Row="5" Background="#7FCFCDE8" Visibility="Visible" Margin="0,397,147,0" Grid.RowSpan="2" Height="60">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <hc:CircleProgressBar x:Name="MyCircleProgressBar" Height="40" Width="40" Margin="10 0 0 0" Value="0" ArcThickness ="5" Text="0"  FontSize="12"/>
+            <Icon:PackIconMaterial x:Name="AddingWaterMark_Icon" Kind="CheckboxMarked" Style="{StaticResource pagingButtonIcon}" Height="33" Width="33" Foreground="#FF28B30F" Visibility="Collapsed" VerticalAlignment="Center" Margin="10 0 0 0" />
+            <TextBox x:Name="AddingWaterMark_TextBox" BorderThickness="0" Background="Transparent"  Text="请稍等，正在添加水印中...(1/3)" TextAlignment="Center" Foreground="#FF5F5F5F" FontSize="32" FontWeight="SemiBold"/>
+        </StackPanel>
+    </Border>-->
 </Window>
