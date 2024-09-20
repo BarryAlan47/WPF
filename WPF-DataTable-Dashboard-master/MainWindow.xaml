@@ -234,7 +234,7 @@
                     </DataGrid.Columns>
                 </DataGrid>
                 <!--Members Data Grid:已添加水印的文件列表-->
-                <DataGrid x:Name="AddedWatermarkFile_Grid" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" Style="{DynamicResource DataGridStyle1}" Visibility="Collapsed" EnableRowVirtualization="False">
+                <DataGrid x:Name="AddedWatermarkFile_Grid" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" Style="{DynamicResource DataGridStyle1}" Visibility="Collapsed">
                     <DataGrid.Columns>
                         <!--<DataGridCheckBoxColumn Header="C" CanUserResize="False" Width="auto" ElementStyle="{StaticResource CheckBoxStyle1}">
                             <DataGridCheckBoxColumn.HeaderTemplate>

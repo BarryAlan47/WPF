@@ -194,9 +194,8 @@ namespace DataGrid
         /// </summary>
         private void FillGridData()
         {
-            //获取日志行数
-            int loglines = fileOperate.GetLogFileLines();
-
+            text_NoFile.Text = Environment.CurrentDirectory + "\\Logs\\Logs.txt";
+            text_NoFile.FontSize = 15;
             //获取未添加水印的文件的数量
             int UnWaterMarkFileCount = 0;
             foreach (var file in members)
@@ -270,9 +269,7 @@ namespace DataGrid
         {
             Border addingWaterMark_Mask = (Border)MainGrid.FindName("AddingWaterMark_Mask");
             System.Windows.Controls.TextBox addingWaterMark_TextBox = (System.Windows.Controls.TextBox)AddingWaterMark_Mask.FindName("AddingWaterMark_TextBox");
-            //MahApps.Metro.IconPacks.PackIconMaterial addingWaterMark_Icon = (MahApps.Metro.IconPacks.PackIconMaterial)MainGrid.FindName("AddingWaterMark_Icon");
             int loglines = fileOperate.GetLogFileLines();
-
             int waitForAddWaterMarkFileStartIndex = 0;
             int waitForAddWaterMarkFileCount = 0;
 
@@ -329,7 +326,6 @@ namespace DataGrid
                         })
                         );
                         members[i].Flag = true;
-                        //Trace.WriteLine("members[" + i + "].Flag:" + members[i].Flag);
                         string logInfo = (loglines + AddedWaterMarkFileCount) + "|" + fileName.Substring(0, 1) + "|" + fileName + "|" + fileDir + "|" + fileFullInfo["addWaterMarkDate"].ToString() + "|" + fileType + "|" + filePath;
                         fileOperate.LogsWriter(logInfo);
                         ShowOpenFileButton(i);
