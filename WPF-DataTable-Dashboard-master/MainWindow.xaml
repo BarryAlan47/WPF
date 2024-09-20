@@ -85,13 +85,13 @@
                             <!--Menu Seprator-->
                             <Separator Margin="10" Background="#7E5FDC" DockPanel.Dock="Top" Height="0.8"/>
 
-                            <Button x:Name="MenuButton_A2a" Style="{StaticResource menuButton}" Width="170" Height="35" Click="MenuButton_A2a_Click" >
+                            <Button x:Name="MenuButton_A2a" Style="{StaticResource menuButton}" Width="170" Height="35" Click="MenuButton_A2a_Click" Visibility="Collapsed" >
                                 <StackPanel Orientation="Horizontal">
                                     <Icon:PackIconMaterial Kind="FormatFont" Style="{StaticResource menuButtonIcon}"/>
                                     <TextBlock Text="大小写转换"/>
                                 </StackPanel>
                             </Button>
-                            <Button x:Name="MenuButton_QRCodeGenerated" Style="{StaticResource menuButton}" Width="170" Height="35" Click="MenuButton_QRCodeGenerated_Click">
+                            <Button x:Name="MenuButton_QRCodeGenerated" Style="{StaticResource menuButton}" Width="170" Height="35" Click="MenuButton_QRCodeGenerated_Click" Visibility="Collapsed">
                                 <StackPanel Orientation="Horizontal">
                                     <Icon:PackIconMaterial Kind="Qrcode" Style="{StaticResource menuButtonIcon}"/>
                                     <TextBlock Text="二维码生成器"/>
