@@ -36,7 +36,8 @@ namespace DataGrid
         List<string> file_list = new List<string>();//声明一个列表，用于保存待添加水印的文件列表
         TextBlock title_TextBlock;//标题文字
         TextBlock text_NoFile;//暂未选择任何文件、暂无任何添加水印记录
-        System.Windows.Controls.Button button_AddFile;//
+        System.Windows.Controls.Button button_AddFile;
+        System.Windows.Controls.Button addWaterMarkButton;
         System.Windows.Controls.Button menuButton_AddWaterMark;
         System.Windows.Controls.Button menuButton_A2a;
         System.Windows.Controls.Button menuButton_QRCodeGenerated;
@@ -58,6 +59,8 @@ namespace DataGrid
         System.Windows.Media.Brush a2AIcon_bgColor_Truning;
         CircleProgressBar myCircleProgressBar;
         MahApps.Metro.IconPacks.PackIconMaterial addingWaterMark_Icon;
+        MahApps.Metro.IconPacks.PackIconMaterial openOrCLoseMenuButton_Icon;
+        Border p1_Image_Border;
 
         public MainWindow()
         {
@@ -65,6 +68,7 @@ namespace DataGrid
             title_TextBlock = (TextBlock)MainGrid.FindName("Title_TextBlock");
             text_NoFile = (TextBlock)FatherGrid.FindName("Text_NoFiles");
             button_AddFile = (System.Windows.Controls.Button)MainGrid.FindName("Button_AddFile");
+            addWaterMarkButton = (System.Windows.Controls.Button)MainGrid.FindName("AddWaterMarkButton");
             menuButton_AddWaterMark = (System.Windows.Controls.Button)MenuButton_Grid.FindName("MenuButton_AddWaterMark");
             menuButton_A2a = (System.Windows.Controls.Button)MenuButton_Grid.FindName("MenuButton_A2a");
             menuButton_QRCodeGenerated = (System.Windows.Controls.Button)MenuButton_Grid.FindName("MenuButton_QRCodeGenerated");
@@ -88,6 +92,8 @@ namespace DataGrid
             //myGifImage = (GifImage)MainGrid.FindName("MyGifImage");
             //myGifImage.Uri = new Uri("pack://siteoforigin:,,,/C:\\Git\\WPF\\WPF-DataTable-Dashboard-master\\Images\\3.gif");
             addingWaterMark_Icon = (MahApps.Metro.IconPacks.PackIconMaterial)MainGrid.FindName("AddingWaterMark_Icon");
+            openOrCLoseMenuButton_Icon = (MahApps.Metro.IconPacks.PackIconMaterial)FatherGrid.FindName("OpenOrCLoseMenuButton_Icon");
+            p1_Image_Border = (Border)MenuButton_Grid.FindName("P1_Image_Border");
         }
 
         private bool IsMaximize = false;
@@ -194,8 +200,6 @@ namespace DataGrid
         /// </summary>
         private void FillGridData()
         {
-            text_NoFile.Text = Environment.CurrentDirectory + "\\Logs\\Logs.txt";
-            text_NoFile.FontSize = 15;
             //获取未添加水印的文件的数量
             int UnWaterMarkFileCount = 0;
             foreach (var file in members)
@@ -256,9 +260,10 @@ namespace DataGrid
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void GetFilePathButton_Click(object sender, RoutedEventArgs e)
+        private void Button_AddFile_Click(object sender, RoutedEventArgs e)
         {
             FillGridData();
+            tabButton_SelectedFiles.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));
         }
         /// <summary>
         /// 点击开始添加水印
@@ -297,6 +302,7 @@ namespace DataGrid
                     int AddedWaterMarkFileCount = 0;
                     float ProgressBar_CurrentValue = 0f;
                     ShowAddingWaterMarkMask(true);
+                    TimeDelay.Delay(800);
                     for (int i = waitForAddWaterMarkFileStartIndex; i < members.Count; i++)
                     {
                         AddedWaterMarkFileCount++;
@@ -337,9 +343,10 @@ namespace DataGrid
                         myCircleProgressBar.Visibility = Visibility.Collapsed;
                         TimeDelay.Delay(1000);
                         ShowAddingWaterMarkMask(false);
-                        TimeDelay.Delay(300);
-                        addingWaterMark_Mask.Visibility = Visibility.Collapsed;
+                        TimeDelay.Delay(800);
+                        //addingWaterMark_Mask.Visibility = Visibility.Collapsed;
                         addingWaterMark_Icon.Visibility = Visibility.Collapsed;
+                        myCircleProgressBar.Visibility = Visibility.Visible;
                     })
                     );
                 }
@@ -430,6 +437,8 @@ namespace DataGrid
         /// <param name="e"></param>
         private void TabButton_SeletedFile_Click(object sender, RoutedEventArgs e)
         {
+            addWaterMarkButton.Visibility = Visibility.Visible;
+            SerchFile_Grid.Visibility = Visibility.Collapsed;
             membersDataGrid.Visibility = Visibility.Visible;
             AddedWatermarkFile_Grid.Visibility = Visibility.Collapsed;
             text_NoFile.Text = "暂未选择任何文件";
@@ -457,6 +466,8 @@ namespace DataGrid
         /// <param name="e"></param>
         private void TabButton_AddedWaterMarkFile_Click(object sender, RoutedEventArgs e)
         {
+            addWaterMarkButton.Visibility = Visibility.Collapsed;
+            SerchFile_Grid.Visibility = Visibility.Visible;
             addedWaterMarkFileList.Clear();
             string LogContent = fileOperate.LogsReader();
             string[] list_LogInfo = fileOperate.ReadLogInfoByLine();
@@ -517,11 +528,13 @@ namespace DataGrid
         }
         private void PageUpButton_Click(object sender, RoutedEventArgs e)
         {
-            System.Windows.MessageBox.Show("已经是第一页");
+            //System.Windows.MessageBox.Show("已经是第一页");
+            //HandyControl.Controls.MessageBox.Info("已经是第一页");
+            //HandyControl.Controls.MessageBox.Show("已经是第一页", "提示", MessageBoxButton.OKCancel, MessageBoxImage.Information);
         }
         private void PageDownButton_Click(object sender, RoutedEventArgs e)
         {
-            System.Windows.MessageBox.Show("已经是最后一页");
+            //System.Windows.MessageBox.Show("已经是最后一页");
         }
         /// <summary>
         /// 展示文件正在添加水印的处理动效
@@ -583,15 +596,25 @@ namespace DataGrid
         /// <param name="needShow"></param>
         private void ShowAddingWaterMarkMask(bool needShow) 
         {
-            
+            int RightMargin = 0;
+            if (isClose)
+            {
+                RightMargin = 500;
+            }
+            else 
+            {
+                RightMargin = 300;
+            }
             if (needShow)
             {
                 this.Dispatcher.Invoke(new Action(() =>
                 {
                     ThicknessAnimation marginAnimation = new ThicknessAnimation();
-                    marginAnimation.From = new Thickness(0, 0, 880, 20);
-                    marginAnimation.To = new Thickness(0, 0, 290, 20);
-                    marginAnimation.Duration = TimeSpan.FromSeconds(0.3);
+                    CubicEase ease = new CubicEase { EasingMode = EasingMode.EaseInOut };
+                    marginAnimation.EasingFunction = ease;
+                    marginAnimation.From = new Thickness(0, 0, 1080, 20);
+                    marginAnimation.To = new Thickness(0, 0, RightMargin, 20);
+                    marginAnimation.Duration = TimeSpan.FromSeconds(0.8);
                     AddingWaterMark_Mask.BeginAnimation(Border.MarginProperty, marginAnimation);
                 })
                 );
@@ -601,9 +624,11 @@ namespace DataGrid
                 this.Dispatcher.Invoke(new Action(() =>
                 {
                     ThicknessAnimation marginAnimation = new ThicknessAnimation();
-                    marginAnimation.From = new Thickness(0, 0, 290, 20);
-                    marginAnimation.To = new Thickness(0, 0, 880, 20);
-                    marginAnimation.Duration = TimeSpan.FromSeconds(0.3);
+                    CubicEase ease = new CubicEase { EasingMode = EasingMode.EaseInOut };
+                    marginAnimation.EasingFunction = ease;
+                    marginAnimation.From = new Thickness(0, 0, RightMargin, 20);
+                    marginAnimation.To = new Thickness(0, 0, 1080, 20);
+                    marginAnimation.Duration = TimeSpan.FromSeconds(0.8);
                     AddingWaterMark_Mask.BeginAnimation(Border.MarginProperty, marginAnimation);
                 })
                 );
@@ -631,8 +656,114 @@ namespace DataGrid
         {
             
         }
+        /// <summary>
+        /// 点击打开或关闭菜单按钮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        bool isClose = true;//菜单栏是否折叠
+        private void OpenOrCLoseMenuButton_Click(object sender, RoutedEventArgs e)
+        {
+            MenuGrid_Width.Width = new GridLength(200);
+            if (isClose)
+            {
+                Trace.WriteLine("——————————————菜单栏已折叠————————————————");
+                this.Dispatcher.Invoke(new Action(() =>
+                {
+                    this.IsEnabled = false;
+                    Storyboard storyboard = new Storyboard();
+                    Duration duration = new Duration(TimeSpan.FromMilliseconds(500));
+                    CubicEase ease = new CubicEase { EasingMode = EasingMode.EaseInOut };
+                    DoubleAnimation animation = new DoubleAnimation();
+                    DoubleAnimation animation_Width = new DoubleAnimation();
+                    DoubleAnimation animation_Height = new DoubleAnimation();
 
+                    animation.EasingFunction = ease;
+                    animation.Duration = duration;
+                    storyboard.Children.Add(animation);
+                    animation.From = 0;
+                    animation.To = 200;
 
+                    animation_Width.EasingFunction = ease;
+                    animation_Width.Duration = duration;
+                    storyboard.Children.Add(animation_Width);
+                    animation_Width.From = 0;
+                    animation_Width.To = 80;
+
+                    animation_Height.EasingFunction = ease;
+                    animation_Height.Duration = duration;
+                    storyboard.Children.Add(animation_Height);
+                    animation_Height.From = 0;
+                    animation_Height.To = 80;
+
+                    Storyboard.SetTarget(animation, MenuGrid_Width);
+                    Storyboard.SetTarget(animation_Width, p1_Image_Border);
+                    Storyboard.SetTarget(animation_Height, p1_Image_Border);
+
+                    Storyboard.SetTargetProperty(animation, new PropertyPath("(ColumnDefinition.MaxWidth)"));
+                    Storyboard.SetTargetProperty(animation_Width, new PropertyPath("Width"));
+                    Storyboard.SetTargetProperty(animation_Height, new PropertyPath("Height"));
+
+                    storyboard.Begin();
+
+                    this.IsEnabled = true;
+                    openOrCLoseMenuButton_Icon.Kind = MahApps.Metro.IconPacks.PackIconMaterialKind.MenuLeft;
+                })
+                );
+            }
+            else
+            {
+                Trace.WriteLine("——————————————菜单栏已展开————————————————");
+                this.Dispatcher.Invoke(new Action(() =>
+                {
+                    this.IsEnabled = false;
+                    Storyboard storyboard = new Storyboard();
+                    Duration duration = new Duration(TimeSpan.FromMilliseconds(500));
+                    CubicEase ease = new CubicEase { EasingMode = EasingMode.EaseInOut };
+                    DoubleAnimation animation = new DoubleAnimation();
+                    DoubleAnimation animation_Width = new DoubleAnimation();
+                    DoubleAnimation animation_Height = new DoubleAnimation();
+
+                    animation.EasingFunction = ease;
+                    animation.Duration = duration;
+                    storyboard.Children.Add(animation);
+                    animation.From = 200;
+                    animation.To = 0;
+
+                    animation_Width.EasingFunction = ease;
+                    animation_Width.Duration = duration;
+                    storyboard.Children.Add(animation_Width);
+                    animation_Width.From = 80;
+                    animation_Width.To = 0;
+
+                    animation_Height.EasingFunction = ease;
+                    animation_Height.Duration = duration;
+                    storyboard.Children.Add(animation_Height);
+                    animation_Height.From = 80;
+                    animation_Height.To = 0;
+
+                    Storyboard.SetTarget(animation, MenuGrid_Width);
+                    Storyboard.SetTarget(animation_Width, p1_Image_Border);
+                    Storyboard.SetTarget(animation_Height, p1_Image_Border);
+
+                    Storyboard.SetTargetProperty(animation, new PropertyPath("(ColumnDefinition.MaxWidth)"));
+                    Storyboard.SetTargetProperty(animation_Width, new PropertyPath("Width"));
+                    Storyboard.SetTargetProperty(animation_Height, new PropertyPath("Height"));
+
+                    storyboard.Begin();
+
+                    this.IsEnabled = true;
+                    openOrCLoseMenuButton_Icon.Kind = MahApps.Metro.IconPacks.PackIconMaterialKind.MenuRight;
+                })
+                );
+            }
+            isClose = !isClose;
+        }
+        /// <summary>
+        /// 点击关闭按钮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CloseTheAppButton_Click(object sender, RoutedEventArgs e)
         {
             Environment.Exit(0);

@@ -43,6 +43,7 @@
                                 <!--故事板，可以让改变从小逐渐变大，而不是突然变大-->
                                 <DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Width" To="31.5"/>
                                 <DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Height" To="31.5"/>
+                                <ColorAnimation From="#FF6E7783" To="#FFF33B3B" Duration="00:00:0.1" Storyboard.TargetProperty="(Button.Foreground).(SolidColorBrush.Color)"/>
                                 <!--Duration表示花多少时间改变-->
                             </Storyboard>
                         </BeginStoryboard>
@@ -54,12 +55,62 @@
                                 <!--故事板，可以让改变从小逐渐变大，而不是突然变大-->
                                 <DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Width" To="30"/>
                                 <DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Height" To="30"/>
+                                <ColorAnimation From="#FFF33B3B" To="#FF6E7783" Duration="00:00:0.1" Storyboard.TargetProperty="(Button.Foreground).(SolidColorBrush.Color)"/>
                                 <!--Duration表示花多少时间改变-->
                             </Storyboard>
                         </BeginStoryboard>
                     </EventTrigger>
                 </Style.Triggers>
             </Style>
+            
+            <Style x:Key="LeftButton" TargetType="Button">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="Foreground" Value="#6E7783" />
+                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                <Setter Property="Height" Value="30" />
+                <Setter Property="Width" Value="30" />
+                <Setter Property="HorizontalAlignment" Value="Right" />
+                <Setter Property="Template" >
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" CornerRadius="50">
+                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+
+                <Style.Triggers>
+                    <!--<Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#dcdcdc" />
+                    </Trigger>-->
+                    <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                        <!--事件触发器-->
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <!--故事板，可以让改变从小逐渐变大，而不是突然变大-->
+                                <DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Width" To="30"/>
+                                <DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Height" To="30"/>
+                                <ColorAnimation From="#FFB0B9C6" To="#FF6741D9" Duration="00:00:0.1" Storyboard.TargetProperty="(Button.Foreground).(SolidColorBrush.Color)"/>
+                                <!--Duration表示花多少时间改变-->
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                        <!--事件触发器-->
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <!--故事板，可以让改变从小逐渐变大，而不是突然变大-->
+                                <DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Width" To="24"/>
+                                <DoubleAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Height" To="24"/>
+                                <ColorAnimation From="#FF6741D9" To="#FFB0B9C6" Duration="00:00:0.1" Storyboard.TargetProperty="(Button.Foreground).(SolidColorBrush.Color)"/>
+                                <!--Duration表示花多少时间改变-->
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Style.Triggers>
+            </Style>
+
             <Style x:Key="HelpButton" TargetType="Button">
                 <Setter Property="Background" Value="Transparent" />
                 <Setter Property="Foreground" Value="#6E7783" />
@@ -166,11 +217,11 @@
                 <Setter Property="Padding" Value="15 10" />
                 <Setter Property="VerticalAlignment" Value="Center" />
                 <Setter Property="Margin" Value="0 10" />
-                <!--<Setter Property="Effect" >
+                <Setter Property="Effect" >
                 <Setter.Value>
                     <DropShadowEffect BlurRadius="2" Opacity="0.1" ShadowDepth="1"/>
                 </Setter.Value>
-            </Setter>-->
+            </Setter>
 
                 <Setter Property="Template">
                     <Setter.Value>
@@ -191,7 +242,39 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+            <Style x:Key="searchFileTextbox" TargetType="TextBox">
+                <Setter Property="Background" Value="#ffffff" />
+                <Setter Property="Foreground" Value="#B0B9C6" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="Padding" Value="15 10" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <!--<Setter Property="Margin" Value="0 10" />-->
+                <Setter Property="Effect" >
+                    <Setter.Value>
+                        <DropShadowEffect BlurRadius="2" Opacity="0.1" ShadowDepth="1"/>
+                    </Setter.Value>
+                </Setter>
 
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TextBoxBase}">
+                            <Border x:Name="border" CornerRadius="20" Background="{TemplateBinding Background}" SnapsToDevicePixels="True" BorderThickness="1" BorderBrush="#E0E6ED" >
+                                <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                            </Border>
+
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="BorderBrush" TargetName="border" Value="#d9d9d9"/>
+                                </Trigger>
+                                <Trigger Property="IsKeyboardFocused" Value="true">
+                                    <Setter Property="BorderBrush" TargetName="border" Value="#d9d9d9"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
 
             <Style x:Key="addButton" TargetType="Button">
                 <Setter Property="Background" Value="#6741D9" />
