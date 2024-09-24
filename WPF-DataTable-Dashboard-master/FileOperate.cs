@@ -5,10 +5,10 @@ using Spire.Doc;
 using Spire.Xls;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using System.Diagnostics;
+using Spire.Doc.Documents;
+using System.Drawing;
+using System.Text.RegularExpressions;
 
 namespace DataGrid
 {
@@ -212,6 +212,213 @@ namespace DataGrid
             pdfWriter.Close();
             pdf.Close();
             pdfReader.Close();
+        }
+        public void InitMoneyRequestDOC(int Type, string InfoText,string CostText)
+        {
+            //上一月
+            string previous_month = DateTime.Now.ToString("yyyy年MM月");
+            //大写金额
+            string COSTTEXT = null;
+            if (CostText != "")
+            {
+                float textBox_a_value = float.Parse(CostText);
+                var s = textBox_a_value.ToString("#L#E#D#C#K#E#D#C#J#E#D#C#I#E#D#C#H#E#D#C#G#E#D#C#F#E#D#C#.0B0A");
+                var d = Regex.Replace(s, @"((?<=-|^)[^1-9]*)|((?'z'0)[0A-E]*((?=[1-9])|(?'-z'(?=[F-L\.]|$))))|((?'b'[F-L])(?'z'0)[0A-L]*((?=[1-9])|(?'-z'(?=[\.]|$))))", "${b}${z}");
+                var r = Regex.Replace(d, ".", m => "负元空零壹贰叁肆伍陆柒捌玖空空空空空空空分角拾佰仟万亿兆京垓秭穰"[m.Value[0] - '-'].ToString());
+                var final_text = "人民币" + r + "整";
+                COSTTEXT = final_text;
+            }
+            else
+            {
+                COSTTEXT = "金额错误";
+            }
+            //户名
+            string bodyParagraph_4_text = null;
+            //开户行
+            string bodyParagraph_5_text = null;
+            //银行账号
+            string bodyParagraph_6_text = null;
+            if (Type == 0 || Type == 1)//联拓
+            {
+                bodyParagraph_4_text = "户  名：广西联拓信息技术有限公司";
+                bodyParagraph_5_text = "开户行：招商银行股份有限公司南宁分行";
+                bodyParagraph_6_text = "帐  号：771901921910605";
+            }
+            else 
+            {
+                bodyParagraph_4_text = "户  名：广西海纳电子科技有限公司";
+                bodyParagraph_5_text = "开户行：桂林银行南宁分行";
+                bodyParagraph_6_text = "账  号：6602 0000 8136 1000 10";
+            }
+            //创建一个Document对象
+            Document doc = new Document();
+
+            //添加section
+            Section section = doc.AddSection();
+
+            //设置页边距
+            section.PageSetup.Margins.Left = 90f;
+            section.PageSetup.Margins.Right = 90f;
+            section.PageSetup.Margins.Top = 72f;
+            section.PageSetup.Margins.Bottom = 72f;
+
+            //添加一个段落作为标题
+            Paragraph titleParagraph = section.AddParagraph();
+            titleParagraph.AppendText("转账请示");
+
+            Paragraph bodyParagraph_0 = section.AddParagraph();
+            bodyParagraph_0.AppendText("");
+            //添加两个段落作为正文
+            Paragraph bodyParagraph_1 = section.AddParagraph();
+            bodyParagraph_1.AppendText("馆领导：");
+
+
+            Paragraph bodyParagraph_2 = section.AddParagraph();
+            if (Type == 0)
+            {
+                bodyParagraph_2.AppendText("我馆因办公需要，向广西联拓信息技术有限公司购买" +
+                    InfoText +
+                    "等办公用品及耗材配件。" +
+                    previous_month +
+                    "的费用共计" +
+                    COSTTEXT +
+                    "（¥" +
+                    CostText +
+                    ".00）。现所有物品已到位使用，请财务给予转账，从部门办公耗材经费支出。");
+            }
+            else if (Type == 1)
+            {
+                bodyParagraph_2.AppendText("我馆在" +
+                    previous_month +
+                    "工作中，部分" +
+                    InfoText +
+                    "出现故障，需要维修及更换配件，费用合计" +
+                    COSTTEXT +
+                    "（¥" +
+                    CostText +
+                    ".00）(详见清单)。请财务给予转账，从部门办公设备维修维护经费支出。");
+            }
+            else if (Type == 2)
+            {
+                bodyParagraph_2.AppendText("我馆因办公需要，" +
+                    previous_month +
+                    "向广西海纳电子科技有限公司购买" +
+                    InfoText +
+                    "等办公用品及耗材配件，费用共计" +
+                    COSTTEXT +
+                    "（¥" +
+                    CostText +
+                    ".00）（详见清单）。请财务给予转账，从部门办公耗材经费支出。");
+            }
+            else
+            {
+                bodyParagraph_2.AppendText("我馆在" +
+                    previous_month +
+                    "工作中，部分" +
+                    InfoText +
+                    "等出现故障，需要维修及更换配件，费用合计" +
+                    COSTTEXT +
+                    "（¥" +
+                    CostText +
+                    ".00）(详见清单)。请财务给予转账，从部门办公设备维修维护经费支出。");
+            }
+
+            Paragraph bodyParagraph_3 = section.AddParagraph();
+            bodyParagraph_3.AppendText("妥否，请领导审批。");
+
+            Paragraph bodyParagraph_00 = section.AddParagraph();
+            bodyParagraph_00.AppendText("");
+
+            Paragraph bodyParagraph_4 = section.AddParagraph();
+            bodyParagraph_4.AppendText(bodyParagraph_4_text);
+
+            Paragraph bodyParagraph_5 = section.AddParagraph();
+            bodyParagraph_5.AppendText(bodyParagraph_5_text);
+
+            Paragraph bodyParagraph_6 = section.AddParagraph();
+            bodyParagraph_6.AppendText(bodyParagraph_6_text);
+
+            Paragraph bodyParagraph_000 = section.AddParagraph();
+            bodyParagraph_000.AppendText("");
+
+            Paragraph bodyParagraph_7 = section.AddParagraph();
+            bodyParagraph_7.AppendText("网络和信息中心");
+
+            Paragraph bodyParagraph_8 = section.AddParagraph();
+            bodyParagraph_8.AppendText("经办人：      ");
+
+            Paragraph bodyParagraph_9 = section.AddParagraph();
+            bodyParagraph_9.AppendText(DateTime.Now.ToString("yyyy年MM月dd日"));
+
+
+            //为标题段落创建样式
+            ParagraphStyle style1 = new ParagraphStyle(doc);
+            style1.Name = "titleStyle";
+            style1.CharacterFormat.Bold = false;
+            style1.CharacterFormat.TextColor = Color.Black;
+            style1.CharacterFormat.FontName = "方正小标宋简体";
+            style1.CharacterFormat.FontSize = 22;
+            doc.Styles.Add(style1);
+            titleParagraph.ApplyStyle("titleStyle");
+
+            //为正文段落创建样式
+            ParagraphStyle style2 = new ParagraphStyle(doc);
+            style2.Name = "paraStyle";
+            style2.CharacterFormat.FontName = "仿宋_GB2312";
+            style2.CharacterFormat.FontSize = 16;
+            doc.Styles.Add(style2);
+            bodyParagraph_1.ApplyStyle("paraStyle");
+            bodyParagraph_2.ApplyStyle("paraStyle");
+            bodyParagraph_3.ApplyStyle("paraStyle");
+            bodyParagraph_4.ApplyStyle("paraStyle");
+            bodyParagraph_5.ApplyStyle("paraStyle");
+            bodyParagraph_6.ApplyStyle("paraStyle");
+            bodyParagraph_7.ApplyStyle("paraStyle");
+            bodyParagraph_8.ApplyStyle("paraStyle");
+            bodyParagraph_9.ApplyStyle("paraStyle");
+
+            //设置段落的水平对齐方式
+            titleParagraph.Format.HorizontalAlignment = HorizontalAlignment.Center;
+            bodyParagraph_1.Format.HorizontalAlignment = HorizontalAlignment.Justify;
+            bodyParagraph_2.Format.HorizontalAlignment = HorizontalAlignment.Justify;
+            bodyParagraph_3.Format.HorizontalAlignment = HorizontalAlignment.Justify;
+            bodyParagraph_4.Format.HorizontalAlignment = HorizontalAlignment.Justify;
+            bodyParagraph_5.Format.HorizontalAlignment = HorizontalAlignment.Justify;
+            bodyParagraph_6.Format.HorizontalAlignment = HorizontalAlignment.Justify;
+            bodyParagraph_7.Format.HorizontalAlignment = HorizontalAlignment.Right;
+            bodyParagraph_8.Format.HorizontalAlignment = HorizontalAlignment.Right;
+            bodyParagraph_9.Format.HorizontalAlignment = HorizontalAlignment.Right;
+
+            //设置首行缩进
+            bodyParagraph_1.Format.FirstLineIndent = 0;
+            bodyParagraph_2.Format.FirstLineIndent = 30;
+            bodyParagraph_3.Format.FirstLineIndent = 30;
+            bodyParagraph_4.Format.FirstLineIndent = 0;
+            bodyParagraph_5.Format.FirstLineIndent = 0;
+            bodyParagraph_6.Format.FirstLineIndent = 0;
+            bodyParagraph_7.Format.FirstLineIndent = 0;
+            bodyParagraph_8.Format.FirstLineIndent = 0;
+            bodyParagraph_9.Format.FirstLineIndent = 0;
+
+            //设置行间距
+            bodyParagraph_2.Format.LineSpacing = 17f;
+            //设置后间距
+            titleParagraph.Format.AfterSpacing = 10;
+            bodyParagraph_0.Format.AfterSpacing = 10;
+            bodyParagraph_1.Format.AfterSpacing = 10;
+            bodyParagraph_2.Format.AfterSpacing = 10;
+            bodyParagraph_3.Format.AfterSpacing = 10;
+            bodyParagraph_4.Format.AfterSpacing = 10;
+            bodyParagraph_5.Format.AfterSpacing = 10;
+            bodyParagraph_6.Format.AfterSpacing = 10;
+            bodyParagraph_7.Format.AfterSpacing = 10;
+            bodyParagraph_8.Format.AfterSpacing = 10;
+            bodyParagraph_9.Format.AfterSpacing = 10;
+            bodyParagraph_00.Format.AfterSpacing = 10;
+            bodyParagraph_000.Format.AfterSpacing = 10;
+
+            //保存文件
+            doc.SaveToFile(@"F:\TestFile\测试Word文档" + "_" + Type + ".docx", Spire.Doc.FileFormat.Docx2016);
         }
     }
 }

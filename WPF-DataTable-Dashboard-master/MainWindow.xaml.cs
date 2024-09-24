@@ -61,6 +61,7 @@ namespace DataGrid
         MahApps.Metro.IconPacks.PackIconMaterial addingWaterMark_Icon;
         MahApps.Metro.IconPacks.PackIconMaterial openOrCLoseMenuButton_Icon;
         Border p1_Image_Border;
+        ImageBrush featuredImage;
 
         public MainWindow()
         {
@@ -94,6 +95,7 @@ namespace DataGrid
             addingWaterMark_Icon = (MahApps.Metro.IconPacks.PackIconMaterial)MainGrid.FindName("AddingWaterMark_Icon");
             openOrCLoseMenuButton_Icon = (MahApps.Metro.IconPacks.PackIconMaterial)FatherGrid.FindName("OpenOrCLoseMenuButton_Icon");
             p1_Image_Border = (Border)MenuButton_Grid.FindName("P1_Image_Border");
+            featuredImage = (ImageBrush)MenuButton_Grid.FindName("FeaturedImage");
         }
 
         private bool IsMaximize = false;
@@ -159,11 +161,24 @@ namespace DataGrid
         {
             this.Dispatcher.Invoke(new Action(() =>
             {
+                //featuredImage.ImageSource = new BitmapImage(new Uri(Environment.CurrentDirectory + "\\Images\\p1.jpg", UriKind.Relative));
+                MainGrid.Visibility = Visibility.Visible;
+                MoneyRequestGrid.Visibility = Visibility.Collapsed;
                 button_AddFile.Visibility = Visibility.Visible;
                 title_TextBlock.Text = "添加水印";
                 a2a_Panel.Visibility = Visibility.Collapsed;
                 qRCode_Panel.Visibility = Visibility.Collapsed;
             }));
+        }
+        /// <summary>
+        /// 菜单栏：点击撰写转账请示文档按钮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MenuButton_MoneyRequest_Click(object sender, RoutedEventArgs e)
+        {
+            MainGrid.Visibility = Visibility.Collapsed;
+            MoneyRequestGrid.Visibility = Visibility.Visible;
         }
         /// <summary>
         /// 菜单栏：人民币大小写转换
@@ -174,6 +189,7 @@ namespace DataGrid
         {
             this.Dispatcher.Invoke(new Action(() =>
             {
+                //featuredImage.ImageSource = new BitmapImage(new Uri(Environment.CurrentDirectory + "\\Images\\p2.jpg", UriKind.Relative));
                 button_AddFile.Visibility = Visibility.Collapsed;
                 title_TextBlock.Text = "大小写转换";
                 a2a_Panel.Visibility = Visibility.Visible;
@@ -189,6 +205,7 @@ namespace DataGrid
         {
             this.Dispatcher.Invoke(new Action(() =>
             {
+                //featuredImage.ImageSource = new BitmapImage(new Uri(Environment.CurrentDirectory + "\\Images\\p3.jpg", UriKind.Relative));
                 button_AddFile.Visibility = Visibility.Collapsed;
                 title_TextBlock.Text = "二维码生成器";
                 a2a_Panel.Visibility = Visibility.Collapsed;
@@ -466,6 +483,7 @@ namespace DataGrid
         /// <param name="e"></param>
         private void TabButton_AddedWaterMarkFile_Click(object sender, RoutedEventArgs e)
         {
+            AddedWatermarkFile_Grid.ItemsSource = null;
             addWaterMarkButton.Visibility = Visibility.Collapsed;
             SerchFile_Grid.Visibility = Visibility.Visible;
             addedWaterMarkFileList.Clear();
@@ -845,6 +863,33 @@ namespace DataGrid
             }
         }
 
+        private void MoneyRequestGrid_Start_Button_Click(object sender, RoutedEventArgs e)
+        {
+            List<string> list_InfoText = new List<string>();
+            List<string> list_CostText = new List<string>();
+            System.Windows.Controls.TextBox lT_Haocai_Info_TextBox = (System.Windows.Controls.TextBox)MoneyRequestGrid.FindName("LT_Haocai_Info_TextBox");
+            System.Windows.Controls.TextBox lT_Haocai_Cost_TextBox = (System.Windows.Controls.TextBox)MoneyRequestGrid.FindName("LT_Haocai_Cost_TextBox");
+            System.Windows.Controls.TextBox lT_Weixiu_Info_TextBox = (System.Windows.Controls.TextBox)MoneyRequestGrid.FindName("LT_Weixiu_Info_TextBox");
+            System.Windows.Controls.TextBox lT_Weixiu_Cost_TextBox = (System.Windows.Controls.TextBox)MoneyRequestGrid.FindName("LT_Weixiu_Cost_TextBox");
+            System.Windows.Controls.TextBox hN_Haocai_Info_TextBox = (System.Windows.Controls.TextBox)MoneyRequestGrid.FindName("HN_Haocai_Info_TextBox");
+            System.Windows.Controls.TextBox hN_Haocai_Cost_TextBox = (System.Windows.Controls.TextBox)MoneyRequestGrid.FindName("HN_Haocai_Cost_TextBox");
+            System.Windows.Controls.TextBox hN_Weixiu_Info_TextBox = (System.Windows.Controls.TextBox)MoneyRequestGrid.FindName("HN_Weixiu_Info_TextBox");
+            System.Windows.Controls.TextBox hN_Weixiu_Cost_TextBox = (System.Windows.Controls.TextBox)MoneyRequestGrid.FindName("HN_Weixiu_Cost_TextBox");
+
+            list_InfoText.Add(lT_Haocai_Info_TextBox.Text);
+            list_InfoText.Add(lT_Weixiu_Info_TextBox.Text);
+            list_InfoText.Add(hN_Haocai_Info_TextBox.Text);
+            list_InfoText.Add(hN_Weixiu_Info_TextBox.Text);
+
+            list_CostText.Add(lT_Haocai_Cost_TextBox.Text);
+            list_CostText.Add(lT_Weixiu_Cost_TextBox.Text);
+            list_CostText.Add(hN_Haocai_Cost_TextBox.Text);
+            list_CostText.Add(hN_Weixiu_Cost_TextBox.Text);
+            for (int i = 0; i < 4; i++) 
+            {
+                fileOperate.InitMoneyRequestDOC(i, list_InfoText[i], list_CostText[i]);
+            }
+        }
     }
     /// <summary>
     /// DataGrid成员
