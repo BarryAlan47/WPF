@@ -867,34 +867,30 @@ namespace DataGrid
 
         private void MoneyRequestGrid_Start_Button_Click(object sender, RoutedEventArgs e)
         {
-            Task task = Task.Run(() =>
+            List<string> list_InfoText = new List<string>();
+            List<string> list_CostText = new List<string>();
+            System.Windows.Controls.TextBox lT_Haocai_Info_TextBox = (System.Windows.Controls.TextBox)MoneyRequestGrid.FindName("LT_Haocai_Info_TextBox");
+            System.Windows.Controls.TextBox lT_Haocai_Cost_TextBox = (System.Windows.Controls.TextBox)MoneyRequestGrid.FindName("LT_Haocai_Cost_TextBox");
+            System.Windows.Controls.TextBox lT_Weixiu_Info_TextBox = (System.Windows.Controls.TextBox)MoneyRequestGrid.FindName("LT_Weixiu_Info_TextBox");
+            System.Windows.Controls.TextBox lT_Weixiu_Cost_TextBox = (System.Windows.Controls.TextBox)MoneyRequestGrid.FindName("LT_Weixiu_Cost_TextBox");
+            System.Windows.Controls.TextBox hN_Haocai_Info_TextBox = (System.Windows.Controls.TextBox)MoneyRequestGrid.FindName("HN_Haocai_Info_TextBox");
+            System.Windows.Controls.TextBox hN_Haocai_Cost_TextBox = (System.Windows.Controls.TextBox)MoneyRequestGrid.FindName("HN_Haocai_Cost_TextBox");
+            System.Windows.Controls.TextBox hN_Weixiu_Info_TextBox = (System.Windows.Controls.TextBox)MoneyRequestGrid.FindName("HN_Weixiu_Info_TextBox");
+            System.Windows.Controls.TextBox hN_Weixiu_Cost_TextBox = (System.Windows.Controls.TextBox)MoneyRequestGrid.FindName("HN_Weixiu_Cost_TextBox");
+
+            list_InfoText.Add(lT_Haocai_Info_TextBox.Text);
+            list_InfoText.Add(lT_Weixiu_Info_TextBox.Text);
+            list_InfoText.Add(hN_Haocai_Info_TextBox.Text);
+            list_InfoText.Add(hN_Weixiu_Info_TextBox.Text);
+
+            list_CostText.Add(lT_Haocai_Cost_TextBox.Text);
+            list_CostText.Add(lT_Weixiu_Cost_TextBox.Text);
+            list_CostText.Add(hN_Haocai_Cost_TextBox.Text);
+            list_CostText.Add(hN_Weixiu_Cost_TextBox.Text);
+            for (int i = 0; i < 4; i++)
             {
-                List<string> list_InfoText = new List<string>();
-                List<string> list_CostText = new List<string>();
-                System.Windows.Controls.TextBox lT_Haocai_Info_TextBox = (System.Windows.Controls.TextBox)MoneyRequestGrid.FindName("LT_Haocai_Info_TextBox");
-                System.Windows.Controls.TextBox lT_Haocai_Cost_TextBox = (System.Windows.Controls.TextBox)MoneyRequestGrid.FindName("LT_Haocai_Cost_TextBox");
-                System.Windows.Controls.TextBox lT_Weixiu_Info_TextBox = (System.Windows.Controls.TextBox)MoneyRequestGrid.FindName("LT_Weixiu_Info_TextBox");
-                System.Windows.Controls.TextBox lT_Weixiu_Cost_TextBox = (System.Windows.Controls.TextBox)MoneyRequestGrid.FindName("LT_Weixiu_Cost_TextBox");
-                System.Windows.Controls.TextBox hN_Haocai_Info_TextBox = (System.Windows.Controls.TextBox)MoneyRequestGrid.FindName("HN_Haocai_Info_TextBox");
-                System.Windows.Controls.TextBox hN_Haocai_Cost_TextBox = (System.Windows.Controls.TextBox)MoneyRequestGrid.FindName("HN_Haocai_Cost_TextBox");
-                System.Windows.Controls.TextBox hN_Weixiu_Info_TextBox = (System.Windows.Controls.TextBox)MoneyRequestGrid.FindName("HN_Weixiu_Info_TextBox");
-                System.Windows.Controls.TextBox hN_Weixiu_Cost_TextBox = (System.Windows.Controls.TextBox)MoneyRequestGrid.FindName("HN_Weixiu_Cost_TextBox");
-
-                list_InfoText.Add(lT_Haocai_Info_TextBox.Text);
-                list_InfoText.Add(lT_Weixiu_Info_TextBox.Text);
-                list_InfoText.Add(hN_Haocai_Info_TextBox.Text);
-                list_InfoText.Add(hN_Weixiu_Info_TextBox.Text);
-
-                list_CostText.Add(lT_Haocai_Cost_TextBox.Text);
-                list_CostText.Add(lT_Weixiu_Cost_TextBox.Text);
-                list_CostText.Add(hN_Haocai_Cost_TextBox.Text);
-                list_CostText.Add(hN_Weixiu_Cost_TextBox.Text);
-                for (int i = 0; i < 4; i++)
-                {
-                    fileOperate.InitMoneyRequestDOC(i, list_InfoText[i], list_CostText[i]);
-                }
+                fileOperate.InitMoneyRequestDOC(i, list_InfoText[i], list_CostText[i]);
             }
-            );
         }
     }
     /// <summary>

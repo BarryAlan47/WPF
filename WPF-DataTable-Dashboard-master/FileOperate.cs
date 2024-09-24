@@ -351,7 +351,7 @@ namespace DataGrid
             bodyParagraph_7.AppendText("网络和信息中心");
 
             Paragraph bodyParagraph_8 = section.AddParagraph();
-            bodyParagraph_8.AppendText("经办人：      ");
+            bodyParagraph_8.AppendText("经办人：______");
 
             Paragraph bodyParagraph_9 = section.AddParagraph();
             bodyParagraph_9.AppendText(DateTime.Now.ToString("yyyy年MM月dd日"));
@@ -392,7 +392,7 @@ namespace DataGrid
             bodyParagraph_5.Format.HorizontalAlignment = HorizontalAlignment.Justify;
             bodyParagraph_6.Format.HorizontalAlignment = HorizontalAlignment.Justify;
             bodyParagraph_7.Format.HorizontalAlignment = HorizontalAlignment.Right;
-            bodyParagraph_8.Format.HorizontalAlignment = HorizontalAlignment.Distribute;
+            bodyParagraph_8.Format.HorizontalAlignment = HorizontalAlignment.Right;
             bodyParagraph_9.Format.HorizontalAlignment = HorizontalAlignment.Right;
 
             //设置首行缩进
@@ -420,11 +420,24 @@ namespace DataGrid
             bodyParagraph_7.Format.AfterSpacing = 10;
             bodyParagraph_8.Format.AfterSpacing = 10;
             bodyParagraph_9.Format.AfterSpacing = 10;
-            //bodyParagraph_00.Format.AfterSpacing = 10;
-            //bodyParagraph_000.Format.AfterSpacing = 10;
+
+            //查找指定文本
+            TextSelection[] text1 = doc.FindAllString("______", false, true);
+            TextSelection[] text2 = doc.FindAllString("金额错误", false, true);
+            //更改特定文本的字体颜色
+            foreach (TextSelection seletion in text1)
+            {
+                seletion.GetAsOneRange().CharacterFormat.TextColor = Color.White;
+            }
+            foreach (TextSelection seletion in text2)
+            {
+                seletion.GetAsOneRange().CharacterFormat.TextColor = Color.Red;
+            }
+
             //保存文件
             doc.SaveToFile(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\水印工具Output\转账请示文档\" + fileName + ".docx", Spire.Doc.FileFormat.Docx2016);
 
+            //获取PrintDocument对象
             PrintDocument printDoc = doc.PrintDocument;
 
             //设置PrintController属性为StandardPrintController，用于隐藏打印进程
