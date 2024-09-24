@@ -9,6 +9,7 @@ using System.IO;
 using Spire.Doc.Documents;
 using System.Drawing;
 using System.Text.RegularExpressions;
+using System.Drawing.Printing;
 
 namespace DataGrid
 {
@@ -216,7 +217,8 @@ namespace DataGrid
         public void InitMoneyRequestDOC(int Type, string InfoText,string CostText)
         {
             //上一月
-            string previous_month = DateTime.Now.ToString("yyyy年MM月");
+            string previous_month = DateTime.Parse(DateTime.Now.ToString("Y")).AddMonths(-1).ToString("yyyy年MM月"); 
+            string fileName = null;
             //大写金额
             string COSTTEXT = null;
             if (CostText != "")
@@ -276,6 +278,7 @@ namespace DataGrid
             Paragraph bodyParagraph_2 = section.AddParagraph();
             if (Type == 0)
             {
+                fileName = "联拓_办公耗材_转账请示" + "_" + DateTime.Parse(DateTime.Now.ToString("Y")).ToString("yyyy_MM");
                 bodyParagraph_2.AppendText("我馆因办公需要，向广西联拓信息技术有限公司购买" +
                     InfoText +
                     "等办公用品及耗材配件。" +
@@ -288,6 +291,7 @@ namespace DataGrid
             }
             else if (Type == 1)
             {
+                fileName = "联拓_维修_转账请示" + "_" + DateTime.Parse(DateTime.Now.ToString("Y")).ToString("yyyy_MM");
                 bodyParagraph_2.AppendText("我馆在" +
                     previous_month +
                     "工作中，部分" +
@@ -300,6 +304,7 @@ namespace DataGrid
             }
             else if (Type == 2)
             {
+                fileName = "海纳_办公耗材_转账请示" + "_" + DateTime.Parse(DateTime.Now.ToString("Y")).ToString("yyyy_MM");
                 bodyParagraph_2.AppendText("我馆因办公需要，" +
                     previous_month +
                     "向广西海纳电子科技有限公司购买" +
@@ -312,6 +317,7 @@ namespace DataGrid
             }
             else
             {
+                fileName = "海纳_维修_转账请示" + "_" + DateTime.Parse(DateTime.Now.ToString("Y")).ToString("yyyy_MM");
                 bodyParagraph_2.AppendText("我馆在" +
                     previous_month +
                     "工作中，部分" +
@@ -386,7 +392,7 @@ namespace DataGrid
             bodyParagraph_5.Format.HorizontalAlignment = HorizontalAlignment.Justify;
             bodyParagraph_6.Format.HorizontalAlignment = HorizontalAlignment.Justify;
             bodyParagraph_7.Format.HorizontalAlignment = HorizontalAlignment.Right;
-            bodyParagraph_8.Format.HorizontalAlignment = HorizontalAlignment.Right;
+            bodyParagraph_8.Format.HorizontalAlignment = HorizontalAlignment.Distribute;
             bodyParagraph_9.Format.HorizontalAlignment = HorizontalAlignment.Right;
 
             //设置首行缩进
@@ -414,11 +420,18 @@ namespace DataGrid
             bodyParagraph_7.Format.AfterSpacing = 10;
             bodyParagraph_8.Format.AfterSpacing = 10;
             bodyParagraph_9.Format.AfterSpacing = 10;
-            bodyParagraph_00.Format.AfterSpacing = 10;
-            bodyParagraph_000.Format.AfterSpacing = 10;
-
+            //bodyParagraph_00.Format.AfterSpacing = 10;
+            //bodyParagraph_000.Format.AfterSpacing = 10;
             //保存文件
-            doc.SaveToFile(@"F:\TestFile\测试Word文档" + "_" + Type + ".docx", Spire.Doc.FileFormat.Docx2016);
+            doc.SaveToFile(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\水印工具Output\转账请示文档\" + fileName + ".docx", Spire.Doc.FileFormat.Docx2016);
+
+            PrintDocument printDoc = doc.PrintDocument;
+
+            //设置PrintController属性为StandardPrintController，用于隐藏打印进程
+            printDoc.PrintController = new StandardPrintController();
+
+            //打印文档
+            printDoc.Print();
         }
     }
 }
