@@ -4,12 +4,12 @@
 winexe
 C#
 .cs
-C:\Users\12040\source\repos\MyApp\MyApp\obj\Release\net8.0-windows\
+C:\Git\WPF\MyApp\obj\Release\net8.0-windows\
 MyApp
 none
 false
 TRACE;RELEASE;NET;NET8_0;NETCOREAPP
-C:\Users\12040\source\repos\MyApp\MyApp\App.xaml
+C:\Git\WPF\MyApp\App.xaml
 11407045341
 1-1606302853
 12-1181622985

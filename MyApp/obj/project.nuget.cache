@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "1HTzrf3suMA=",
+  "dgSpecHash": "d8LyBueJmnQ=",
   "success": true,
-  "projectFilePath": "C:\\Users\\12040\\source\\repos\\MyApp\\MyApp\\MyApp.csproj",
+  "projectFilePath": "C:\\Git\\WPF\\MyApp\\MyApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\12040\\.nuget\\packages\\bouncycastle.cryptography\\2.2.1\\bouncycastle.cryptography.2.2.1.nupkg.sha512",
     "C:\\Users\\12040\\.nuget\\packages\\closedxml\\0.104.2\\closedxml.0.104.2.nupkg.sha512",

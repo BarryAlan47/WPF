@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\12040\\source\\repos\\MyApp\\MyApp\\MyApp.csproj": {}
+    "C:\\Git\\WPF\\MyApp\\MyApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\12040\\source\\repos\\MyApp\\MyApp\\MyApp.csproj": {
+    "C:\\Git\\WPF\\MyApp\\MyApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\12040\\source\\repos\\MyApp\\MyApp\\MyApp.csproj",
+        "projectUniqueName": "C:\\Git\\WPF\\MyApp\\MyApp.csproj",
         "projectName": "MyApp",
-        "projectPath": "C:\\Users\\12040\\source\\repos\\MyApp\\MyApp\\MyApp.csproj",
+        "projectPath": "C:\\Git\\WPF\\MyApp\\MyApp.csproj",
         "packagesPath": "C:\\Users\\12040\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\12040\\source\\repos\\MyApp\\MyApp\\obj\\",
+        "outputPath": "C:\\Git\\WPF\\MyApp\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\12040\\AppData\\Roaming\\NuGet\\NuGet.Config",

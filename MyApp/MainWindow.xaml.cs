@@ -10,40 +10,40 @@ using HandyControl.Controls;
 using System.Windows.Media.Animation;
 using System.Text;
 using System.ComponentModel;
+using System.IO;
 
 
 namespace MyApp
 {
     public partial class MainWindow : System.Windows.Window
     {
-        ObservableCollection<Member> members = new ObservableCollection<Member>(); //待添加水印的文件列表信息，用于界面展示用
-        ObservableCollection<Member> addedWaterMarkFileList = new ObservableCollection<Member>();//已添加水印的文件列表，用于界面展示用
         GetFileInfo getFileInfo = new GetFileInfo();//初始化获取文件路径的类
         FileOperate fileOperate = new FileOperate();//初始化操作文件的类
-        List<string> file_list = new List<string>();//声明一个列表，用于保存待添加水印的文件列表
-        TextBlock title_TextBlock;//标题文字
-        TextBlock text_NoFile;//暂未选择任何文件、暂无任何添加水印记录
-        System.Windows.Controls.Button button_AddFile;
-        System.Windows.Controls.Button addWaterMarkButton;
-        System.Windows.Controls.Button menuButton_AddWaterMark;
-        
-        System.Windows.Controls.Button menuButton_QRCodeGenerated;
-        System.Windows.Controls.Button tabButton_SelectedFiles;
-        System.Windows.Controls.Button tabButton_AddedWaterMarkFiles;
+
         System.Windows.Media.Brush tabButton_BorderBrush_Color_Default;
         System.Windows.Media.Brush tabButton_BorderBrush_Color_Seleted;
         System.Windows.Media.Brush tabButton_Foreground_Color_Default;
         System.Windows.Media.Brush tabButton_Foreground_Color_Seleted;
-
         System.Windows.Media.BrushConverter converter = new System.Windows.Media.BrushConverter();//改变首字符圈圈颜色用的
-        DataGridTemplateColumn templeColumn;//动态生成的列表
-        
 
-        CircleProgressBar myCircleProgressBar;
-        MahApps.Metro.IconPacks.PackIconMaterial addingWaterMark_Icon;
+        //杂项
         MahApps.Metro.IconPacks.PackIconMaterial openOrCLoseMenuButton_Icon;
-        Border p1_Image_Border;
+        CircleProgressBar myCircleProgressBar;
+        Border p1_Image_Border;//功能头像
         ImageBrush featuredImage;
+
+        //添加水印相关组件及列表配置
+        ObservableCollection<Member> members = new ObservableCollection<Member>(); //待添加水印的文件列表信息，用于界面展示用
+        ObservableCollection<Member> addedWaterMarkFileList = new ObservableCollection<Member>();//已添加水印的文件列表，用于界面展示用
+        List<string> file_list = new List<string>();//声明一个列表，用于保存待添加水印的文件列表
+        TextBlock title_TextBlock;//标题文字
+        TextBlock text_NoFile;//暂未选择任何文件、暂无任何添加水印记录
+        System.Windows.Controls.Button button_AddFile;//添加文件按钮
+        System.Windows.Controls.Button addWaterMarkButton;//开始添加水印按钮
+        System.Windows.Controls.Button tabButton_SelectedFiles;//标签页按钮：已选择的文件列表
+        System.Windows.Controls.Button tabButton_AddedWaterMarkFiles;//标签页按钮：已添加过水印的文件列表
+        MahApps.Metro.IconPacks.PackIconMaterial addingWaterMark_Icon;
+        DataGridTemplateColumn templeColumn;//动态生成的列表
 
         //图片裁切的相关组件及列表配置
         System.Windows.Controls.Button button_SelectedFiles_PictureCropping;
@@ -62,6 +62,16 @@ namespace MyApp
         System.Windows.Controls.TextBox hN_Weixiu_Info_TextBox;
         System.Windows.Controls.TextBox hN_Weixiu_Cost_TextBox;
 
+        //通用二维码的相关组件及列表配置
+        System.Windows.Controls.Button button_SelectedFiles_NormalQRCode;
+        System.Windows.Controls.Button button_Start_Generate_NormalQRCode;
+        System.Windows.Controls.TextBox textBox_PagePath_NormalQRCode;
+        System.Windows.Controls.TextBox textBox_SaveName_NormalQRCode;
+        System.Windows.Controls.Grid normalQRCode_PagePath_TextBox_Grid;
+        System.Windows.Controls.Grid normalQRCode_SaveName_TextBox_Grid;
+        ObservableCollection<Member> members_NormalQRCode = new ObservableCollection<Member>();//待生成太阳码的Excel列表数组信息，用于界面展示用
+        DataGridTemplateColumn templeColumn_NormalQRCode;//动态生成的列表对象
+
         //微信太阳码的相关组件及列表配置
         System.Windows.Controls.Button button_SelectedFiles_WXQRCode;
         System.Windows.Controls.Button button_Single_WXQRCode;
@@ -71,6 +81,8 @@ namespace MyApp
         System.Windows.Controls.TextBox textBox_SaveName;
         System.Windows.Controls.Grid wXQRCode_ChanelName_TextBox_Grid;
         System.Windows.Controls.Grid wXQRCode_PagePath_TextBox_Grid;
+        ObservableCollection<Member> members_WXQRCode = new ObservableCollection<Member>();//待生成太阳码的Excel列表数组信息，用于界面展示用
+        DataGridTemplateColumn templeColumn_WXQRCode;//动态生成的列表对象
 
         //人民币大小写转换的相关组件及配置列表
         System.Windows.Controls.Button menuButton_A2a;//侧边菜单栏功能按钮
@@ -81,8 +93,7 @@ namespace MyApp
         System.Windows.Media.Brush a2AIcon_bgColor_Truning;//展示动效用的颜色2
 
 
-        ObservableCollection<Member> members_WXQRCode = new ObservableCollection<Member>();//待生成太阳码的Excel列表信息，用于界面展示用
-        DataGridTemplateColumn templeColumn_WXQRCode;//动态生成的列表
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -90,9 +101,6 @@ namespace MyApp
             text_NoFile = (TextBlock)FatherGrid.FindName("Text_NoFiles");
             button_AddFile = (System.Windows.Controls.Button)MainGrid.FindName("Button_AddFile");
             addWaterMarkButton = (System.Windows.Controls.Button)MainGrid.FindName("AddWaterMarkButton");
-            menuButton_AddWaterMark = (System.Windows.Controls.Button)MenuButton_Grid.FindName("MenuButton_AddWaterMark");
-            
-            menuButton_QRCodeGenerated = (System.Windows.Controls.Button)MenuButton_Grid.FindName("MenuButton_QRCodeGenerated");
             tabButton_SelectedFiles = (System.Windows.Controls.Button)MenuButton_Grid.FindName("TabButton_SelectedFiles");
             tabButton_AddedWaterMarkFiles = (System.Windows.Controls.Button)MenuButton_Grid.FindName("TabButton_AddedWaterMarkFiles");
             file_list.Clear();
@@ -123,6 +131,15 @@ namespace MyApp
             System.Windows.Controls.TextBox hN_Haocai_Cost_TextBox = (System.Windows.Controls.TextBox)HN_Haocai_Cost_Grid.FindName("HN_Haocai_Cost_TextBox");
             System.Windows.Controls.TextBox hN_Weixiu_Info_TextBox = (System.Windows.Controls.TextBox)HN_Weixiu_Info_Grid.FindName("HN_Weixiu_Info_TextBox");
             System.Windows.Controls.TextBox hN_Weixiu_Cost_TextBox = (System.Windows.Controls.TextBox)HN_Weixiu_Cost_Grid.FindName("HN_Weixiu_Cost_TextBox");
+
+            //通用二维码相关组件实例化
+            button_SelectedFiles_NormalQRCode = (System.Windows.Controls.Button)NormalQRCodeGrid.FindName("NormalQRCode_Button_AddFile");
+            button_Start_Generate_NormalQRCode = (System.Windows.Controls.Button)NormalQRCodeGrid.FindName("NormalQRCode_Start_Generate_Button");
+            textBox_PagePath_NormalQRCode = (System.Windows.Controls.TextBox)NormalQRCode_PagePath_TextBox_Grid.FindName("NormalQRCode_PagePath_TextBox");
+            textBox_SaveName_NormalQRCode = (System.Windows.Controls.TextBox)NormalQRCode_SaveName_TextBox_Grid.FindName("NormalQRCode_SaveName_TextBox");
+            normalQRCode_PagePath_TextBox_Grid = (System.Windows.Controls.Grid)WXQRCodeGrid.FindName("NormalQRCode_PagePath_TextBox_Grid");
+            normalQRCode_SaveName_TextBox_Grid = (System.Windows.Controls.Grid)WXQRCodeGrid.FindName("NormalQRCode_SaveName_TextBox_Grid");
+            templeColumn_NormalQRCode = NormalQRCode_membersDataGrid.Columns[4] as DataGridTemplateColumn;
 
             //微信太阳码相关组件实例化
             button_SelectedFiles_WXQRCode = (System.Windows.Controls.Button)WXQRCodeGrid.FindName("WXQRCode_Button_AddFile");
@@ -721,25 +738,7 @@ namespace MyApp
         {
             System.Windows.Clipboard.SetDataObject(a2A_textBox_A.Text);
         }
-        /// <summary>
-        /// 点击保存二维码到本地指定位置
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SaveQRCode_Button_Click(object sender, RoutedEventArgs e)
-        {
-            //System.Windows.Controls.Image qRCode_Image = (System.Windows.Controls.Image)QRCode_Panel.FindName("QRCode_Image");
-            //System.Windows.Forms.SaveFileDialog sfd = new System.Windows.Forms.SaveFileDialog();
-            //sfd.Filter = "Image Files (*.bmp, *.png, *.jpg)|*.bmp;*.png;*.jpg | All Files | *.*";
-            //sfd.RestoreDirectory = true;//保存对话框是否记忆上次打开的目录 
-            //if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            //{
-            //    var encoder = new PngBitmapEncoder();
-            //    encoder.Frames.Add(BitmapFrame.Create((BitmapSource)qRCode_Image.Source));
-            //    using (FileStream stream = new FileStream(sfd.FileName, FileMode.Create))
-            //        encoder.Save(stream);
-            //}
-        }
+        
         /// <summary>
         /// 点击开始生成报账文档
         /// </summary>
@@ -954,12 +953,12 @@ namespace MyApp
         {
             //打开系统窗口获取文件路径列表，相同的文件则忽略
             file_list = getFileInfo.GetFilePath();
-            int CurrentFileCount = members_WXQRCode.Count;
+            int CurrentFileCount = members_NormalQRCode.Count;
             for (int i = 0; i < file_list.Count; i++)
             {
                 bool flag = true;
 
-                foreach (var file in members_WXQRCode)
+                foreach (var file in members_NormalQRCode)
                 {
                     if (file.FilePath == file_list[i])
                     {
@@ -970,7 +969,7 @@ namespace MyApp
                 if (flag)
                 {
                     Hashtable fileFullInfo = getFileInfo.GetFileFullInfo(file_list[i]);
-                    members_WXQRCode.Add(new Member
+                    members_NormalQRCode.Add(new Member
                     {
                         FilePath = fileFullInfo["filePath"].ToString(),
                         Number = (CurrentFileCount + i + 1).ToString(),
@@ -985,8 +984,8 @@ namespace MyApp
                 }
             }
 
-            WXQRCode_membersDataGrid.ItemsSource = members_WXQRCode;
-            if (members_WXQRCode.Count != 0)
+            NormalQRCode_membersDataGrid.ItemsSource = members_NormalQRCode;
+            if (members_NormalQRCode.Count != 0)
             {
                 show_NoFile_Text(false);
             }
@@ -1002,23 +1001,38 @@ namespace MyApp
         /// <param name="e"></param>
         private void NormalQRCode_Button_AddFile_Click(object sender, RoutedEventArgs e)
         {
-            FillGridData_WXQRCode();
+            FillGridData_NormalQRCode();
         }
         private void NormalQRCode_TabButton_SeletedFile_Click(object sender, RoutedEventArgs e)
         {
             //暂时用不到
         }
         /// <summary>
-        /// 批量生成通用二维码
+        /// 点击按钮生成通用二维码
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void NormalQRCode_Multiply_Start_Click(object sender, RoutedEventArgs e)
+        private async void NormalQRCode_Start_Generate_Click(object sender, RoutedEventArgs e)
         {
-            foreach (var file in members_WXQRCode)
+            string saveName = "";
+            if (NormalQRCode_PagePath_TextBox != null && !string.IsNullOrEmpty(NormalQRCode_PagePath_TextBox.Text))
+            {
+                if (NormalQRCode_SaveName_TextBox != null && string.IsNullOrEmpty(NormalQRCode_SaveName_TextBox.Text))
+                {
+                    saveName = "未命名二维码";
+                }
+                else 
+                {
+                    saveName = NormalQRCode_SaveName_TextBox.Text;
+                }
+                await NormalQRCodeGenerated.NormalQRCode_Generate(NormalQRCode_PagePath_TextBox.Text, Path.Combine(@"C:\Users\12040\Desktop\二维码", $"{saveName}.png"));
+            }
+            
+
+            foreach (var file in members_NormalQRCode)
             {
                 string filePath = file.FilePath;
-                NormalQRCodeGenerated.NormalQRCode_Generate(filePath);
+                await NormalQRCodeGenerated.WXQRCodeMultiplyGenerated(filePath);
             }
         }
         /// <summary>
@@ -1121,7 +1135,7 @@ namespace MyApp
                 WXQRCodeGrid.Visibility = Visibility.Collapsed;
                 
                 //背景图片路径
-                string ImagePath = @"C:\Users\12040\source\repos\MyApp\MyApp\bin\Release\net8.0-windows\Images\BG1.jpg";
+                string ImagePath = @"C:\Git\WPF\MyApp\bin\Release\net8.0-windows\Images\BG1.jpg";
                 // 切换图片
                 CurrentImageBrush.ImageSource = new BitmapImage(new System.Uri(ImagePath, System.UriKind.Relative));
                 //显示添加水印界面
@@ -1142,7 +1156,7 @@ namespace MyApp
             WXQRCodeGrid.Visibility = Visibility.Collapsed;
 
             //背景图片路径
-            string ImagePath = @"C:\Users\12040\source\repos\MyApp\MyApp\bin\Release\net8.0-windows\Images\BG2.jpg";
+            string ImagePath = @"C:\Git\WPF\MyApp\bin\Release\net8.0-windows\Images\BG2.jpg";
             // 切换图片
             CurrentImageBrush.ImageSource = new BitmapImage(new System.Uri(ImagePath, System.UriKind.Relative));
             //显示图片裁切界面
@@ -1165,7 +1179,7 @@ namespace MyApp
                 show_NoFile_Text(false);
 
                 //背景图片路径
-                string ImagePath = @"C:\Users\12040\source\repos\MyApp\MyApp\bin\Release\net8.0-windows\Images\BG3.jpg";
+                string ImagePath = @"C:\Git\WPF\MyApp\bin\Release\net8.0-windows\Images\BG3.jpg";
                 // 切换图片
                 CurrentImageBrush.ImageSource = new BitmapImage(new System.Uri(ImagePath, System.UriKind.Relative));
 
@@ -1189,7 +1203,7 @@ namespace MyApp
                 show_NoFile_Text(false);
 
                 //背景图片路径
-                string ImagePath = @"C:\Users\12040\source\repos\MyApp\MyApp\bin\Release\net8.0-windows\Images\BG4.jpg";
+                string ImagePath = @"C:\Git\WPF\MyApp\bin\Release\net8.0-windows\Images\BG4.jpg";
                 // 切换图片
                 CurrentImageBrush.ImageSource = new BitmapImage(new System.Uri(ImagePath, System.UriKind.Relative));
                 //显示撰写转账请示文档界面
@@ -1212,7 +1226,7 @@ namespace MyApp
                 WXQRCodeGrid.Visibility = Visibility.Collapsed;
                 show_NoFile_Text(false);
                 //背景图片路径
-                string ImagePath = @"C:\Users\12040\source\repos\MyApp\MyApp\bin\Release\net8.0-windows\Images\BG5.jpg";
+                string ImagePath = @"C:\Git\WPF\MyApp\bin\Release\net8.0-windows\Images\BG5.jpg";
                 // 切换图片
                 CurrentImageBrush.ImageSource = new BitmapImage(new System.Uri(ImagePath, System.UriKind.Relative));
                 //显示通用二维码生成界面
@@ -1235,7 +1249,7 @@ namespace MyApp
                 NormalQRCodeGrid.Visibility = Visibility.Collapsed;
                 show_NoFile_Text(false);
                 //背景图片路径
-                string ImagePath = @"C:\Users\12040\source\repos\MyApp\MyApp\bin\Release\net8.0-windows\Images\BG6.jpg";
+                string ImagePath = @"C:\Git\WPF\MyApp\bin\Release\net8.0-windows\Images\BG6.jpg";
                 // 切换图片
                 CurrentImageBrush.ImageSource = new BitmapImage(new System.Uri(ImagePath, System.UriKind.Relative));
                 //显示太阳码生成器界面
