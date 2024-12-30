@@ -43,10 +43,9 @@ namespace MyApp
             {
                 pagePath = "您未输入任何文字或链接";
             }
-
             QRCoder.QRCodeGenerator code_generator = new QRCoder.QRCodeGenerator();
 
-            QRCoder.QRCodeData code_data = code_generator.CreateQrCode(pagePath, QRCoder.QRCodeGenerator.ECCLevel.M/* 这里设置容错率的一个级别 */, true, true, QRCoder.QRCodeGenerator.EciMode.Default, version);
+            QRCoder.QRCodeData code_data = code_generator.CreateQrCode(pagePath, QRCoder.QRCodeGenerator.ECCLevel.M/* 这里设置容错率的一个级别 */, true, true, QRCoder.QRCodeGenerator.EciMode.Utf8, version);
 
             QRCoder.QRCode code = new QRCoder.QRCode(code_data);
 
