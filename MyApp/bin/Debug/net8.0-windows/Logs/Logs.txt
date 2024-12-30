@@ -1,0 +1,7 @@
+1|D|Doc|F:\TestFile|2024/10/9|Word文档|F:\TestFile\Doc.doc
+2|D|Docx|F:\TestFile|2024/10/9|Word文档|F:\TestFile\Docx.docx
+3|P|Pdf|F:\TestFile|2024/10/9|PDF文件|F:\TestFile\Pdf.pdf
+4|S|SayMyName|F:\TestFile|2024/10/9|PDF文件|F:\TestFile\SayMyName.pdf
+5|T|Test|F:\TestFile|2024/10/9|PDF文件|F:\TestFile\Test.pdf
+6|X|Xls|F:\TestFile|2024/10/9|Excel表格|F:\TestFile\Xls.xls
+7|X|Xlsx|F:\TestFile|2024/10/9|Excel表格|F:\TestFile\Xlsx.xlsx

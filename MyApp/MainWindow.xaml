@@ -1,0 +1,1032 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:hc="https://handyorg.github.io/handycontrol" x:Class="MyApp.MainWindow"
+        Height="720" Width="1080" WindowStartupLocation="CenterScreen" AllowsTransparency="True"
+        Background="Transparent" WindowStyle="None">
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </Window.Resources>
+
+    <Border x:Name="BackgroundBorder" CornerRadius="30" MouseDown="Border_MouseDown" MouseLeftButtonDown="Border_MouseLeftButtonDown">
+        <Border.Background>
+            <ImageBrush x:Name="CurrentImageBrush" ImageSource="C:\Users\12040\source\repos\MyApp\MyApp\bin\Release\net8.0-windows\Images\BG1.jpg" Stretch="Fill">
+            </ImageBrush>
+        </Border.Background>
+
+        <Grid x:Name="FatherGrid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="MenuGrid_Width" Width="0"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--左侧菜单栏-->
+            <Grid x:Name="MenuButton_Grid" FocusManager.FocusedElement="{Binding ElementName=MenuButton_AddWaterMark}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!--Menu Icon-->
+                <Button Style="{StaticResource HelpButton}" HorizontalAlignment="Left" Margin="20 28 0 35" Click="HelpButton_Click">
+                    <Icon:PackIconMaterial Kind="HelpCircleOutline" Width="25" Height="25" Visibility="Collapsed" />
+                </Button>
+
+                <Border Grid.Row="1" Background="#623ED0" CornerRadius="0 50 0 30">
+                    <DockPanel>
+                        <!--Menu Logo-->
+                        <Border x:Name="P1_Image_Border" Width="80" Height="80" Padding="2" Background="White" CornerRadius="100" DockPanel.Dock="Top" HorizontalAlignment="Left" Margin="20 -30 0 0">
+                            <Ellipse>
+                                <Ellipse.Fill>
+                                    <ImageBrush x:Name="FeaturedImage" ImageSource="/Images/p1.jpg"/>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                        </Border>
+
+                        <!--Menu Titles-->
+                        <TextBlock Text="功能列表" Foreground="White" FontSize="22" FontWeight="SemiBold" DockPanel.Dock="Top" Margin="0 25 0 10" TextAlignment="Center"/>
+                        <!--<TextBlock Text="________________________" Foreground="#D0BFFF" FontSize="14" FontWeight="SemiBold" DockPanel.Dock="Top" TextAlignment="Center"/>-->
+                        <!--Menu Seprator-->
+                        <Separator Margin="10" Background="#7E5FDC" DockPanel.Dock="Top" Height="0.8"/>
+                        <!--Menu Buttons-->
+                        <StackPanel x:Name="MenuButton_List" DockPanel.Dock="Top" >
+                            <Button x:Name="MenuButton_AddWaterMark" Style="{StaticResource menuButton}" Width="170" Height="35" Click="MenuButton_AddWaterMark_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <Icon:PackIconMaterial Kind="Watermark" Style="{StaticResource menuButtonIcon}"/>
+                                    <TextBlock Text="添加水印"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Button Style="{StaticResource menuButton}" Width="170" Height="35" Visibility="Collapsed">
+                                <StackPanel Orientation="Horizontal">
+                                    <Icon:PackIconMaterial Kind="ArrowSplitHorizontal" Style="{StaticResource menuButtonIcon}"/>
+                                    <TextBlock Text="PDF拆分"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Button Style="{StaticResource menuButton}" Width="170" Height="35" Visibility="Collapsed">
+                                <StackPanel Orientation="Horizontal">
+                                    <Icon:PackIconMaterial Kind="TableMergeCells" Style="{StaticResource menuButtonIcon}"/>
+                                    <TextBlock Text="PDF合并"/>
+                                </StackPanel>
+                            </Button>
+
+
+
+                            <Button Style="{StaticResource menuButton}" Width="170" Height="35" Visibility="Collapsed" >
+                                <StackPanel Orientation="Horizontal">
+                                    <Icon:PackIconMaterial Kind="ArrowSplitHorizontal" Style="{StaticResource menuButtonIcon}"/>
+                                    <TextBlock Text="文档拆分"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Button Style="{StaticResource menuButton}" Width="170" Height="35" Visibility="Visible" Click="MenuButton_PictureCropping_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <Icon:PackIconMaterial Kind="PictureInPictureBottomRight" Style="{StaticResource menuButtonIcon}"/>
+                                    <TextBlock Text="图片裁切"/>
+                                </StackPanel>
+                            </Button>
+
+                            <!--分割线-->
+                            <Separator Margin="10" Background="#7E5FDC" DockPanel.Dock="Top" Height="0.8"/>
+
+                            <Button x:Name="MenuButton_A2a" Style="{StaticResource menuButton}" Width="170" Height="35" Click="MenuButton_A2a_Click" >
+                                <StackPanel Orientation="Horizontal">
+                                    <Icon:PackIconMaterial Kind="FormatFont" Style="{StaticResource menuButtonIcon}"/>
+                                    <TextBlock Text="大小写转换"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Button Style="{StaticResource menuButton}" Width="170" Height="35" Visibility="Visible" Click="MenuButton_MoneyRequest_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <Icon:PackIconMaterial Kind="LockOff" Style="{StaticResource menuButtonIcon}"/>
+                                    <TextBlock Text="报账文档生成"/>
+                                </StackPanel>
+                            </Button>
+                            <!--分割线-->
+                            <Separator Margin="10" Background="#7E5FDC" DockPanel.Dock="Top" Height="0.8"/>
+
+                            <Button x:Name="MenuButton_NormalQRCodeGenerated" Style="{StaticResource menuButton}" Width="170" Height="35" Click="MenuButton_NormalQRCodeGenerated_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <Icon:PackIconMaterial Kind="QrcodeMinus" Style="{StaticResource menuButtonIcon}"/>
+                                    <TextBlock Text="通用二维码生成"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="MenuButton_WXQRCodeGenerated" Style="{StaticResource menuButton}" Width="170" Height="35" Click="MenuButton_WXQRCodeGenerated_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <Icon:PackIconMaterial Kind="QrcodePlus" Style="{StaticResource menuButtonIcon}"/>
+                                    <TextBlock Text="微信二维码生成"/>
+                                </StackPanel>
+                            </Button>
+                            <!--分割线-->
+                            <Separator Margin="10" Background="#7E5FDC" DockPanel.Dock="Top" Height="0.8"/>
+
+                            <Button x:Name="MenuButton_WXBotDeploy" Style="{StaticResource menuButton}" Width="170" Height="35" Click="MenuButton_NormalQRCodeGenerated_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <Icon:PackIconMaterial Kind="Linkedin" Style="{StaticResource menuButtonIcon}"/>
+                                    <TextBlock Text="团队预约自动化"/>
+                                </StackPanel>
+                            </Button>
+
+                        </StackPanel>
+
+                        <Button Style="{StaticResource menuButton}" HorizontalAlignment="Center" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Margin="15 0 15 20" IsEnabled="False">
+                            <StackPanel Orientation="Horizontal" >
+                                <!--<Icon:PackIconMaterial Kind="Logout" Style="{StaticResource menuButtonIcon}"/>-->
+                                <TextBlock Text="———   Ver 1.0.0   ———"/>
+                            </StackPanel>
+                        </Button>
+
+                    </DockPanel>
+                </Border>
+
+            </Grid>
+            <!--暂未选择任何文件遮罩-->
+            <TextBlock x:Name="Text_NoFiles" Text="暂未选择任何文件" FontSize="32" FontWeight="SemiBold" TextAlignment="Center"  Margin="30,300,0,176" Foreground="#FFBBC0C5" HorizontalAlignment="Center" VerticalAlignment="Center" Width="830" Grid.Column="1"/>
+
+            <!--添加水印的Grid-->
+            <Grid x:Name="MainGrid" Grid.Column="1" Margin="30 20 20 20" Visibility="Visible">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="57*"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="398*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <!--查找已经添加过水印的文件-->
+                <Grid Width="600" HorizontalAlignment="Left" Margin="0,0,0,61" Grid.RowSpan="2">
+
+                    <TextBlock Margin="20 0" VerticalAlignment="Center" Foreground="#B0B9C6" IsHitTestVisible="False"
+                           Panel.ZIndex="1" Text="查找已经添加水印的文件..."
+                           Visibility="{Binding ElementName=textBoxSearch, Path=Text.IsEmpty, Converter={StaticResource BoolToVis}}" />
+
+                    <TextBox Name="textBoxSearch" Style="{StaticResource searchTextbox}"/>
+
+                    <Icon:PackIconMaterial Kind="Magnify" Width="15" Height="15" VerticalAlignment="Center" Margin="0 0 15 0" Foreground="#B0B9C6" HorizontalAlignment="Right" />
+                </Grid>
+
+                <!--<Button Style="{StaticResource topButton}" Margin="0 0 55 0">
+                    <Icon:PackIconMaterial Kind="Bell"/>
+                </Button>-->
+                <Button Style="{StaticResource topButton}"  Margin="0 0 20 0" RenderTransformOrigin="0.5,0.5" Click="CloseTheAppButton_Click">
+                    <Icon:PackIconMaterial Kind="Close"/>
+                </Button>
+                <!--<TextBlock Text="Filter by" Grid.Row="4" FontSize="13" FontWeight="SemiBold" Margin="0 0 215 0" Foreground="#121518" HorizontalAlignment="Right" VerticalAlignment="Center"/>-->
+
+                <!--Page Title-->
+                <TextBlock x:Name="Title_TextBlock" Text="添加水印" Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0" Foreground="#121518" HorizontalAlignment="Left"/>
+
+                <!--Add Button-->
+                <Button x:Name="Button_AddFile" Style="{StaticResource addButton}" Click="Button_AddFile_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Icon:PackIconMaterial Kind="PlusBoxOutline" VerticalAlignment="Center" Margin="0 1 8 0" Width="15" Height="15"/>
+                        <TextBlock Text="添加文件..."/>
+                    </StackPanel>
+                </Button>
+
+                <!--Seprator-->
+                <Separator Height="1" Grid.Row="3" Background="#DAE2EA" Margin="0 -1 0 3"/>
+
+                <!--Tab buttons-->
+                <StackPanel x:Name="TabButtonGroup" Grid.Row="2" Orientation="Horizontal" Margin="0 10 0 0" Width="auto">
+                    <Button x:Name="TabButton_SelectedFiles" Style="{StaticResource tabButton}" Content="已选择文件列表" Width="100" HorizontalAlignment="Left" BorderBrush="#784FF2" Foreground="#784FF2" Click="TabButton_SeletedFile_Click"/>
+                    <Button Style="{StaticResource tabButton}" Content="" Width="20" IsEnabled="False"/>
+                    <Button x:Name="TabButton_AddedWaterMarkFiles" Style="{StaticResource tabButton}" Content="水印添加记录" Width="100" Click="TabButton_AddedWaterMarkFile_Click"/>
+                </StackPanel>
+
+                <!--Counter Title-->
+                <TextBlock Text="文件信息" Grid.Row="4" FontSize="18" FontWeight="SemiBold" Foreground="#121518" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+                <!--Filter Textbox-->
+                <Grid Width="400" HorizontalAlignment="Right" Grid.Row="4" Height="40">
+                    <Grid x:Name="SerchFile_Grid" Width="400" HorizontalAlignment="Left" Visibility="Collapsed">
+                        <TextBlock Margin="20 0" VerticalAlignment="Center" Foreground="#B0B9C6" IsHitTestVisible="False" Panel.ZIndex="1" Text="查找已经添加水印的文件..." Visibility="{Binding ElementName=SerchFile_TextBox, Path=Text.IsEmpty, Converter={StaticResource BoolToVis}}" />
+
+                        <TextBox x:Name="SerchFile_TextBox" Height="36" Style="{StaticResource searchFileTextbox}"/>
+
+                        <Icon:PackIconMaterial Kind="Magnify" Width="15" Height="15" VerticalAlignment="Center" Margin="0 0 15 0" Foreground="#B0B9C6" HorizontalAlignment="Right" />
+                    </Grid>
+                    <!--AddWaterMark Button-->
+                    <Button x:Name="AddWaterMarkButton" Style="{StaticResource addWaterMarkButton}" Click="AddWaterMarkButton_Click"  Margin="0,2,0,2" Grid.Column="1" HorizontalAlignment="Right">
+                        <StackPanel Orientation="Horizontal">
+                            <Icon:PackIconMaterial Kind="Play" VerticalAlignment="Center" Margin="0 0 8 0" Width="15" Height="15"/>
+                            <TextBlock Text="开始添加水印"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+
+                <!--Members Data Grid：待添加水印的文件列表-->
+                <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="membersDataGrid" Style="{DynamicResource DataGridStyle1}" Visibility="Visible" EnableRowVirtualization="False">
+                    <DataGrid.Columns>
+                        <!--<DataGridCheckBoxColumn Header="C" CanUserResize="False" Width="auto" ElementStyle="{StaticResource CheckBoxStyle1}">
+                            <DataGridCheckBoxColumn.HeaderTemplate>
+                                <DataTemplate>
+                                    <CheckBox Style="{StaticResource CheckBoxStyle1}"/>
+                                </DataTemplate>
+                            </DataGridCheckBoxColumn.HeaderTemplate>
+                        </DataGridCheckBoxColumn>-->
+                        <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding Number}" />
+                        <DataGridTemplateColumn Header="文件名" IsReadOnly="True" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Border Width="25" Height="25" CornerRadius="50" Margin="0 0 10 0" Background="{Binding BgColor}">
+                                            <TextBlock Text="{Binding Character}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" Margin="0 0 0 1" IsHitTestVisible="False"/>
+                                        </Border>
+                                        <TextBlock Text="{Binding FileName}" VerticalAlignment="Center" IsHitTestVisible="False"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="文件路径" Binding="{Binding FileDir}" IsReadOnly="True" Width="*" />
+                        <DataGridTextColumn Header="文件类型" Binding="{Binding FileType}" IsReadOnly="True" Width="*"/>
+                        <DataGridTemplateColumn x:Name="EditButtonPanel" Header="" IsReadOnly="True" Width="150">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel x:Name="StackPanel_EditButton" Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Icon:PackIconMaterial x:Name="Check_Icon" Kind="CheckBold" Style="{StaticResource gridButtonIcon}" Width="20" Height="20" Foreground="Green" Visibility="Collapsed"/>
+                                        <TextBox x:Name="AddedWaterMark_TextBox" BorderThickness="0" Background="Transparent"  Text="已添加水印" TextAlignment="Center" Foreground="#FF5F5F5F" FontSize="12" FontWeight="SemiBold" IsEnabled="False" Visibility="Collapsed"/>
+                                        <hc:LoadingCircle x:Name="FileLoadingCircle" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Width="24" Height="24" Visibility="Collapsed"/>
+                                        <Button x:Name="RemoveFile_Button" Margin="0 0 0 0" Style="{StaticResource gridRemoveButton}" Width="24" Height="24" Click="RemoveFileButton_Click" Visibility="Visible">
+                                            <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}" />
+                                        </Button>
+                                        <Button x:Name="OpenFileButton" Margin="0 0 0 0" Style="{StaticResource gridOpenFileButton}" Click="OpenFileButton_Click" Visibility="Collapsed">
+                                            <Icon:PackIconMaterial Kind="Folder" Style="{StaticResource gridButtonIcon}" />
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <!--Members Data Grid:已添加水印的文件列表-->
+                <DataGrid x:Name="AddedWatermarkFile_Grid" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" Style="{DynamicResource DataGridStyle1}" Visibility="Collapsed">
+                    <DataGrid.Columns>
+                        <!--<DataGridCheckBoxColumn Header="C" CanUserResize="False" Width="auto" ElementStyle="{StaticResource CheckBoxStyle1}">
+                <DataGridCheckBoxColumn.HeaderTemplate>
+                    <DataTemplate>
+                        <CheckBox Style="{StaticResource CheckBoxStyle1}"/>
+                    </DataTemplate>
+                </DataGridCheckBoxColumn.HeaderTemplate>
+            </DataGridCheckBoxColumn>-->
+                        <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding Number}"/>
+                        <DataGridTemplateColumn Header="文件名" IsReadOnly="True" Width="1.5*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Border Width="25" Height="25" CornerRadius="50" Margin="0 0 10 0" Background="{Binding BgColor}">
+                                            <TextBlock Text="{Binding Character}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" Margin="0 0 0 1"/>
+                                        </Border>
+                                        <TextBlock Text="{Binding FileName}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="文件路径" Binding="{Binding FileDir}" IsReadOnly="True" Width="*"/>
+                        <DataGridTextColumn Header="文件类型" Binding="{Binding FileType}" IsReadOnly="True" Width="*"/>
+                        <DataGridTextColumn Header="水印添加日期" Binding="{Binding AddWaterMarkDate}" IsReadOnly="True" Width="*"/>
+                        <DataGridTemplateColumn  Header="" IsReadOnly="True" Width="auto">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button x:Name="PositionFileButton" Style="{StaticResource gridCheckButton}" Visibility="Visible" Click="PositionFileButton_Click" Margin="0 0 1 0">
+                                            <Icon:PackIconMaterial Kind="Folder" Style="{StaticResource gridButtonIcon}"/>
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <!--Pagingation Section-->
+                <Border Grid.Row="6" HorizontalAlignment="Right" BorderBrush="#DEE4EC" BorderThickness="1" CornerRadius="5" Padding="5" Background="#ffffff" Margin="0 10 10 10">
+                    <StackPanel Orientation="Horizontal">
+                        <Button Style="{StaticResource pagingButton}" Click="PageUpButton_Click">
+                            <Icon:PackIconMaterial Kind="ChevronLeft" Style="{StaticResource pagingButtonIcon}"/>
+                        </Button>
+                        <Rectangle Width="1" Fill="#DEE4EC" Margin="3 7"/>
+
+                        <Button Style="{StaticResource pagingButton}" Content="1" Background="#7950F2" Foreground="#ffffff"/>
+                        <!--<Button Style="{StaticResource pagingButton}" Content="2" />
+                        <Button Style="{StaticResource pagingButton}" Content="3"/>
+
+                        <TextBlock Text="..." Foreground="#6C7682" VerticalAlignment="Center" Margin="10 0" FontSize="15"/>
+
+                        <Button Style="{StaticResource pagingButton}" Content="7"/>
+                        <Button Style="{StaticResource pagingButton}" Content="8"/>
+                        <Button Style="{StaticResource pagingButton}" Content="9"/>-->
+
+                        <Rectangle Width="1" Fill="#DEE4EC" Margin="3 7"/>
+                        <Button Style="{StaticResource pagingButton}" Click="PageDownButton_Click">
+                            <Icon:PackIconMaterial Kind="ChevronRight" Style="{StaticResource pagingButtonIcon}"/>
+                        </Button>
+                    </StackPanel>
+                </Border>
+            </Grid>
+            <!--大小写转化的Grid-->
+            <Grid x:Name="a2A_Grid" Grid.Column="1" Margin="30 20 20 20" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="57*"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="398*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Button Style="{StaticResource topButton}"  Margin="0 0 20 0" RenderTransformOrigin="0.5,0.5" Click="CloseTheAppButton_Click">
+                    <Icon:PackIconMaterial Kind="Close"/>
+                </Button>
+                <!--功能标题-->
+                <TextBlock x:Name="a2A_Title_TextBlock" Text="人民币大小写转换" Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0" Foreground="#121518" HorizontalAlignment="Left"/>
+                <!--分割线-->
+                <Separator Height="1" Grid.Row="3" Background="#DAE2EA" Margin="0 -1 0 3"/>
+
+                <!--顶部标签页按钮，目前为空，不需要-->
+                <StackPanel x:Name="a2A_TabButtonGroup" Grid.Row="2" Orientation="Horizontal" Margin="0 10 0 0" Width="auto" Height="45">
+                </StackPanel>
+                <!--转换前的文本输入框-->
+                <Grid x:Name="a2A_TextBox_a_Grid" Grid.Row="4" Margin="0,0,0,0">
+                    <TextBlock Margin="10,0,10,0"  TextAlignment="Center" VerticalAlignment="Center" Foreground="#B0B9C6" IsHitTestVisible="False" Width="auto" FontSize="16"
+                        Panel.ZIndex="1" Text="请输入待转换的金额文本..."
+                        Visibility="{Binding Text.IsEmpty, Converter={StaticResource BoolToVis}, ElementName=_a2A_TextBox_a}" />
+                    <TextBox x:Name="_a2A_TextBox_a" TextChanged="a2A_TextBox_a_TextChanged" Text="" Style="{StaticResource searchTextbox}" Width="auto" Height="50" FontSize="18" TextAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,0,0" FontWeight="Bold"/>
+                </Grid>
+
+                <Grid x:Name="a2A_Image1_Grid" Grid.Row="5" Margin="5" HorizontalAlignment="Center">
+                    <!-- 水平布局 -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <!-- 第一张图片 -->
+                        <Image x:Name="Image_LilyOfTheValley" Source="C:\Users\12040\source\repos\MyApp\MyApp\bin\Release\net8.0-windows\Images\a2A2.jpg" Stretch="Uniform" Margin="0,0,3,0" Width="0"/>
+                        <!-- 第二张图片 -->
+                        <Image x:Name="Image_MorningGlory" Source="C:\Users\12040\source\repos\MyApp\MyApp\bin\Release\net8.0-windows\Images\a2A4.jpg" Stretch="Uniform" Margin="0,0,3,0"/>
+                        <!-- 第三张图片 -->
+                        <Image Source="C:\Users\12040\source\repos\MyApp\MyApp\bin\Release\net8.0-windows\Images\a2A1.png" Stretch="Uniform" Margin="3,0,0,0"/>
+                    </StackPanel>
+                </Grid>
+
+                <Grid x:Name="a2A_TextBox_A_Grid" Grid.Row="6" Margin="0,0,160,0">
+                    <TextBlock Margin="10,0,20,0"  TextAlignment="Center" VerticalAlignment="Center" Foreground="#B0B9C6" IsHitTestVisible="False" Width="auto" FontSize="16" 
+                        Panel.ZIndex="1" Text="暂无文本转换..."
+                        Visibility="{Binding Text.IsEmpty, Converter={StaticResource BoolToVis}, ElementName=_a2A_TextBox_A}" />
+                    <TextBox x:Name="_a2A_TextBox_A" Text="" Style="{StaticResource searchTextbox}" Width="auto" Height="50"  IsReadOnly="True" FontSize="18" TextAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,10,0" FontWeight="Bold"/>
+                </Grid>
+                <!--用以展现大小写转换时动效的icon-->
+                <Icon:PackIconMaterial x:Name="_a2A_Icon" Kind="CapsLock" Margin="12,0,0,0" Style="{StaticResource pagingButtonIcon}" Height="32" Width="32" Grid.Row="6" Foreground="#FFA5A5A5" Visibility="Visible" HorizontalAlignment="Left"/>
+                <!--生成按钮所属Grid-->
+                <Grid Width="160" HorizontalAlignment="Right" Grid.Row="6" Height="40">
+                    <!--复制转换后的大写金额-->
+                    <Button x:Name="a2A_Copy_Button" Style="{StaticResource addWaterMarkButton}" Click="Copy_A_Value_Button_Click"  Margin="0,2,0,2" Grid.Column="1" HorizontalAlignment="Right">
+                        <StackPanel Orientation="Horizontal">
+                            <Icon:PackIconMaterial Kind="ContentCopy" VerticalAlignment="Center" Margin="0 0 8 0" Width="15" Height="15"/>
+                            <TextBlock Text="Copy"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Grid>
+            <!--拆分PDF文件的界面-->
+            <Grid x:Name="PDFSplitGrid" Grid.Column="1" Margin="30 20 20 20" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="57*"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="398*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <!--Top Buttons-->
+                <Button Style="{StaticResource topButton}"  Margin="0 0 20 0" RenderTransformOrigin="0.5,0.5" Click="CloseTheAppButton_Click">
+                    <Icon:PackIconMaterial Kind="Close"/>
+                </Button>
+
+                <!--Page Title-->
+                <TextBlock x:Name="PDFSplitGrid_Title_TextBlock" Text="拆分PDF文件" Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0" Foreground="#121518" HorizontalAlignment="Left"/>
+
+                <!--Seprator-->
+                <Separator Height="1" Grid.Row="3" Background="#DAE2EA" Margin="0 -1 0 3"/>
+
+                <!--Tab buttons-->
+                <StackPanel x:Name="PDFSplitGrid_TabButtonGroup" Grid.Row="2" Orientation="Horizontal" Margin="0 10 0 0" Width="auto">
+                    <Button x:Name="PDFSplitGrid_TabButton_SplitByPage" Style="{StaticResource tabButton}" Content="逐页拆分" Width="100" HorizontalAlignment="Left" BorderBrush="#784FF2" Foreground="#784FF2" Click="TabButton_SeletedFile_Click"/>
+                    <Button Style="{StaticResource tabButton}" Content="" Width="20" IsEnabled="False"/>
+                    <Button x:Name="PDFSplitGrid_TabButton_SplitByUser" Style="{StaticResource tabButton}" Content="自定义拆分" Width="100" Click="TabButton_AddedWaterMarkFile_Click"/>
+                </StackPanel>
+
+                <!--Counter Title-->
+                <TextBlock Text="文件信息" Grid.Row="4" FontSize="18" FontWeight="SemiBold" Foreground="#121518" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+                <!--Filter Textbox-->
+                <Grid Width="400" HorizontalAlignment="Right" Grid.Row="4" Height="40">
+                    <!--AddWaterMark Button-->
+                    <Button x:Name="StartSplit_Button" Style="{StaticResource addWaterMarkButton}" Click="AddWaterMarkButton_Click"  Margin="0,2,0,2" Grid.Column="1" HorizontalAlignment="Right">
+                        <StackPanel Orientation="Horizontal">
+                            <Icon:PackIconMaterial Kind="Play" VerticalAlignment="Center" Margin="0 0 8 0" Width="15" Height="15"/>
+                            <TextBlock Text="开始拆分PDF"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+
+                <!--Members Data Grid：待拆分的PDF文件列表-->
+                <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" Style="{DynamicResource DataGridStyle1}" Visibility="Visible" EnableRowVirtualization="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding Number}" />
+                        <DataGridTemplateColumn Header="文件名" IsReadOnly="True" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Border Width="25" Height="25" CornerRadius="50" Margin="0 0 10 0" Background="{Binding BgColor}">
+                                            <TextBlock Text="{Binding Character}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" Margin="0 0 0 1" IsHitTestVisible="False"/>
+                                        </Border>
+                                        <TextBlock Text="{Binding FileName}" VerticalAlignment="Center" IsHitTestVisible="False"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="文件路径" Binding="{Binding FileDir}" IsReadOnly="True" Width="*" />
+                        <DataGridTextColumn Header="文件类型" Binding="{Binding FileType}" IsReadOnly="True" Width="*"/>
+                        <DataGridTemplateColumn x:Name="PDFSplitGrid_EditButtonPanel" Header="" IsReadOnly="True" Width="150">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel x:Name="StackPanel_EditButton" Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Icon:PackIconMaterial x:Name="Check_Icon" Kind="CheckBold" Style="{StaticResource gridButtonIcon}" Width="20" Height="20" Foreground="Green" Visibility="Collapsed"/>
+                                        <TextBox x:Name="AddedWaterMark_TextBox" BorderThickness="0" Background="Transparent"  Text="已添加水印" TextAlignment="Center" Foreground="#FF5F5F5F" FontSize="12" FontWeight="SemiBold" IsEnabled="False" Visibility="Collapsed"/>
+                                        <hc:LoadingCircle x:Name="FileLoadingCircle" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Width="24" Height="24" Visibility="Collapsed"/>
+                                        <Button x:Name="RemoveFile_Button" Margin="0 0 0 0" Style="{StaticResource gridRemoveButton}" Width="24" Height="24" Click="RemoveFileButton_Click" Visibility="Visible">
+                                            <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}" />
+                                        </Button>
+                                        <Button x:Name="OpenFileButton" Margin="0 0 0 0" Style="{StaticResource gridOpenFileButton}" Click="OpenFileButton_Click" Visibility="Collapsed">
+                                            <Icon:PackIconMaterial Kind="Folder" Style="{StaticResource gridButtonIcon}" />
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+
+            <!--合并PDF文件的界面-->
+            <Grid x:Name="PDFMergeGrid" Grid.Column="1" Margin="30 20 20 20" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="57*"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="398*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <!--Top Buttons-->
+                <Button Style="{StaticResource topButton}"  Margin="0 0 20 0" RenderTransformOrigin="0.5,0.5" Click="CloseTheAppButton_Click">
+                    <Icon:PackIconMaterial Kind="Close"/>
+                </Button>
+
+                <!--Page Title-->
+                <TextBlock x:Name="PDFMergeGrid_Title_TextBlock" Text="合并PDF文件" Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0" Foreground="#121518" HorizontalAlignment="Left"/>
+                <!--Add Button-->
+                <Button x:Name="PDFMergeGrid_Button_AddFile" Style="{StaticResource addButton}" Click="Button_AddFile_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Icon:PackIconMaterial Kind="PlusBoxOutline" VerticalAlignment="Center" Margin="0 1 8 0" Width="15" Height="15"/>
+                        <TextBlock Text="添加文件..."/>
+                    </StackPanel>
+                </Button>
+                <!--Seprator-->
+                <Separator Height="1" Grid.Row="3" Background="#DAE2EA" Margin="0 10 0 10"/>
+
+                <!--Counter Title-->
+                <TextBlock Text="文件信息" Grid.Row="4" FontSize="18" FontWeight="SemiBold" Foreground="#121518" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+                <!--Filter Textbox-->
+                <Grid Width="400" HorizontalAlignment="Right" Grid.Row="4" Height="40">
+                    <!--AddWaterMark Button-->
+                    <Button x:Name="StartPDFMerge_Button" Style="{StaticResource addWaterMarkButton}" Click="AddWaterMarkButton_Click"  Margin="0,2,0,2" Grid.Column="1" HorizontalAlignment="Right">
+                        <StackPanel Orientation="Horizontal">
+                            <Icon:PackIconMaterial Kind="Play" VerticalAlignment="Center" Margin="0 0 8 0" Width="15" Height="15"/>
+                            <TextBlock Text="开始合并PDF"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+
+                <!--Members Data Grid：待合并的PDF文件列表-->
+                <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" Style="{DynamicResource DataGridStyle1}" Visibility="Visible" EnableRowVirtualization="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding Number}" />
+                        <DataGridTemplateColumn Header="文件名" IsReadOnly="True" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Border Width="25" Height="25" CornerRadius="50" Margin="0 0 10 0" Background="{Binding BgColor}">
+                                            <TextBlock Text="{Binding Character}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" Margin="0 0 0 1" IsHitTestVisible="False"/>
+                                        </Border>
+                                        <TextBlock Text="{Binding FileName}" VerticalAlignment="Center" IsHitTestVisible="False"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="文件路径" Binding="{Binding FileDir}" IsReadOnly="True" Width="*" />
+                        <DataGridTextColumn Header="文件类型" Binding="{Binding FileType}" IsReadOnly="True" Width="*"/>
+                        <DataGridTemplateColumn x:Name="PDFMergeGrid_EditButtonPanel" Header="" IsReadOnly="True" Width="150">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel x:Name="StackPanel_EditButton" Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Icon:PackIconMaterial x:Name="Check_Icon" Kind="CheckBold" Style="{StaticResource gridButtonIcon}" Width="20" Height="20" Foreground="Green" Visibility="Collapsed"/>
+                                        <TextBox x:Name="AddedWaterMark_TextBox" BorderThickness="0" Background="Transparent"  Text="已添加水印" TextAlignment="Center" Foreground="#FF5F5F5F" FontSize="12" FontWeight="SemiBold" IsEnabled="False" Visibility="Collapsed"/>
+                                        <hc:LoadingCircle x:Name="FileLoadingCircle" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Width="24" Height="24" Visibility="Collapsed"/>
+                                        <Button x:Name="RemoveFile_Button" Margin="0 0 0 0" Style="{StaticResource gridRemoveButton}" Width="24" Height="24" Click="RemoveFileButton_Click" Visibility="Visible">
+                                            <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}" />
+                                        </Button>
+                                        <Button x:Name="OpenFileButton" Margin="0 0 0 0" Style="{StaticResource gridOpenFileButton}" Click="OpenFileButton_Click" Visibility="Collapsed">
+                                            <Icon:PackIconMaterial Kind="Folder" Style="{StaticResource gridButtonIcon}" />
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+
+            <!--撰写报账请示文档的界面-->
+            <Grid x:Name="MoneyRequestGrid" Grid.Column="1" Margin="30 20 20 20" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="57*"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="398*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <!--Top Buttons-->
+                <Button Style="{StaticResource topButton}"  Margin="0 0 20 0" RenderTransformOrigin="0.5,0.5" Click="CloseTheAppButton_Click">
+                    <Icon:PackIconMaterial Kind="Close"/>
+                </Button>
+
+                <!--功能标题文本-->
+                <TextBlock x:Name="MoneyRequestGrid_Title_TextBlock" Text="报账文档生成" Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0" Foreground="#121518" HorizontalAlignment="Left"/>
+
+                <!--分割线-->
+                <Separator Height="1" Grid.Row="3" Background="#DAE2EA" Margin="0 20 0 20"/>
+
+                <!--列表顶部文本-->
+                <TextBlock Text="请填写需要变动的文件信息" Grid.Row="4" FontSize="18" FontWeight="SemiBold" Foreground="#121518" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+                <!--开始撰写按钮所处Grid-->
+                <Grid Width="400" HorizontalAlignment="Right" Grid.Row="4" Height="40">
+                    <!--开始撰写并打印按钮-->
+                    <Button x:Name="MoneyRequestGrid_Start_Button" Style="{StaticResource addWaterMarkButton}"  Margin="0,2,0,2" Grid.Column="1" HorizontalAlignment="Right" Click="MoneyRequestGrid_Start_Button_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <Icon:PackIconMaterial Kind="Play" VerticalAlignment="Center" Margin="0 0 8 0" Width="15" Height="15"/>
+                            <TextBlock Text="撰写并打印"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+                <!--撰写明细Grid-->
+                <!--联拓耗材-->
+                <Grid x:Name="LT_Haocai_Info_Grid" Grid.Row="5" Width="auto">
+                    <TextBlock Text="联拓耗材" FontSize="16" FontWeight="SemiBold" Margin="20 25 0 0" Foreground="#FF3286E4" HorizontalAlignment="Left" IsEnabled="False" TextDecorations="Underline"/>
+                    <TextBlock Margin="25,62,250,0" VerticalAlignment="Top" Foreground="#B0B9C6" IsHitTestVisible="False" Width="auto" FontSize="17"
+                        Panel.ZIndex="1" Text="请在此处输入购买的耗材 ..."
+                        Visibility="{Binding Text.IsEmpty, Converter={StaticResource BoolToVis}, ElementName=LT_Haocai_Info_TextBox}" />
+                    <TextBox x:Name="LT_Haocai_Info_TextBox" Margin="0,48,220,0" Style="{StaticResource searchTextbox}" VerticalAlignment="Top" Width="auto" Height="50" FontSize="17" VerticalContentAlignment="Center"/>
+                </Grid>
+                <Grid x:Name="LT_Haocai_Cost_Grid" Width="200" Grid.Row="5" Margin="0 0 0 0" HorizontalAlignment="Right">
+                    <TextBlock Margin="20,62,100,0" VerticalAlignment="Top" Foreground="#B0B9C6" IsHitTestVisible="False" Width="100" FontSize="17"
+                        Panel.ZIndex="1" Text="输入金额 ..."
+                        Visibility="{Binding Text.IsEmpty, Converter={StaticResource BoolToVis}, ElementName=LT_Haocai_Cost_TextBox}" />
+                    <TextBox x:Name="LT_Haocai_Cost_TextBox" Style="{StaticResource searchTextbox}" VerticalAlignment="Top" Width="auto" Height="50" FontSize="17" VerticalContentAlignment="Center" Margin="0,48,0,0"/>
+                </Grid>
+                <!--联拓维修-->
+                <Grid x:Name="LT_Weixiu_Info_Grid" Grid.Row="5" Width="auto">
+                    <TextBlock Text="联拓维修" FontSize="16" FontWeight="SemiBold" Margin="20 125 0 0" Foreground="#FF3286E4" HorizontalAlignment="Left" IsEnabled="False" TextDecorations="Underline"/>
+                    <TextBlock Margin="25,162,250,0" VerticalAlignment="Top" Foreground="#B0B9C6" IsHitTestVisible="False" Width="auto" FontSize="17"
+                        Panel.ZIndex="1" Text="请在此处输入维修的清单 ..."
+                        Visibility="{Binding Text.IsEmpty, Converter={StaticResource BoolToVis}, ElementName=LT_Weixiu_Info_TextBox}" />
+                    <TextBox x:Name="LT_Weixiu_Info_TextBox" Margin="0,148,220,0" Style="{StaticResource searchTextbox}" VerticalAlignment="Top" Width="auto" Height="50" FontSize="17" VerticalContentAlignment="Center"/>
+                </Grid>
+                <Grid x:Name="LT_Weixiu_Cost_Grid" Width="200" Grid.Row="5" Margin="0 0 0 0" HorizontalAlignment="Right">
+                    <TextBlock Margin="20,162,100,0" VerticalAlignment="Top" Foreground="#B0B9C6" IsHitTestVisible="False" Width="100" FontSize="17"
+                        Panel.ZIndex="1" Text="输入金额 ..."
+                        Visibility="{Binding Text.IsEmpty, Converter={StaticResource BoolToVis}, ElementName=LT_Weixiu_Cost_TextBox}" />
+                    <TextBox x:Name="LT_Weixiu_Cost_TextBox" Margin="0,148,0,0" Style="{StaticResource searchTextbox}" VerticalAlignment="Top" Width="auto" Height="50" FontSize="17" VerticalContentAlignment="Center"/>
+                </Grid>
+
+                <!--海纳耗材-->
+                <Grid x:Name="HN_Haocai_Info_Grid" Grid.Row="5" Width="auto">
+                    <TextBlock Text="海纳耗材" FontSize="16" FontWeight="SemiBold" Margin="20 225 0 0" Foreground="#FFEC8935" HorizontalAlignment="Left" IsEnabled="False" TextDecorations="Underline"/>
+                    <TextBlock Margin="25,262,250,0" VerticalAlignment="Top" Foreground="#B0B9C6" IsHitTestVisible="False" Width="auto" FontSize="17"
+                        Panel.ZIndex="1" Text="请在此处输入购买的耗材 ..."
+                        Visibility="{Binding Text.IsEmpty, Converter={StaticResource BoolToVis}, ElementName=HN_Haocai_Info_TextBox}" />
+                    <TextBox x:Name="HN_Haocai_Info_TextBox" Margin="0,248,220,0" Style="{StaticResource searchTextbox}" VerticalAlignment="Top" Width="auto" Height="50" FontSize="17" VerticalContentAlignment="Center"/>
+                </Grid>
+                <Grid x:Name="HN_Haocai_Cost_Grid" Width="200" Grid.Row="5" Margin="0 0 0 0" HorizontalAlignment="Right">
+                    <TextBlock Margin="20,262,100,0" VerticalAlignment="Top" Foreground="#B0B9C6" IsHitTestVisible="False" Width="100" FontSize="17"
+                        Panel.ZIndex="1" Text="输入金额 ..."
+                        Visibility="{Binding Text.IsEmpty, Converter={StaticResource BoolToVis}, ElementName=HN_Haocai_Cost_TextBox}" />
+                    <TextBox x:Name="HN_Haocai_Cost_TextBox" Margin="0,248,0,0" Style="{StaticResource searchTextbox}" VerticalAlignment="Top" Width="auto" Height="50" FontSize="17" VerticalContentAlignment="Center"/>
+                </Grid>
+
+                <!--海纳维修-->
+                <Grid x:Name="HN_Weixiu_Info_Grid" Grid.Row="5" Width="auto">
+                    <TextBlock Text="海纳维修" FontSize="16" FontWeight="SemiBold" Margin="20 325 0 0" Foreground="#FFEC8935" HorizontalAlignment="Left" IsEnabled="False" TextDecorations="Underline"/>
+                    <TextBlock Margin="25,362,250,0" VerticalAlignment="Top" Foreground="#B0B9C6" IsHitTestVisible="False" Width="auto" FontSize="17"
+                        Panel.ZIndex="1" Text="请在此处输入维修的清单 ..."
+                        Visibility="{Binding Text.IsEmpty, Converter={StaticResource BoolToVis}, ElementName=HN_Weixiu_Info_TextBox}" />
+                    <TextBox x:Name="HN_Weixiu_Info_TextBox" Margin="0,348,220,0" Style="{StaticResource searchTextbox}" VerticalAlignment="Top" Width="auto" Height="50" FontSize="17" VerticalContentAlignment="Center"/>
+                </Grid>
+                <Grid x:Name="HN_Weixiu_Cost_Grid" Width="200" Grid.Row="5" Margin="0 0 0 0" HorizontalAlignment="Right">
+                    <TextBlock Margin="20,362,100,0" VerticalAlignment="Top" Foreground="#B0B9C6" IsHitTestVisible="False" Width="100" FontSize="17"
+                        Panel.ZIndex="1" Text="输入金额 ..."
+                        Visibility="{Binding Text.IsEmpty, Converter={StaticResource BoolToVis}, ElementName=HN_Weixiu_Cost_TextBox}" />
+                    <TextBox x:Name="HN_Weixiu_Cost_TextBox" Margin="0,348,0,0" Style="{StaticResource searchTextbox}" VerticalAlignment="Top" Width="auto" Height="50" FontSize="17" VerticalContentAlignment="Center"/>
+                </Grid>
+            </Grid>
+
+            <!--裁切图片的界面-->
+            <Grid x:Name="PictureCroppingGrid" Grid.Column="1" Margin="30 20 20 20" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="57*"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="398*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Button Style="{StaticResource topButton}"  Margin="0 0 20 0" RenderTransformOrigin="0.5,0.5" Click="CloseTheAppButton_Click">
+                    <Icon:PackIconMaterial Kind="Close"/>
+                </Button>
+                <!--功能标题-->
+                <TextBlock x:Name="PictureCropping_Title_TextBlock" Text="图片裁切" Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0" Foreground="#121518" HorizontalAlignment="Left"/>
+
+                <!--浏览本地目录添加图片按钮-->
+                <Button x:Name="PictureCropping_Button_AddFile" Style="{StaticResource addButton}" Click="PictureCropping_Button_AddFile_Click" HorizontalAlignment="Right" Grid.Row="1">
+                    <StackPanel Orientation="Horizontal">
+                        <Icon:PackIconMaterial Kind="PlusBoxOutline" VerticalAlignment="Center" Margin="0 1 8 0" Width="15" Height="15"/>
+                        <TextBlock Text="添加图片..."/>
+                    </StackPanel>
+                </Button>
+
+                <!--分割线-->
+                <Separator Height="1" Grid.Row="3" Background="#DAE2EA" Margin="0 -1 0 3"/>
+
+                <!--顶部标签页按钮，目前就一个按钮-->
+                <StackPanel x:Name="PictureCropping_TabButtonGroup" Grid.Row="2" Orientation="Horizontal" Margin="0 10 0 0" Width="auto">
+                    <Button x:Name="PictureCropping_TabButton_SelectedFiles" Style="{StaticResource tabButton}" Content="已选择图片列表" Width="100" HorizontalAlignment="Left" BorderBrush="#784FF2" Foreground="#784FF2" Click="PictureCropping_TabButton_SeletedFile_Click"/>
+                </StackPanel>
+
+                <!--图片信息列表标题-->
+                <TextBlock Text="图片信息" Grid.Row="4" FontSize="18" FontWeight="SemiBold" Foreground="#121518" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+                <!--开始裁切图片按钮所处Grid-->
+                <Grid Width="400" HorizontalAlignment="Right" Grid.Row="4" Height="40">
+                    <!--开始裁切图片按钮-->
+                    <Button x:Name="PictureCropping_Button_Start" Style="{StaticResource addWaterMarkButton}" Click="PictureCropping_Button_Start_Click"  Margin="0,2,0,2" Grid.Column="1" HorizontalAlignment="Right">
+                        <StackPanel Orientation="Horizontal">
+                            <Icon:PackIconMaterial Kind="Play" VerticalAlignment="Center" Margin="0 0 8 0" Width="15" Height="15"/>
+                            <TextBlock Text="开始裁切"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+
+                <!--Members Data Grid：待裁切的图片列表-->
+                <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="PictureCropping_membersDataGrid" Style="{DynamicResource DataGridStyle1}" Visibility="Visible" EnableRowVirtualization="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding Number}" />
+                        <DataGridTemplateColumn Header="文件名" IsReadOnly="True" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Border Width="25" Height="25" CornerRadius="50" Margin="0 0 10 0" Background="{Binding BgColor}">
+                                            <TextBlock Text="{Binding Character}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" Margin="0 0 0 1" IsHitTestVisible="False"/>
+                                        </Border>
+                                        <TextBlock Text="{Binding FileName}" VerticalAlignment="Center" IsHitTestVisible="False"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="文件路径" Binding="{Binding FileDir}" IsReadOnly="True" Width="*" />
+                        <DataGridTextColumn Header="文件类型" Binding="{Binding FileType}" IsReadOnly="True" Width="*"/>
+                        <DataGridTemplateColumn x:Name="PictureCropping_EditButtonPanel" Header="" IsReadOnly="True" Width="150">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel x:Name="StackPanel_EditButton" Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Icon:PackIconMaterial x:Name="Check_Icon" Kind="CheckBold" Style="{StaticResource gridButtonIcon}" Width="20" Height="20" Foreground="Green" Visibility="Collapsed"/>
+                                        <TextBox x:Name="AddedWaterMark_TextBox" BorderThickness="0" Background="Transparent"  Text="已添加水印" TextAlignment="Center" Foreground="#FF5F5F5F" FontSize="12" FontWeight="SemiBold" IsEnabled="False" Visibility="Collapsed"/>
+                                        <hc:LoadingCircle x:Name="FileLoadingCircle" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Width="24" Height="24" Visibility="Collapsed"/>
+                                        <Button x:Name="RemoveFile_Button" Margin="0 0 0 0" Style="{StaticResource gridRemoveButton}" Width="24" Height="24" Click="RemoveFileButton_Click" Visibility="Visible">
+                                            <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}" />
+                                        </Button>
+                                        <Button x:Name="OpenFileButton" Margin="0 0 0 0" Style="{StaticResource gridOpenFileButton}" Click="OpenFileButton_Click" Visibility="Collapsed">
+                                            <Icon:PackIconMaterial Kind="Folder" Style="{StaticResource gridButtonIcon}" />
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!--裁切参数配置栏-->
+                <Grid x:Name="CuttingParameters_TextBox_Grid" Grid.Row="6" Width="auto" Margin="0">
+                    <TextBlock Margin="7,0,25,0" TextAlignment="Center"  VerticalAlignment="Center" Foreground="#B0B9C6" IsHitTestVisible="False" Width="auto" FontSize="18"
+                        Panel.ZIndex="1" Text="裁切参数配置 { 左40|上56|右40|下118|圆角20 }"
+                        Visibility="{Binding Text.IsEmpty, Converter={StaticResource BoolToVis}, ElementName=CuttingParameters_TextBox}" />
+                    <TextBox x:Name="CuttingParameters_TextBox" Text="" Style="{StaticResource searchTextbox}" Width="auto" Height="50" FontSize="18" TextAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,0,0"/>
+                </Grid>
+
+
+                <Border Grid.Row="6" HorizontalAlignment="Left" BorderBrush="#DEE4EC" Width="820" BorderThickness="3" CornerRadius="26" Padding="5"  Margin="0 10 10 10" Visibility="Collapsed">
+                    <StackPanel x:Name="PictureCropping_Offset_Panel" Orientation="Horizontal" Margin="5,0,5,0">
+                        <Grid Visibility="Collapsed">
+                            <TextBlock Margin="7,0,25,0" TextAlignment="Center"  VerticalAlignment="Center" Foreground="#B0B9C6" IsHitTestVisible="False" Width="100" FontSize="20"
+                                Panel.ZIndex="1" Text="Left"
+                                Visibility="{Binding Text.IsEmpty, Converter={StaticResource BoolToVis}, ElementName=Left_TextBox1}" />
+                            <TextBox x:Name="Left_TextBox1" Text="40" Style="{StaticResource searchTextbox}" Width="120" Height="50" FontSize="20" TextAlignment="Center" VerticalContentAlignment="Center" Margin="-3,0,15,0" FontWeight="Bold"/>
+                        </Grid>
+                        <Grid Visibility="Collapsed">
+                            <TextBlock Margin="10,0,20,0"  TextAlignment="Center" VerticalAlignment="Center" Foreground="#B0B9C6" IsHitTestVisible="False" Width="100" FontSize="20"
+                                Panel.ZIndex="1" Text="Top"
+                                Visibility="{Binding Text.IsEmpty, Converter={StaticResource BoolToVis}, ElementName=Top_TextBox}" />
+                            <TextBox x:Name="Top_TextBox1" Text="56" Style="{StaticResource searchTextbox}" Width="120" Height="50" FontSize="20" TextAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,10,0" FontWeight="Bold"/>
+                        </Grid>
+                        <Grid Visibility="Collapsed">
+                            <TextBlock Margin="15,0,15,0"  TextAlignment="Center" VerticalAlignment="Center" Foreground="#B0B9C6" IsHitTestVisible="False" Width="100" FontSize="20"
+                                Panel.ZIndex="1" Text="Right"
+                                Visibility="{Binding Text.IsEmpty, Converter={StaticResource BoolToVis}, ElementName=Right_TextBox}" />
+                            <TextBox x:Name="Right_TextBox1" Text="40" Style="{StaticResource searchTextbox}" VerticalAlignment="Bottom" Width="120" Height="50" FontSize="20" TextAlignment="Center" VerticalContentAlignment="Center" Margin="5,0,5,0" FontWeight="Bold"/>
+                        </Grid>
+                        <Grid Visibility="Collapsed">
+                            <TextBlock Margin="20,0,10,0"  TextAlignment="Center" VerticalAlignment="Center" Foreground="#B0B9C6" IsHitTestVisible="False" Width="100" FontSize="20"
+                                Panel.ZIndex="1" Text="Bottom"
+                                Visibility="{Binding Text.IsEmpty, Converter={StaticResource BoolToVis}, ElementName=Bottom_TextBox}" />
+                            <TextBox x:Name="Bottom_TextBox1" Text="118" Style="{StaticResource searchTextbox}" Width="120" Height="50" FontSize="20" TextAlignment="Center" VerticalContentAlignment="Center" Margin="10,0,0,0" FontWeight="Bold"/>
+                        </Grid>
+                        <Grid Visibility="Collapsed">
+                            <TextBlock Margin="167,0,-137,0"  TextAlignment="Center" VerticalAlignment="Center" Foreground="White" IsHitTestVisible="False" Width="100" FontSize="20"
+                                Panel.ZIndex="1" Text="Angle"
+                                Visibility="{Binding Text.IsEmpty, Converter={StaticResource BoolToVis}, ElementName=Pic_Angle_TextBox}" FontWeight="Bold" />
+                            <TextBox x:Name="Pic_Angle_TextBox1" Text="20" Style="{StaticResource searchTextbox}" Width="120" Height="50" FontSize="20" TextAlignment="Center" VerticalContentAlignment="Center" Margin="150,0,-154,0" Background="#FFFF5FE3" Foreground="White" FontWeight="Bold" BorderBrush="White"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!--生成通用二维码的界面-->
+            <Grid x:Name="NormalQRCodeGrid" Grid.Column="1" Margin="30 20 20 20" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="57*"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="398*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Button Style="{StaticResource topButton}"  Margin="0 0 20 0" RenderTransformOrigin="0.5,0.5" Click="CloseTheAppButton_Click">
+                    <Icon:PackIconMaterial Kind="Close"/>
+                </Button>
+                <!--功能标题-->
+                <TextBlock x:Name="NormalQRCode_Title_TextBlock" Text="通用二维码" Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0" Foreground="#121518" HorizontalAlignment="Left"/>
+
+                <!--浏览本地目录添加Excel表格-->
+                <Button x:Name="NormalQRCode_Button_AddFile" Style="{StaticResource addButton}" Click="NormalQRCode_Button_AddFile_Click" HorizontalAlignment="Right" Grid.Row="1">
+                    <StackPanel Orientation="Horizontal">
+                        <Icon:PackIconMaterial Kind="PlusBoxOutline" VerticalAlignment="Center" Margin="0 1 8 0" Width="15" Height="15"/>
+                        <TextBlock Text="导入Excel表格..."/>
+                    </StackPanel>
+                </Button>
+
+                <!--分割线-->
+                <Separator Height="1" Grid.Row="3" Background="#DAE2EA" Margin="0 -1 0 3"/>
+
+                <!--顶部标签页按钮，目前就一个按钮-->
+                <StackPanel x:Name="NormalQRCode_TabButtonGroup" Grid.Row="2" Orientation="Horizontal" Margin="0 10 0 0" Width="auto">
+                    <Button x:Name="NormalQRCode_TabButton_SelectedFiles" Style="{StaticResource tabButton}" Content="已导入的Excel" Width="100" HorizontalAlignment="Left" BorderBrush="#784FF2" Foreground="#784FF2" Click="NormalQRCode_TabButton_SeletedFile_Click"/>
+                </StackPanel>
+
+                <!--表格信息列表标题-->
+                <TextBlock Text="表格信息" Grid.Row="4" FontSize="18" FontWeight="SemiBold" Foreground="#121518" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+                <!--生成按钮所属Grid-->
+                <Grid Width="400" HorizontalAlignment="Right" Grid.Row="4" Height="40">
+                    <!--开始批量生成太阳码-->
+                    <Button x:Name="NormalQRCode_Button_Multiply" Style="{StaticResource addWaterMarkButton}" Click="NormalQRCode_Multiply_Start_Click"  Margin="0,2,0,2" Grid.Column="1" HorizontalAlignment="Right">
+                        <StackPanel Orientation="Horizontal">
+                            <Icon:PackIconMaterial Kind="Play" VerticalAlignment="Center" Margin="0 0 8 0" Width="15" Height="15"/>
+                            <TextBlock Text="批量生成二维码"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+
+                <!--Members Data Grid：批量生成二维码用到的excel表格-->
+                <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="NormalQRCode_membersDataGrid" Style="{DynamicResource DataGridStyle1}" Visibility="Visible" EnableRowVirtualization="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding Number}" />
+                        <DataGridTemplateColumn Header="文件名" IsReadOnly="True" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Border Width="25" Height="25" CornerRadius="50" Margin="0 0 10 0" Background="{Binding BgColor}">
+                                            <TextBlock Text="{Binding Character}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" Margin="0 0 0 1" IsHitTestVisible="False"/>
+                                        </Border>
+                                        <TextBlock Text="{Binding FileName}" VerticalAlignment="Center" IsHitTestVisible="False"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="文件路径" Binding="{Binding FileDir}" IsReadOnly="True" Width="*" />
+                        <DataGridTextColumn Header="文件类型" Binding="{Binding FileType}" IsReadOnly="True" Width="*"/>
+                        <DataGridTemplateColumn x:Name="NormalQRCode_EditButtonPanel" Header="" IsReadOnly="True" Width="150">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel x:Name="StackPanel_EditButton" Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Icon:PackIconMaterial x:Name="Check_Icon" Kind="CheckBold" Style="{StaticResource gridButtonIcon}" Width="20" Height="20" Foreground="Green" Visibility="Collapsed"/>
+                                        <TextBox x:Name="AddedWaterMark_TextBox" BorderThickness="0" Background="Transparent"  Text="已添加水印" TextAlignment="Center" Foreground="#FF5F5F5F" FontSize="12" FontWeight="SemiBold" IsEnabled="False" Visibility="Collapsed"/>
+                                        <hc:LoadingCircle x:Name="FileLoadingCircle" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Width="24" Height="24" Visibility="Collapsed"/>
+                                        <Button x:Name="RemoveFile_Button" Margin="0 0 0 0" Style="{StaticResource gridRemoveButton}" Width="24" Height="24" Click="RemoveFileButton_Click" Visibility="Visible">
+                                            <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}" />
+                                        </Button>
+                                        <Button x:Name="OpenFileButton" Margin="0 0 0 0" Style="{StaticResource gridOpenFileButton}" Click="OpenFileButton_Click" Visibility="Collapsed">
+                                            <Icon:PackIconMaterial Kind="Folder" Style="{StaticResource gridButtonIcon}" />
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!--单个二维码生成配置栏-->
+
+                <Grid x:Name="NormalQRCode_ChanelName_TextBox_Grid" Grid.Row="6" Width="0" HorizontalAlignment="Left" Margin="50,0,0,0">
+                    <TextBlock Margin="7,0,25,0" TextAlignment="Center"  VerticalAlignment="Center" Foreground="#B0B9C6" IsHitTestVisible="False" Width="100" FontSize="15"
+                        Panel.ZIndex="1" Text="展厅名称"
+                        Visibility="{Binding Text.IsEmpty, Converter={StaticResource BoolToVis}, ElementName=NormalQRCode_ChanelName_TextBox}" />
+                    <TextBox x:Name="NormalQRCode_ChanelName_TextBox" Text="" Style="{StaticResource searchTextbox}" Width="auto" Height="50" FontSize="20" TextAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,10,0" FontWeight="Bold"/>
+                </Grid>
+                <Grid x:Name="NormalQRCode_PagePath_TextBox_Grid" Grid.Row="6" Margin="0,0,200,0">
+                    <TextBlock Margin="10,0,20,0"  TextAlignment="Center" VerticalAlignment="Center" Foreground="#B0B9C6" IsHitTestVisible="False" Width="100" FontSize="15"
+                        Panel.ZIndex="1" Text="链接地址"
+                        Visibility="{Binding Text.IsEmpty, Converter={StaticResource BoolToVis}, ElementName=NormalQRCode_PagePath_TextBox}" />
+                    <TextBox x:Name="NormalQRCode_PagePath_TextBox" Text="" Style="{StaticResource searchTextbox}" Width="auto" Height="50" FontSize="20" TextAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,10,0" FontWeight="Bold"/>
+                </Grid>
+                <Grid x:Name="NormalQRCode_SaveName_TextBox_Grid" Grid.Row="6" Width="200" HorizontalAlignment="Right">
+                    <TextBlock Margin="10,0,20,0"  TextAlignment="Center" VerticalAlignment="Center" Foreground="#B0B9C6" IsHitTestVisible="False" Width="100" FontSize="15"
+                        Panel.ZIndex="1" Text="保存名称"
+                        Visibility="{Binding Text.IsEmpty, Converter={StaticResource BoolToVis}, ElementName=NormalQRCode_SaveName_TextBox}" />
+                    <TextBox x:Name="NormalQRCode_SaveName_TextBox" Text="" Style="{StaticResource searchTextbox}" Width="auto" Height="50" FontSize="20" TextAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,10,0" FontWeight="Bold"/>
+                </Grid>
+            </Grid>
+
+            <!--生成微信太阳码的界面-->
+            <Grid x:Name="WXQRCodeGrid" Grid.Column="1" Margin="30 20 20 20" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="57*"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="398*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Button Style="{StaticResource topButton}"  Margin="0 0 20 0" RenderTransformOrigin="0.5,0.5" Click="CloseTheAppButton_Click">
+                    <Icon:PackIconMaterial Kind="Close"/>
+                </Button>
+                <!--功能标题-->
+                <TextBlock x:Name="WXQRCode_Title_TextBlock" Text="微信太阳码" Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0" Foreground="#121518" HorizontalAlignment="Left"/>
+
+                <!--浏览本地目录添加Excel表格-->
+                <Button x:Name="WXQRCode_Button_AddFile" Style="{StaticResource addButton}" Click="WXQRCode_Button_AddFile_Click" HorizontalAlignment="Right" Grid.Row="1">
+                    <StackPanel Orientation="Horizontal">
+                        <Icon:PackIconMaterial Kind="PlusBoxOutline" VerticalAlignment="Center" Margin="0 1 8 0" Width="15" Height="15"/>
+                        <TextBlock Text="导入Excel表格..."/>
+                    </StackPanel>
+                </Button>
+
+                <!--分割线-->
+                <Separator Height="1" Grid.Row="3" Background="#DAE2EA" Margin="0 -1 0 3"/>
+
+                <!--顶部标签页按钮，目前就一个按钮-->
+                <StackPanel x:Name="WXQRCode_TabButtonGroup" Grid.Row="2" Orientation="Horizontal" Margin="0 10 0 0" Width="auto">
+                    <Button x:Name="WXQRCode_TabButton_SelectedFiles" Style="{StaticResource tabButton}" Content="已导入的Excel" Width="100" HorizontalAlignment="Left" BorderBrush="#784FF2" Foreground="#784FF2" Click="WXQRCode_TabButton_SeletedFile_Click"/>
+                </StackPanel>
+
+                <!--表格信息列表标题-->
+                <TextBlock Text="表格信息" Grid.Row="4" FontSize="18" FontWeight="SemiBold" Foreground="#121518" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+                <!--生成按钮所属Grid-->
+                <Grid Width="400" HorizontalAlignment="Right" Grid.Row="4" Height="40">
+                    <!--开始批量生成太阳码-->
+                    <Button x:Name="WXQRCode_Button_Multiply" Style="{StaticResource addWaterMarkButton}" Click="WXQRCode_Multiply_Start_Click"  Margin="0,2,0,2" Grid.Column="1" HorizontalAlignment="Right">
+                        <StackPanel Orientation="Horizontal">
+                            <Icon:PackIconMaterial Kind="Play" VerticalAlignment="Center" Margin="0 0 8 0" Width="15" Height="15"/>
+                            <TextBlock Text="批量生成太阳码"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+
+                <!--Members Data Grid：批量生成二维码用到的excel表格-->
+                <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="WXQRCode_membersDataGrid" Style="{DynamicResource DataGridStyle1}" Visibility="Visible" EnableRowVirtualization="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding Number}" />
+                        <DataGridTemplateColumn Header="文件名" IsReadOnly="True" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Border Width="25" Height="25" CornerRadius="50" Margin="0 0 10 0" Background="{Binding BgColor}">
+                                            <TextBlock Text="{Binding Character}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" Margin="0 0 0 1" IsHitTestVisible="False"/>
+                                        </Border>
+                                        <TextBlock Text="{Binding FileName}" VerticalAlignment="Center" IsHitTestVisible="False"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="文件路径" Binding="{Binding FileDir}" IsReadOnly="True" Width="*" />
+                        <DataGridTextColumn Header="文件类型" Binding="{Binding FileType}" IsReadOnly="True" Width="*"/>
+                        <DataGridTemplateColumn x:Name="WXQRCode_EditButtonPanel" Header="" IsReadOnly="True" Width="150">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel x:Name="StackPanel_EditButton" Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Icon:PackIconMaterial x:Name="Check_Icon" Kind="CheckBold" Style="{StaticResource gridButtonIcon}" Width="20" Height="20" Foreground="Green" Visibility="Collapsed"/>
+                                        <TextBox x:Name="AddedWaterMark_TextBox" BorderThickness="0" Background="Transparent"  Text="已添加水印" TextAlignment="Center" Foreground="#FF5F5F5F" FontSize="12" FontWeight="SemiBold" IsEnabled="False" Visibility="Collapsed"/>
+                                        <hc:LoadingCircle x:Name="FileLoadingCircle" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Width="24" Height="24" Visibility="Collapsed"/>
+                                        <Button x:Name="RemoveFile_Button" Margin="0 0 0 0" Style="{StaticResource gridRemoveButton}" Width="24" Height="24" Click="RemoveFileButton_Click" Visibility="Visible">
+                                            <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}" />
+                                        </Button>
+                                        <Button x:Name="OpenFileButton" Margin="0 0 0 0" Style="{StaticResource gridOpenFileButton}" Click="OpenFileButton_Click" Visibility="Collapsed">
+                                            <Icon:PackIconMaterial Kind="Folder" Style="{StaticResource gridButtonIcon}" />
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!--单个二维码生成配置栏-->
+                <CheckBox x:Name="CheckBox_IsAR" Grid.Row="6" Content="AR" IsChecked="False" Margin="0,5" HorizontalAlignment="Left" Checked="CheckBox_IsAR_Checked" Unchecked="CheckBox_IsAR_Unchecked" Foreground="#784FF2" FontWeight="Bold"/>
+
+                <Grid x:Name="WXQRCode_ChanelName_TextBox_Grid" Grid.Row="6" Width="0" HorizontalAlignment="Left" Margin="50,0,0,0">
+                    <TextBlock Margin="7,0,25,0" TextAlignment="Center"  VerticalAlignment="Center" Foreground="#B0B9C6" IsHitTestVisible="False" Width="100" FontSize="15"
+                        Panel.ZIndex="1" Text="展厅名称"
+                        Visibility="{Binding Text.IsEmpty, Converter={StaticResource BoolToVis}, ElementName=WXQRCode_ChanelName_TextBox}" />
+                    <TextBox x:Name="WXQRCode_ChanelName_TextBox" Text="" Style="{StaticResource searchTextbox}" Width="auto" Height="50" FontSize="20" TextAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,10,0" FontWeight="Bold"/>
+                </Grid>
+                <Grid x:Name="WXQRCode_PagePath_TextBox_Grid" Grid.Row="6" Margin="50,0,200,0">
+                    <TextBlock Margin="10,0,20,0"  TextAlignment="Center" VerticalAlignment="Center" Foreground="#B0B9C6" IsHitTestVisible="False" Width="100" FontSize="15"
+                        Panel.ZIndex="1" Text="链接地址"
+                        Visibility="{Binding Text.IsEmpty, Converter={StaticResource BoolToVis}, ElementName=WXQRCode_PagePath_TextBox}" />
+                    <TextBox x:Name="WXQRCode_PagePath_TextBox" Text="" Style="{StaticResource searchTextbox}" Width="auto" Height="50" FontSize="20" TextAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,10,0" FontWeight="Bold"/>
+                </Grid>
+                <Grid x:Name="WXQRCode_SaveName_TextBox_Grid" Grid.Row="6" Width="200" HorizontalAlignment="Right">
+                    <TextBlock Margin="10,0,20,0"  TextAlignment="Center" VerticalAlignment="Center" Foreground="#B0B9C6" IsHitTestVisible="False" Width="100" FontSize="15"
+                        Panel.ZIndex="1" Text="保存名称"
+                        Visibility="{Binding Text.IsEmpty, Converter={StaticResource BoolToVis}, ElementName=WXQRCode_SaveName_TextBox}" />
+                    <TextBox x:Name="WXQRCode_SaveName_TextBox" Text="" Style="{StaticResource searchTextbox}" Width="auto" Height="50" FontSize="20" TextAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,10,0" FontWeight="Bold"/>
+                </Grid>
+                <StackPanel HorizontalAlignment="Stretch" Grid.Row="6" x:Name="WXQRCode_Single_Panel" Orientation="Horizontal" Margin="0,0,0,0" Width="auto" >
+                    <Grid Visibility="Collapsed">
+                        <Button x:Name="WXQRCode_Button_Single" Style="{StaticResource addWaterMarkButton}" Click="WXQRCode_Single_Start_Click" Margin="0,0,0,0" Grid.Column="1" HorizontalAlignment="Left" Background="#FF459ACD">
+                            <StackPanel Orientation="Horizontal">
+                                <Icon:PackIconMaterial Kind="Play" VerticalAlignment="Center" Margin="0 0 8 0" Width="15" Height="15"/>
+                                <TextBlock Text="生成单个太阳码"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+
+            <!--正在添加水印遮罩-->
+            <Border x:Name="AddingWaterMark_Mask" BorderBrush="#FFBBBBEC"  BorderThickness="3" CornerRadius="0,30,30,0" Background="#7FCFCDE8" Visibility="Collapsed" Height="60" VerticalAlignment="Bottom" Margin="0,0,500,20" Grid.Column="1">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <hc:CircleProgressBar x:Name="MyCircleProgressBar" Height="40" Width="40" Margin="10 0 0 0" Value="0" ArcThickness ="5" Text="0"  FontSize="12"/>
+                    <Icon:PackIconMaterial x:Name="AddingWaterMark_Icon" Kind="CheckboxMarked" Style="{StaticResource pagingButtonIcon}" Height="30" Width="30" Foreground="#FF28B30F" Visibility="Collapsed" VerticalAlignment="Center" Margin="10 2 0 0" />
+                    <TextBox x:Name="AddingWaterMark_TextBox" BorderThickness="0" Background="Transparent"  Text="请稍等，正在添加水印中...(1/3)" TextAlignment="Center" Foreground="#FF5F5F5F" FontSize="28" FontWeight="SemiBold"/>
+                </StackPanel>
+                <Border.Triggers>
+                    <EventTrigger RoutedEvent="Page.Loaded">
+                        <BeginStoryboard>
+                            <Storyboard x:Name="Storyboard">
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Border.Triggers>
+            </Border>
+            <!--展开或者收起侧边菜单栏-->
+            <Button x:Name="OpenOrCLoseMenuButton" Style="{StaticResource LeftButton}" HorizontalAlignment="Left" Width="24" Height="24" Margin="0,379,0,311" Foreground="#B0B9C6" Click="OpenOrCLoseMenuButton_Click" Grid.Column="1">
+                <Icon:PackIconMaterial x:Name="OpenOrCLoseMenuButton_Icon" Kind="MenuRight" Width="24" Height="24"/>
+            </Button>
+
+        </Grid>
+    </Border>
+</Window>

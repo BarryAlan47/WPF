@@ -1,0 +1,58 @@
+1|D|Doc|F:\TestFile|2024/10/9|Word文档|F:\TestFile\Doc.doc
+2|D|Docx|F:\TestFile|2024/10/9|Word文档|F:\TestFile\Docx.docx
+3|P|Pdf|F:\TestFile|2024/10/9|PDF文件|F:\TestFile\Pdf.pdf
+4|S|SayMyName|F:\TestFile|2024/10/9|PDF文件|F:\TestFile\SayMyName.pdf
+5|T|Test|F:\TestFile|2024/10/9|PDF文件|F:\TestFile\Test.pdf
+6|X|Xls|F:\TestFile|2024/10/9|Excel表格|F:\TestFile\Xls.xls
+7|X|Xlsx|F:\TestFile|2024/10/9|Excel表格|F:\TestFile\Xlsx.xlsx
+8|骆|骆越秘藏 礼韵卣远|C:\Users\12040\Desktop|2024/11/8|视频文件|C:\Users\12040\Desktop\骆越秘藏 礼韵卣远.mp4
+9|骆|骆越秘藏 礼韵卣远|C:\Users\12040\Desktop|2024/11/8|视频文件|C:\Users\12040\Desktop\骆越秘藏 礼韵卣远.mp4
+10|骆|骆越秘藏 礼韵卣远|C:\Users\12040\Desktop|2024/11/8|视频文件|C:\Users\12040\Desktop\骆越秘藏 礼韵卣远.mp4
+11|骆|骆越秘藏 礼韵卣远|C:\Users\12040\Desktop|2024/11/8|视频文件|C:\Users\12040\Desktop\骆越秘藏 礼韵卣远.mp4
+12|骆|骆越秘藏 礼韵卣远|C:\Users\12040\Desktop|2024/11/8|视频文件|C:\Users\12040\Desktop\骆越秘藏 礼韵卣远.mp4
+13|骆|骆越秘藏|C:\Users\12040\Desktop|2024/11/8|视频文件|C:\Users\12040\Desktop\骆越秘藏.mp4
+14|骆|骆越秘藏|C:\Users\12040\Desktop|2024/11/8|视频文件|C:\Users\12040\Desktop\骆越秘藏.mp4
+15|骆|骆越秘藏|C:\Users\12040\Desktop|2024/11/8|视频文件|C:\Users\12040\Desktop\骆越秘藏.mp4
+16|骆|骆越秘藏|C:\Users\12040\Desktop|2024/11/8|视频文件|C:\Users\12040\Desktop\骆越秘藏.mp4
+17|安|安格隆|C:\Users\12040\Desktop\测试用二维码|2024/12/23|图片文件|C:\Users\12040\Desktop\测试用二维码\安格隆.png
+18|筚|筚总|C:\Users\12040\Desktop\测试用二维码|2024/12/23|图片文件|C:\Users\12040\Desktop\测试用二维码\筚总.png
+19|船|船型木琴|C:\Users\12040\Desktop\测试用二维码|2024/12/23|图片文件|C:\Users\12040\Desktop\测试用二维码\船型木琴.png
+20|船|船型竹排琴|C:\Users\12040\Desktop\测试用二维码|2024/12/23|图片文件|C:\Users\12040\Desktop\测试用二维码\船型竹排琴.png
+21|达|达比亚|C:\Users\12040\Desktop\测试用二维码|2024/12/23|图片文件|C:\Users\12040\Desktop\测试用二维码\达比亚.png
+22|笛|笛|C:\Users\12040\Desktop\测试用二维码|2024/12/23|图片文件|C:\Users\12040\Desktop\测试用二维码\笛.png
+23|学|学时|C:\Users\12040\Desktop|2024/12/23|图片文件|C:\Users\12040\Desktop\学时.png
+24|学|学时|C:\Users\12040\Desktop|2024/12/23|图片文件|C:\Users\12040\Desktop\学时.png
+25|学|学时|C:\Users\12040\Desktop|2024/12/23|图片文件|C:\Users\12040\Desktop\学时.png
+26|图|图片|C:\Users\12040\Desktop|2024/12/23|图片文件|C:\Users\12040\Desktop\图片.png
+27|图|图片|C:\Users\12040\Desktop|2024/12/23|图片文件|C:\Users\12040\Desktop\图片.png
+28|学|学时|C:\Users\12040\Desktop|2024/12/23|图片文件|C:\Users\12040\Desktop\学时.png
+29|图|图片|C:\Users\12040\Desktop|2024/12/23|图片文件|C:\Users\12040\Desktop\图片.png
+30|学|学时|C:\Users\12040\Desktop|2024/12/23|图片文件|C:\Users\12040\Desktop\学时.png
+31|学|学时|C:\Users\12040\Desktop|2024/12/23|图片文件|C:\Users\12040\Desktop\学时.png
+32|图|图片|C:\Users\12040\Desktop|2024/12/23|图片文件|C:\Users\12040\Desktop\图片.png
+33|学|学时|C:\Users\12040\Desktop|2024/12/23|图片文件|C:\Users\12040\Desktop\学时.png
+34|测|测试视频|C:\Users\12040\Desktop|2024/12/23|视频文件|C:\Users\12040\Desktop\测试视频.mp4
+35|测|测试视频|C:\Users\12040\Desktop|2024/12/23|视频文件|C:\Users\12040\Desktop\测试视频.mp4
+36|测|测试视频|C:\Users\12040\Desktop|2024/12/23|视频文件|C:\Users\12040\Desktop\测试视频.mp4
+37|测|测试视频|C:\Users\12040\Desktop|2024/12/23|视频文件|C:\Users\12040\Desktop\测试视频.mp4
+38|测|测试视频|C:\Users\12040\Desktop|2024/12/23|视频文件|C:\Users\12040\Desktop\测试视频.mp4
+39|测|测试视频|C:\Users\12040\Desktop|2024/12/23|视频文件|C:\Users\12040\Desktop\测试视频.mp4
+40|测|测试视频|C:\Users\12040\Desktop|2024/12/23|视频文件|C:\Users\12040\Desktop\测试视频.mp4
+41|测|测试视频|C:\Users\12040\Desktop|2024/12/23|视频文件|C:\Users\12040\Desktop\测试视频.mp4
+42|测|测试视频|C:\Users\12040\Desktop|2024/12/23|视频文件|C:\Users\12040\Desktop\测试视频.mp4
+43|测|测试视频|C:\Users\12040\Desktop|2024/12/23|视频文件|C:\Users\12040\Desktop\测试视频.mp4
+44|测|测试视频|C:\Users\12040\Desktop|2024/12/23|视频文件|C:\Users\12040\Desktop\测试视频.mp4
+45|测|测试视频|C:\Users\12040\Desktop|2024/12/23|视频文件|C:\Users\12040\Desktop\测试视频.mp4
+46|测|测试视频|C:\Users\12040\Desktop|2024/12/24|视频文件|C:\Users\12040\Desktop\测试视频.mp4
+47|测|测试视频|C:\Users\12040\Desktop|2024/12/24|视频文件|C:\Users\12040\Desktop\测试视频.mp4
+48|测|测试视频|C:\Users\12040\Desktop|2024/12/24|视频文件|C:\Users\12040\Desktop\测试视频.mp4
+49|测|测试视频|C:\Users\12040\Desktop|2024/12/24|视频文件|C:\Users\12040\Desktop\测试视频.mp4
+50|测|测试视频|C:\Users\12040\Desktop|2024/12/24|视频文件|C:\Users\12040\Desktop\测试视频.mp4
+51|测|测试视频|C:\Users\12040\Desktop|2024/12/24|视频文件|C:\Users\12040\Desktop\测试视频.mp4
+52|测|测试视频|C:\Users\12040\Desktop|2024/12/24|视频文件|C:\Users\12040\Desktop\测试视频.mp4
+53|测|测试视频|C:\Users\12040\Desktop|2024/12/24|视频文件|C:\Users\12040\Desktop\测试视频.mp4
+54|测|测试视频|C:\Users\12040\Desktop|2024/12/24|视频文件|C:\Users\12040\Desktop\测试视频.mp4
+55|测|测试视频|C:\Users\12040\Desktop|2024/12/24|视频文件|C:\Users\12040\Desktop\测试视频.mp4
+56|0|011《骆越秘藏 元龙寻史》|C:\Users\12040\Desktop|2024/12/24|视频文件|C:\Users\12040\Desktop\011《骆越秘藏 元龙寻史》.mp4
+57|测|测试视频|C:\Users\12040\Desktop|2024/12/24|视频文件|C:\Users\12040\Desktop\测试视频.mp4
+58|测|测试视频|C:\Users\12040\Desktop|2024/12/24|视频文件|C:\Users\12040\Desktop\测试视频.mp4
