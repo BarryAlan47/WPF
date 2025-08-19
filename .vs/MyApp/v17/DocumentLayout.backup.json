@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\12040\\source\\repos\\MyApp\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{2FF17A8A-9EBF-4B9A-9B89-3777033AC45A}|MyApp\\MyApp.csproj|c:\\users\\12040\\source\\repos\\myapp\\myapp\\fileoperate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2FF17A8A-9EBF-4B9A-9B89-3777033AC45A}|MyApp\\MyApp.csproj|solutionrelative:myapp\\fileoperate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{2FF17A8A-9EBF-4B9A-9B89-3777033AC45A}|MyApp\\MyApp.csproj|c:\\users\\12040\\source\\repos\\myapp\\myapp\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{2FF17A8A-9EBF-4B9A-9B89-3777033AC45A}|MyApp\\MyApp.csproj|solutionrelative:myapp\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -11,44 +15,16 @@
       "RelativeMoniker": "D:0:0:{2FF17A8A-9EBF-4B9A-9B89-3777033AC45A}|MyApp\\MyApp.csproj|solutionrelative:myapp\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{2FF17A8A-9EBF-4B9A-9B89-3777033AC45A}|MyApp\\MyApp.csproj|c:\\users\\12040\\source\\repos\\myapp\\myapp\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2FF17A8A-9EBF-4B9A-9B89-3777033AC45A}|MyApp\\MyApp.csproj|solutionrelative:myapp\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{2FF17A8A-9EBF-4B9A-9B89-3777033AC45A}|MyApp\\MyApp.csproj|c:\\users\\12040\\source\\repos\\myapp\\myapp\\wxqrcodegenerated.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{2FF17A8A-9EBF-4B9A-9B89-3777033AC45A}|MyApp\\MyApp.csproj|solutionrelative:myapp\\wxqrcodegenerated.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2FF17A8A-9EBF-4B9A-9B89-3777033AC45A}|MyApp\\MyApp.csproj|c:\\users\\12040\\source\\repos\\myapp\\myapp\\normalqrcodegenerated.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2FF17A8A-9EBF-4B9A-9B89-3777033AC45A}|MyApp\\MyApp.csproj|solutionrelative:myapp\\normalqrcodegenerated.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2FF17A8A-9EBF-4B9A-9B89-3777033AC45A}|MyApp\\MyApp.csproj|c:\\users\\12040\\source\\repos\\myapp\\myapp\\aaconvert.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2FF17A8A-9EBF-4B9A-9B89-3777033AC45A}|MyApp\\MyApp.csproj|solutionrelative:myapp\\aaconvert.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\12040\\AppData\\Local\\SourceServer\\0004409594e5437401a819e683220afcd101282b5d39186df2a79d7c8231ef93\\src\\libraries\\System.Private.CoreLib\\src\\System\\Threading\\ExecutionContext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2FF17A8A-9EBF-4B9A-9B89-3777033AC45A}|MyApp\\MyApp.csproj|c:\\users\\12040\\source\\repos\\myapp\\myapp\\fileoperate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2FF17A8A-9EBF-4B9A-9B89-3777033AC45A}|MyApp\\MyApp.csproj|solutionrelative:myapp\\fileoperate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\12040\\AppData\\Local\\Temp\\.vsdbgsrc\\59de3a1815d46745f2c53b4ecb7ea92cb9481c1b59ea526f5f9a488656dbcda3\\XamlReader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{2FF17A8A-9EBF-4B9A-9B89-3777033AC45A}|MyApp\\MyApp.csproj|c:\\users\\12040\\source\\repos\\myapp\\myapp\\getfileinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{2FF17A8A-9EBF-4B9A-9B89-3777033AC45A}|MyApp\\MyApp.csproj|solutionrelative:myapp\\getfileinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\12040\\AppData\\Local\\SourceServer\\cc6a60ec468d593605f295a5d77853ed9a960c680a7a37d7265ed9914269fc24\\src\\libraries\\System.Private.CoreLib\\src\\System\\Number.Parsing.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\12040\\AppData\\Local\\SourceServer\\21f5a650c6071bf48c5f8b5b13c0872d57f4084925e8ee7c4db7c727f43ff5d4\\src\\libraries\\System.Private.CoreLib\\src\\System\\String.Manipulation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2FF17A8A-9EBF-4B9A-9B89-3777033AC45A}|MyApp\\MyApp.csproj|c:\\users\\12040\\source\\repos\\myapp\\myapp\\timedelay.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2FF17A8A-9EBF-4B9A-9B89-3777033AC45A}|MyApp\\MyApp.csproj|solutionrelative:myapp\\timedelay.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2FF17A8A-9EBF-4B9A-9B89-3777033AC45A}|MyApp\\MyApp.csproj|c:\\users\\12040\\source\\repos\\myapp\\myapp\\myapp.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
-      "RelativeMoniker": "D:0:0:{2FF17A8A-9EBF-4B9A-9B89-3777033AC45A}|MyApp\\MyApp.csproj|solutionrelative:myapp\\myapp.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
     }
   ],
   "DocumentGroupContainers": [
@@ -68,7 +44,7 @@
         },
         {
           "DockedHeight": 104,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -80,39 +56,39 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "ExecutionContext.cs",
-              "DocumentMoniker": "C:\\Users\\12040\\AppData\\Local\\SourceServer\\0004409594e5437401a819e683220afcd101282b5d39186df2a79d7c8231ef93\\src\\libraries\\System.Private.CoreLib\\src\\System\\Threading\\ExecutionContext.cs",
-              "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Local\\SourceServer\\0004409594e5437401a819e683220afcd101282b5d39186df2a79d7c8231ef93\\src\\libraries\\System.Private.CoreLib\\src\\System\\Threading\\ExecutionContext.cs",
-              "ToolTip": "C:\\Users\\12040\\AppData\\Local\\SourceServer\\0004409594e5437401a819e683220afcd101282b5d39186df2a79d7c8231ef93\\src\\libraries\\System.Private.CoreLib\\src\\System\\Threading\\ExecutionContext.cs",
-              "RelativeToolTip": "..\\..\\..\\AppData\\Local\\SourceServer\\0004409594e5437401a819e683220afcd101282b5d39186df2a79d7c8231ef93\\src\\libraries\\System.Private.CoreLib\\src\\System\\Threading\\ExecutionContext.cs",
-              "ViewState": "AgIAAKQAAAAAAAAAAAAswLIAAAAQAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-30T02:35:53.78Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "AaConvert.cs",
-              "DocumentMoniker": "C:\\Users\\12040\\source\\repos\\MyApp\\MyApp\\AaConvert.cs",
-              "RelativeDocumentMoniker": "MyApp\\AaConvert.cs",
-              "ToolTip": "C:\\Users\\12040\\source\\repos\\MyApp\\MyApp\\AaConvert.cs",
-              "RelativeToolTip": "MyApp\\AaConvert.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAABsAAAAQAAAAAAAAAA==",
+              "Title": "WXQRCodeGenerated.cs",
+              "DocumentMoniker": "C:\\Users\\12040\\source\\repos\\MyApp\\MyApp\\WXQRCodeGenerated.cs",
+              "RelativeDocumentMoniker": "MyApp\\WXQRCodeGenerated.cs",
+              "ToolTip": "C:\\Users\\12040\\source\\repos\\MyApp\\MyApp\\WXQRCodeGenerated.cs",
+              "RelativeToolTip": "MyApp\\WXQRCodeGenerated.cs",
+              "ViewState": "AgIAAMQAAAAAAAAAAAAgwBwBAABEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-27T06:46:19.143Z",
+              "WhenOpened": "2025-04-10T07:27:19.588Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 1,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\12040\\source\\repos\\MyApp\\MyApp\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "MyApp\\MainWindow.xaml.cs",
+              "ToolTip": "C:\\Users\\12040\\source\\repos\\MyApp\\MyApp\\MainWindow.xaml.cs",
+              "RelativeToolTip": "MyApp\\MainWindow.xaml.cs",
+              "ViewState": "AgIAADoDAAAAAAAAAAAowFIDAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-09T01:35:48.884Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
               "Title": "FileOperate.cs",
               "DocumentMoniker": "C:\\Users\\12040\\source\\repos\\MyApp\\MyApp\\FileOperate.cs",
               "RelativeDocumentMoniker": "MyApp\\FileOperate.cs",
               "ToolTip": "C:\\Users\\12040\\source\\repos\\MyApp\\MyApp\\FileOperate.cs",
               "RelativeToolTip": "MyApp\\FileOperate.cs",
-              "ViewState": "AgIAALUBAAAAAAAAAAAQwMMBAAAlAAAAAAAAAA==",
+              "ViewState": "AgIAAKkDAAAAAAAAAAAYwLsDAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-09T01:52:08.497Z",
               "EditorCaption": ""
@@ -120,125 +96,40 @@
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "WXQRCodeGenerated.cs",
-              "DocumentMoniker": "C:\\Users\\12040\\source\\repos\\MyApp\\MyApp\\WXQRCodeGenerated.cs",
-              "RelativeDocumentMoniker": "MyApp\\WXQRCodeGenerated.cs",
-              "ToolTip": "C:\\Users\\12040\\source\\repos\\MyApp\\MyApp\\WXQRCodeGenerated.cs",
-              "RelativeToolTip": "MyApp\\WXQRCodeGenerated.cs",
-              "ViewState": "AgIAAEEAAAAAAAAAAAAqwEEAAAAuAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-24T08:12:54.941Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
               "Title": "MainWindow.xaml",
               "DocumentMoniker": "C:\\Users\\12040\\source\\repos\\MyApp\\MyApp\\MainWindow.xaml",
               "RelativeDocumentMoniker": "MyApp\\MainWindow.xaml",
               "ToolTip": "C:\\Users\\12040\\source\\repos\\MyApp\\MyApp\\MainWindow.xaml",
               "RelativeToolTip": "MyApp\\MainWindow.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2024-10-09T01:45:15.785Z",
+              "WhenOpened": "2025-03-19T07:43:27.029Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "MainWindow.xaml.cs",
-              "DocumentMoniker": "C:\\Users\\12040\\source\\repos\\MyApp\\MyApp\\MainWindow.xaml.cs",
-              "RelativeDocumentMoniker": "MyApp\\MainWindow.xaml.cs",
-              "ToolTip": "C:\\Users\\12040\\source\\repos\\MyApp\\MyApp\\MainWindow.xaml.cs",
-              "RelativeToolTip": "MyApp\\MainWindow.xaml.cs",
-              "ViewState": "AgIAAKkEAAAAAAAAAAAowNIEAAAgAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-09T01:35:48.884Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "NormalQRCodeGenerated.cs",
-              "DocumentMoniker": "C:\\Users\\12040\\source\\repos\\MyApp\\MyApp\\NormalQRCodeGenerated.cs",
-              "RelativeDocumentMoniker": "MyApp\\NormalQRCodeGenerated.cs",
-              "ToolTip": "C:\\Users\\12040\\source\\repos\\MyApp\\MyApp\\NormalQRCodeGenerated.cs",
-              "RelativeToolTip": "MyApp\\NormalQRCodeGenerated.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAAABwAAAAtAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-09T01:52:54.108Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "MyApp",
-              "DocumentMoniker": "C:\\Users\\12040\\source\\repos\\MyApp\\MyApp\\MyApp.csproj",
-              "RelativeDocumentMoniker": "MyApp\\MyApp.csproj",
-              "ToolTip": "C:\\Users\\12040\\source\\repos\\MyApp\\MyApp\\MyApp.csproj",
-              "RelativeToolTip": "MyApp\\MyApp.csproj",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2024-10-09T01:36:47.789Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "XamlReader.cs",
-              "DocumentMoniker": "C:\\Users\\12040\\AppData\\Local\\Temp\\.vsdbgsrc\\59de3a1815d46745f2c53b4ecb7ea92cb9481c1b59ea526f5f9a488656dbcda3\\XamlReader.cs",
-              "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\59de3a1815d46745f2c53b4ecb7ea92cb9481c1b59ea526f5f9a488656dbcda3\\XamlReader.cs",
-              "ToolTip": "C:\\Users\\12040\\AppData\\Local\\Temp\\.vsdbgsrc\\59de3a1815d46745f2c53b4ecb7ea92cb9481c1b59ea526f5f9a488656dbcda3\\XamlReader.cs",
-              "RelativeToolTip": "..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\59de3a1815d46745f2c53b4ecb7ea92cb9481c1b59ea526f5f9a488656dbcda3\\XamlReader.cs",
-              "ViewState": "AgIAAFUBAAAAAAAAAAAswGMBAAACAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-09T02:36:05.537Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "TImeDelay.cs",
-              "DocumentMoniker": "C:\\Users\\12040\\source\\repos\\MyApp\\MyApp\\TImeDelay.cs",
-              "RelativeDocumentMoniker": "MyApp\\TImeDelay.cs",
-              "ToolTip": "C:\\Users\\12040\\source\\repos\\MyApp\\MyApp\\TImeDelay.cs",
-              "RelativeToolTip": "MyApp\\TImeDelay.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAgwAkAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-09T01:53:11.096Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "Number.Parsing.cs",
-              "DocumentMoniker": "C:\\Users\\12040\\AppData\\Local\\SourceServer\\cc6a60ec468d593605f295a5d77853ed9a960c680a7a37d7265ed9914269fc24\\src\\libraries\\System.Private.CoreLib\\src\\System\\Number.Parsing.cs",
-              "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Local\\SourceServer\\cc6a60ec468d593605f295a5d77853ed9a960c680a7a37d7265ed9914269fc24\\src\\libraries\\System.Private.CoreLib\\src\\System\\Number.Parsing.cs",
-              "ToolTip": "C:\\Users\\12040\\AppData\\Local\\SourceServer\\cc6a60ec468d593605f295a5d77853ed9a960c680a7a37d7265ed9914269fc24\\src\\libraries\\System.Private.CoreLib\\src\\System\\Number.Parsing.cs",
-              "RelativeToolTip": "..\\..\\..\\AppData\\Local\\SourceServer\\cc6a60ec468d593605f295a5d77853ed9a960c680a7a37d7265ed9914269fc24\\src\\libraries\\System.Private.CoreLib\\src\\System\\Number.Parsing.cs",
-              "ViewState": "AgIAAGAFAAAAAAAAAAAswG4FAAAMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-23T03:14:11.843Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 5,
               "Title": "GetFileInfo.cs",
               "DocumentMoniker": "C:\\Users\\12040\\source\\repos\\MyApp\\MyApp\\GetFileInfo.cs",
               "RelativeDocumentMoniker": "MyApp\\GetFileInfo.cs",
               "ToolTip": "C:\\Users\\12040\\source\\repos\\MyApp\\MyApp\\GetFileInfo.cs",
               "RelativeToolTip": "MyApp\\GetFileInfo.cs",
-              "ViewState": "AgIAADgAAAAAAAAAAAAgwBoAAAAoAAAAAAAAAA==",
+              "ViewState": "AgIAAFgAAAAAAAAAAADwv14AAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-09T01:52:25.985Z"
+              "WhenOpened": "2025-05-29T03:09:42.817Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "String.Manipulation.cs",
-              "DocumentMoniker": "C:\\Users\\12040\\AppData\\Local\\SourceServer\\21f5a650c6071bf48c5f8b5b13c0872d57f4084925e8ee7c4db7c727f43ff5d4\\src\\libraries\\System.Private.CoreLib\\src\\System\\String.Manipulation.cs",
-              "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Local\\SourceServer\\21f5a650c6071bf48c5f8b5b13c0872d57f4084925e8ee7c4db7c727f43ff5d4\\src\\libraries\\System.Private.CoreLib\\src\\System\\String.Manipulation.cs",
-              "ToolTip": "C:\\Users\\12040\\AppData\\Local\\SourceServer\\21f5a650c6071bf48c5f8b5b13c0872d57f4084925e8ee7c4db7c727f43ff5d4\\src\\libraries\\System.Private.CoreLib\\src\\System\\String.Manipulation.cs",
-              "RelativeToolTip": "..\\..\\..\\AppData\\Local\\SourceServer\\21f5a650c6071bf48c5f8b5b13c0872d57f4084925e8ee7c4db7c727f43ff5d4\\src\\libraries\\System.Private.CoreLib\\src\\System\\String.Manipulation.cs",
-              "ViewState": "AgIAABMIAAAAAAAAAAAswCcIAAAMAAAAAAAAAA==",
+              "DocumentIndex": 3,
+              "Title": "App.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\12040\\source\\repos\\MyApp\\MyApp\\App.xaml.cs",
+              "RelativeDocumentMoniker": "MyApp\\App.xaml.cs",
+              "ToolTip": "C:\\Users\\12040\\source\\repos\\MyApp\\MyApp\\App.xaml.cs",
+              "RelativeToolTip": "MyApp\\App.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-19T08:37:47.396Z"
+              "WhenOpened": "2025-08-04T01:48:18.894Z",
+              "EditorCaption": ""
             }
           ]
         }

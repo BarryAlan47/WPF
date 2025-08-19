@@ -12,7 +12,6 @@ using System.Text;
 using System.ComponentModel;
 using System.IO;
 
-
 namespace MyApp
 {
     public partial class MainWindow : System.Windows.Window
@@ -123,14 +122,14 @@ namespace MyApp
             templeColumn_PictureCropping = PictureCropping_membersDataGrid.Columns[4] as DataGridTemplateColumn;
 
             //撰写转账请示文档相关组件实例化
-            System.Windows.Controls.TextBox lT_Haocai_Info_TextBox = (System.Windows.Controls.TextBox)LT_Haocai_Info_Grid.FindName("LT_Haocai_Info_TextBox");
-            System.Windows.Controls.TextBox lT_Haocai_Cost_TextBox = (System.Windows.Controls.TextBox)LT_Haocai_Cost_Grid.FindName("LT_Haocai_Cost_TextBox");
-            System.Windows.Controls.TextBox lT_Weixiu_Info_TextBox = (System.Windows.Controls.TextBox)LT_Weixiu_Info_Grid.FindName("LT_Weixiu_Info_TextBox");
-            System.Windows.Controls.TextBox lT_Weixiu_Cost_TextBox = (System.Windows.Controls.TextBox)LT_Weixiu_Cost_Grid.FindName("LT_Weixiu_Cost_TextBox");
-            System.Windows.Controls.TextBox hN_Haocai_Info_TextBox = (System.Windows.Controls.TextBox)HN_Haocai_Info_Grid.FindName("HN_Haocai_Info_TextBox");
-            System.Windows.Controls.TextBox hN_Haocai_Cost_TextBox = (System.Windows.Controls.TextBox)HN_Haocai_Cost_Grid.FindName("HN_Haocai_Cost_TextBox");
-            System.Windows.Controls.TextBox hN_Weixiu_Info_TextBox = (System.Windows.Controls.TextBox)HN_Weixiu_Info_Grid.FindName("HN_Weixiu_Info_TextBox");
-            System.Windows.Controls.TextBox hN_Weixiu_Cost_TextBox = (System.Windows.Controls.TextBox)HN_Weixiu_Cost_Grid.FindName("HN_Weixiu_Cost_TextBox");
+            //System.Windows.Controls.TextBox lT_Haocai_Info_TextBox = (System.Windows.Controls.TextBox)LT_Haocai_Info_Grid.FindName("LT_Haocai_Info_TextBox");
+            //System.Windows.Controls.TextBox lT_Haocai_Cost_TextBox = (System.Windows.Controls.TextBox)LT_Haocai_Cost_Grid.FindName("LT_Haocai_Cost_TextBox");
+            //System.Windows.Controls.TextBox lT_Weixiu_Info_TextBox = (System.Windows.Controls.TextBox)LT_Weixiu_Info_Grid.FindName("LT_Weixiu_Info_TextBox");
+            //System.Windows.Controls.TextBox lT_Weixiu_Cost_TextBox = (System.Windows.Controls.TextBox)LT_Weixiu_Cost_Grid.FindName("LT_Weixiu_Cost_TextBox");
+            //System.Windows.Controls.TextBox hN_Haocai_Info_TextBox = (System.Windows.Controls.TextBox)HN_Haocai_Info_Grid.FindName("HN_Haocai_Info_TextBox");
+            //System.Windows.Controls.TextBox hN_Haocai_Cost_TextBox = (System.Windows.Controls.TextBox)HN_Haocai_Cost_Grid.FindName("HN_Haocai_Cost_TextBox");
+            //System.Windows.Controls.TextBox hN_Weixiu_Info_TextBox = (System.Windows.Controls.TextBox)HN_Weixiu_Info_Grid.FindName("HN_Weixiu_Info_TextBox");
+            //System.Windows.Controls.TextBox hN_Weixiu_Cost_TextBox = (System.Windows.Controls.TextBox)HN_Weixiu_Cost_Grid.FindName("HN_Weixiu_Cost_TextBox");
 
             //通用二维码相关组件实例化
             button_SelectedFiles_NormalQRCode = (System.Windows.Controls.Button)NormalQRCodeGrid.FindName("NormalQRCode_Button_AddFile");
@@ -748,12 +747,19 @@ namespace MyApp
         {
             List<string> list_InfoText = new List<string>();
             List<string> list_CostText = new List<string>();
-
+            System.Windows.Controls.TextBox lT_Haocai_Info_TextBox = (System.Windows.Controls.TextBox)LT_Haocai_Info_Grid.FindName("LT_Haocai_Info_TextBox");
+            System.Windows.Controls.TextBox lT_Haocai_Cost_TextBox = (System.Windows.Controls.TextBox)LT_Haocai_Cost_Grid.FindName("LT_Haocai_Cost_TextBox");
+            System.Windows.Controls.TextBox lT_Weixiu_Info_TextBox = (System.Windows.Controls.TextBox)LT_Weixiu_Info_Grid.FindName("LT_Weixiu_Info_TextBox");
+            System.Windows.Controls.TextBox lT_Weixiu_Cost_TextBox = (System.Windows.Controls.TextBox)LT_Weixiu_Cost_Grid.FindName("LT_Weixiu_Cost_TextBox");
+            System.Windows.Controls.TextBox hN_Haocai_Info_TextBox = (System.Windows.Controls.TextBox)HN_Haocai_Info_Grid.FindName("HN_Haocai_Info_TextBox");
+            System.Windows.Controls.TextBox hN_Haocai_Cost_TextBox = (System.Windows.Controls.TextBox)HN_Haocai_Cost_Grid.FindName("HN_Haocai_Cost_TextBox");
+            System.Windows.Controls.TextBox hN_Weixiu_Info_TextBox = (System.Windows.Controls.TextBox)HN_Weixiu_Info_Grid.FindName("HN_Weixiu_Info_TextBox");
+            System.Windows.Controls.TextBox hN_Weixiu_Cost_TextBox = (System.Windows.Controls.TextBox)HN_Weixiu_Cost_Grid.FindName("HN_Weixiu_Cost_TextBox");
             if (string.IsNullOrEmpty(lT_Haocai_Info_TextBox.Text))
             {
                 list_InfoText.Add("0");
             }
-            else 
+            else
             {
                 list_InfoText.Add(lT_Haocai_Info_TextBox.Text);
             }
@@ -799,7 +805,7 @@ namespace MyApp
             {
                 list_CostText.Add("0");
             }
-            else 
+            else
             {
                 list_CostText.Add(lT_Weixiu_Cost_TextBox.Text);
             }
@@ -808,7 +814,7 @@ namespace MyApp
             {
                 list_CostText.Add("0");
             }
-            else 
+            else
             {
                 list_CostText.Add(hN_Haocai_Cost_TextBox.Text);
             }
@@ -817,27 +823,34 @@ namespace MyApp
             {
                 list_CostText.Add("0");
             }
-            else 
+            else
             {
                 list_CostText.Add(hN_Weixiu_Cost_TextBox.Text);
             }
 
-            Trace.WriteLine("list_InfoText的长度是:" + list_InfoText.Count);
-            Trace.WriteLine("list_CostText的长度是:" + list_CostText.Count);
-            for (int i = 0; i < 4; i++)
+            //Trace.WriteLine("list_InfoText的长度是:" + list_InfoText.Count);
+            //Trace.WriteLine("list_CostText的长度是:" + list_CostText.Count);
+            for (int i = 0; i < 2; i++)
             {
-                if (list_InfoText[i] != "0")
-                {
-                    fileOperate.InitMoneyRequestDOC(i, list_InfoText[i], list_CostText[i]);
-                }
-                else 
-                {
-                    Trace.WriteLine("list_InfoText[" + i + "] = 0");
-                }
-                
+                //if (list_InfoText[i] != "0")
+                //{
+                //    fileOperate.InitMoneyRequestDOC(i, list_InfoText[i], list_CostText[i]);
+                //}
+                //else
+                //{
+                //    Trace.WriteLine("list_InfoText[" + i + "] = 0");
+                //}
             }
+            ////撰写联拓转账请示文档
+            //fileOperate.InitMoneyRequestDOC(0, list_InfoText[0], list_InfoText[1], list_CostText[0], list_CostText[1]);
+            ////撰写海纳转账请示文档
+            //fileOperate.InitMoneyRequestDOC(1, list_InfoText[2], list_InfoText[3], list_CostText[2], list_CostText[3]);
+            //撰写联拓转账请示文档
+            fileOperate.InitMoneyRequestXlsx(0, list_InfoText[0], list_InfoText[1], list_CostText[0], list_CostText[1]);
+            //撰写海纳转账请示文档
+            fileOperate.InitMoneyRequestXlsx(1, list_InfoText[2], list_InfoText[3], list_CostText[2], list_CostText[3]);
         }
-        
+
 
         /// <summary>
         /// 图片裁切页面内顶部标签页按钮(暂时用不到)
@@ -1021,18 +1034,18 @@ namespace MyApp
                 {
                     saveName = "未命名二维码";
                 }
-                else 
+                else
                 {
                     saveName = NormalQRCode_SaveName_TextBox.Text;
                 }
                 await NormalQRCodeGenerated.NormalQRCode_Generate(NormalQRCode_PagePath_TextBox.Text, Path.Combine(@"C:\Users\12040\Desktop\二维码", $"{saveName}.png"));
             }
-            
+
 
             foreach (var file in members_NormalQRCode)
             {
                 string filePath = file.FilePath;
-                await NormalQRCodeGenerated.WXQRCodeMultiplyGenerated(filePath);
+                await NormalQRCodeGenerated.NormalQRCodeMultiplyGenerated(filePath);
             }
         }
         /// <summary>
@@ -1113,11 +1126,52 @@ namespace MyApp
         /// <param name="e"></param>
         private async void WXQRCode_Multiply_Start_Click(object sender, RoutedEventArgs e)
         {
-            foreach (var file in members_WXQRCode)
+            int CurrentFileCount = members_WXQRCode.Count;
+            if (CurrentFileCount != 0)
             {
-                string filePath = file.FilePath;
-                await WXQRCodeGenerated.WXQRCodeMultiplyGenerated(filePath);
+                foreach (var file in members_WXQRCode)
+                {
+                    string filePath = file.FilePath;
+                    await WXQRCodeGenerated.WXQRCodeMultiplyGenerated(filePath);
+                }
             }
+            else 
+            {
+                await WXQRCodeGenerated.WXQRCodeSingleGenerated(textBox_ChanelName.Text, textBox_PagePath.Text, textBox_SaveName.Text);
+            }
+            
+        }
+        /// <summary>
+        /// 开始部署微信机器人
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TaskSchedulerDeploy_Start_Button_Click(object sender, RoutedEventArgs e)
+        {
+            string xmlFilePath = @"C:\Users\12040\source\repos\MyApp\MyApp\bin\Release\net8.0-windows\TaskSchedulerDeploy\每天早上7点发送团队预约信息至开放群.xml";
+            string taskName = "每天早上7点整发送团队预约数据到开放群";
+            // 检查当前用户是否是管理员
+            if (!TaskSchedulerDeploy.IsRunAsAdmin())
+            {
+                // 重新以管理员权限运行
+                var exeName = Process.GetCurrentProcess().MainModule.FileName;
+                var startInfo = new ProcessStartInfo(exeName)
+                {
+                    UseShellExecute = true,
+                    Verb = "runas" // 提升为管理员权限
+                };
+
+                try
+                {
+                    Process.Start(startInfo);
+                }
+                catch
+                {
+                    Console.WriteLine("无法提升为管理员权限，请手动以管理员身份运行程序！");
+                }
+                return;
+            }
+            TaskSchedulerDeploy.ImportTaskFromXmlUsingLibrary(xmlFilePath, taskName);
         }
         /// <summary>
         /// 菜单栏：添加水印按钮
@@ -1133,17 +1187,18 @@ namespace MyApp
                 MoneyRequestGrid.Visibility = Visibility.Collapsed;
                 NormalQRCodeGrid.Visibility = Visibility.Collapsed;
                 WXQRCodeGrid.Visibility = Visibility.Collapsed;
-                
+                TaskSchedulerDeployGrid.Visibility = Visibility.Collapsed;
                 //背景图片路径
-                string ImagePath = @"C:\Git\WPF\MyApp\bin\Release\net8.0-windows\Images\BG1.jpg";
+                string ImagePath = @"Images/BG7.jpg";
+                string absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ImagePath);
                 // 切换图片
-                CurrentImageBrush.ImageSource = new BitmapImage(new System.Uri(ImagePath, System.UriKind.Relative));
+                CurrentImageBrush.ImageSource = new BitmapImage(new System.Uri(absolutePath, System.UriKind.Relative));
                 //显示添加水印界面
                 MainGrid.Visibility = Visibility.Visible;
             }));
         }
         /// <summary>
-        /// 左侧菜单栏图片裁切按钮点击
+        /// 左侧菜单栏:图片裁切按钮点击
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1154,11 +1209,13 @@ namespace MyApp
             MoneyRequestGrid.Visibility = Visibility.Collapsed;
             NormalQRCodeGrid.Visibility = Visibility.Collapsed;
             WXQRCodeGrid.Visibility = Visibility.Collapsed;
+            TaskSchedulerDeployGrid.Visibility = Visibility.Collapsed;
 
             //背景图片路径
-            string ImagePath = @"C:\Git\WPF\MyApp\bin\Release\net8.0-windows\Images\BG2.jpg";
+            string ImagePath = @"Images/BG7.jpg";
+            string absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ImagePath);
             // 切换图片
-            CurrentImageBrush.ImageSource = new BitmapImage(new System.Uri(ImagePath, System.UriKind.Relative));
+            CurrentImageBrush.ImageSource = new BitmapImage(new System.Uri(absolutePath, System.UriKind.Relative));
             //显示图片裁切界面
             PictureCroppingGrid.Visibility = Visibility.Visible;
         }
@@ -1176,12 +1233,14 @@ namespace MyApp
                 MoneyRequestGrid.Visibility = Visibility.Collapsed;
                 NormalQRCodeGrid.Visibility = Visibility.Collapsed;
                 WXQRCodeGrid.Visibility = Visibility.Collapsed;
+                TaskSchedulerDeployGrid.Visibility = Visibility.Collapsed;
                 show_NoFile_Text(false);
 
                 //背景图片路径
-                string ImagePath = @"C:\Git\WPF\MyApp\bin\Release\net8.0-windows\Images\BG3.jpg";
+                string ImagePath = @"Images\BG4.jpg";
+                string absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ImagePath);
                 // 切换图片
-                CurrentImageBrush.ImageSource = new BitmapImage(new System.Uri(ImagePath, System.UriKind.Relative));
+                CurrentImageBrush.ImageSource = new BitmapImage(new System.Uri(absolutePath, System.UriKind.Relative));
 
                 a2A_Grid.Visibility = Visibility.Visible;
             }));
@@ -1200,12 +1259,14 @@ namespace MyApp
                 a2A_Grid.Visibility = Visibility.Collapsed;
                 NormalQRCodeGrid.Visibility = Visibility.Collapsed;
                 WXQRCodeGrid.Visibility = Visibility.Collapsed;
+                TaskSchedulerDeployGrid.Visibility = Visibility.Collapsed;
                 show_NoFile_Text(false);
 
                 //背景图片路径
-                string ImagePath = @"C:\Git\WPF\MyApp\bin\Release\net8.0-windows\Images\BG4.jpg";
+                string ImagePath = @"Images\BG4.jpg";
+                string absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ImagePath);
                 // 切换图片
-                CurrentImageBrush.ImageSource = new BitmapImage(new System.Uri(ImagePath, System.UriKind.Relative));
+                CurrentImageBrush.ImageSource = new BitmapImage(new System.Uri(absolutePath, System.UriKind.Relative));
                 //显示撰写转账请示文档界面
                 MoneyRequestGrid.Visibility = Visibility.Visible;
             }));
@@ -1224,17 +1285,19 @@ namespace MyApp
                 a2A_Grid.Visibility = Visibility.Collapsed;
                 MoneyRequestGrid.Visibility = Visibility.Collapsed;
                 WXQRCodeGrid.Visibility = Visibility.Collapsed;
+                TaskSchedulerDeployGrid.Visibility = Visibility.Collapsed;
                 show_NoFile_Text(false);
                 //背景图片路径
-                string ImagePath = @"C:\Git\WPF\MyApp\bin\Release\net8.0-windows\Images\BG5.jpg";
+                string ImagePath = @"Images\BG5.jpg";
+                string absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ImagePath);
                 // 切换图片
-                CurrentImageBrush.ImageSource = new BitmapImage(new System.Uri(ImagePath, System.UriKind.Relative));
+                CurrentImageBrush.ImageSource = new BitmapImage(new System.Uri(absolutePath, System.UriKind.Relative));
                 //显示通用二维码生成界面
                 NormalQRCodeGrid.Visibility = Visibility.Visible;
             }));
         }
         /// <summary>
-        /// 菜单栏按钮，点击微信二维码按钮
+        /// 菜单栏按钮：点击微信二维码按钮
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1247,13 +1310,40 @@ namespace MyApp
                 a2A_Grid.Visibility = Visibility.Collapsed;
                 MoneyRequestGrid.Visibility = Visibility.Collapsed;
                 NormalQRCodeGrid.Visibility = Visibility.Collapsed;
+                TaskSchedulerDeployGrid.Visibility = Visibility.Collapsed;
                 show_NoFile_Text(false);
                 //背景图片路径
-                string ImagePath = @"C:\Git\WPF\MyApp\bin\Release\net8.0-windows\Images\BG6.jpg";
+                string ImagePath = @"Images\BG5.jpg";
+                string absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ImagePath);
                 // 切换图片
-                CurrentImageBrush.ImageSource = new BitmapImage(new System.Uri(ImagePath, System.UriKind.Relative));
+                CurrentImageBrush.ImageSource = new BitmapImage(new System.Uri(absolutePath, System.UriKind.Relative));
                 //显示太阳码生成器界面
                 WXQRCodeGrid.Visibility = Visibility.Visible;
+            }));
+        }
+        /// <summary>
+        /// 菜单栏按钮：点击团队预约自动化按钮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MenuButton_WXBotDeploy_Click(object sender, RoutedEventArgs e)
+        {
+            this.Dispatcher.Invoke(new Action(() =>
+            {
+                MainGrid.Visibility = Visibility.Collapsed;
+                PictureCroppingGrid.Visibility = Visibility.Collapsed;
+                a2A_Grid.Visibility = Visibility.Collapsed;
+                MoneyRequestGrid.Visibility = Visibility.Collapsed;
+                NormalQRCodeGrid.Visibility = Visibility.Collapsed;
+                WXQRCodeGrid.Visibility = Visibility.Collapsed;
+                show_NoFile_Text(false);
+                //背景图片路径
+                string ImagePath = @"Images\BG7.jpg";
+                string absolutePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ImagePath);
+                // 切换图片
+                CurrentImageBrush.ImageSource = new BitmapImage(new System.Uri(absolutePath, System.UriKind.Relative));
+                //显示团队预约自动化界面
+                TaskSchedulerDeployGrid.Visibility = Visibility.Visible;
             }));
         }
         /// <summary>
@@ -1475,7 +1565,10 @@ namespace MyApp
             );
         }
 
-
+        private void Button_Test_Click(object sender, RoutedEventArgs e)
+        {
+            fileOperate.PdfCompress(@"C:\Users\12040\Desktop\测试3.pdf", @"C:\Users\12040\Desktop\水印工具Output\PDF压缩输出文件夹\输出.pdf",10);
+        }
     }
     /// <summary>
     /// DataGrid成员

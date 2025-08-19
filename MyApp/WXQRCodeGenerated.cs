@@ -29,23 +29,28 @@ namespace MyApp
         /// 单个生成二维码
         /// </summary>
         /// <returns></returns>
-        public static async Task WXQRCodeSingleGenerated(string ChanelName,string PagePath,string SaveName)
+        public static async Task WXQRCodeSingleGenerated(string ChanelName, string PagePath, string SaveName)
         {
             string accessToken = null;
             if (string.IsNullOrEmpty(ChanelName))
             {
                 // 获取 Access Token
                 accessToken = await GetAccessTokenWithCacheAsync(AppId, AppSecret);
+                if (string.IsNullOrEmpty(PagePath))
+                {
+                    PagePath = "pages/activity/activityDetail.html?data={\"id\":\"2a8742b650254760af8282c7d115acfe\"}";
+                }
             }
-            else 
+            else
             {
                 // 获取 Access Token
-                accessToken = await GetAccessTokenWithCacheAsync(AppId, AppSecret);
+                accessToken = await GetAccessTokenWithCacheAsync(AppId_Main, AppSecret_Main);
+                if (string.IsNullOrEmpty(PagePath))
+                {
+                    PagePath = "pages/guide/exhDetail.html?hall=" + ChanelName + "&id=fc9527a58fb172cf92d3aab1194b9790";
+                }
             }
-            if (string.IsNullOrEmpty(PagePath))
-            {
-                PagePath = "pages/activity/activityDetail.html?data={\"id\":\"2a8742b650254760af8282c7d115acfe\"}";
-            }
+
             if (string.IsNullOrEmpty(SaveName))
             {
                 SaveName = "未设置保存名称";
@@ -56,7 +61,7 @@ namespace MyApp
 
                 if (!Directory.Exists(outputDirectory))
                     Directory.CreateDirectory(outputDirectory);
-                
+
                 string finalPagePath = TransformString(PagePath);
                 string outputPath = Path.Combine(outputDirectory, $"{SaveName}.png");
 
@@ -89,6 +94,7 @@ namespace MyApp
 
                 // 获取 Access Token
                 string accessToken = await GetAccessTokenWithCacheAsync(AppId, AppSecret);
+                string accessToken_Main = await GetAccessTokenWithCacheAsync(AppId_Main, AppSecret_Main);
 
                 using (var workbook = new XLWorkbook(excelFilePath))
                 {
@@ -98,15 +104,35 @@ namespace MyApp
                     foreach (var row in rows.Skip(1)) // 跳过标题行
                     {
                         string fileName = row.Cell(1).GetValue<string>();
-                        string pagePath = row.Cell(2).GetValue<string>();
-                        string finalPagePath = TransformString(pagePath);
-                        if (string.IsNullOrWhiteSpace(fileName) || string.IsNullOrWhiteSpace(finalPagePath))
-                            continue;
+                        string ChanelName = row.Cell(2).GetValue<string>();
+                        string pagePath = row.Cell(3).GetValue<string>();
+                        string finalPagePath = null;
+                        //if (string.IsNullOrWhiteSpace(finalPagePath))
+                        //    continue;
+                        if (string.IsNullOrWhiteSpace(fileName))
+                            fileName = "Temp";
+
 
                         string outputPath = Path.Combine(outputDirectory, $"{fileName}.png");
+                        if (string.IsNullOrWhiteSpace(ChanelName))
+                        {
+                            finalPagePath = TransformString(pagePath);
+                            // 调用生成二维码方法
+                            await GenerateQRCodeAsync(accessToken, finalPagePath, outputPath);
+                        }
+                        else
+                        {
+                            Trace.WriteLine("_________ChanelName__________:" + ChanelName);
+                            Trace.WriteLine("_________id__________:" + pagePath);
+                            finalPagePath = TransformString_2(ChanelName, pagePath);
+                            // 调用生成二维码方法
+                            await GenerateQRCodeAsync(accessToken_Main, finalPagePath, outputPath);
 
-                        // 调用生成二维码方法
-                        await GenerateQRCodeAsync(accessToken, finalPagePath, outputPath);
+                        }
+                        Trace.WriteLine("_________finalPagePath__________:" + finalPagePath);
+                        
+
+                        
                     }
                 }
 
@@ -155,7 +181,7 @@ namespace MyApp
                     throw new Exception($"获取 Access Token 失败：{result}");
                 }
             }
-            else 
+            else
             {
                 // 如果有缓存且未过期，直接返回缓存的区博门户小程序 access_token
                 if (!string.IsNullOrEmpty(_cachedAccessToken_Main) && DateTime.UtcNow < _accessTokenExpiryTime_Main)
@@ -183,7 +209,7 @@ namespace MyApp
 
                     throw new Exception($"获取 Access Token 失败：{result}");
                 }
-            }  
+            }
         }
         /// <summary>
         /// 微信官方API,调用以返回二维码Buffer数据流
@@ -223,7 +249,7 @@ namespace MyApp
             }
         }
         /// <summary>
-        /// 截取字符串，生成正确的格式
+        /// 【活动预约】截取字符串，生成正确的PagePath格式
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
@@ -247,6 +273,16 @@ namespace MyApp
 
             // 不符合要求的输入返回原字符串
             return input;
+        }
+
+        /// <summary>
+        /// 【AR导览】截取字符串，生成正确的PagePath格式
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        static string TransformString_2(string Channel,string id)
+        {
+            return $"pages/guide/exhDetail?hall=" + Channel + "&id=" + id;
         }
     }
 }

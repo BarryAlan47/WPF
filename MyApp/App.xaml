@@ -888,7 +888,8 @@
                 </Setter>
             </Style>
             <!--#endregion-->
-
+            <!-- 半透明绿色背景 -->
+            <SolidColorBrush x:Key="SemiTransparentGreen" Color="#8028A745" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

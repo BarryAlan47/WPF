@@ -1,22 +1,27 @@
-﻿using iText.IO.Image;
-using iText.Kernel.Pdf.Extgstate;
+﻿using HandyControl.Tools.Extension;
+using iText.IO.Image;
 using iText.Kernel.Pdf;
+using iText.Kernel.Pdf.Extgstate;
+using iText.Kernel.Pdf.Xobject;
+using iText.Layout.Font;
 using Spire.Doc;
-using Spire.Xls;
+using Spire.Doc.Documents;
 using Spire.Pdf;
+using Spire.Pdf.Exporting;
+using Spire.Pdf.Graphics;
+using Spire.Xls;
+using Spire.Xls.AI;
 using System;
 using System.Collections;
-using System.IO;
-using Spire.Doc.Documents;
-using System.Drawing;
-using System.Text.RegularExpressions;
-using System.Drawing.Printing;
 using System.Diagnostics;
-using System.Text;
-using HandyControl.Tools.Extension;
-using iText.Layout.Font;
+using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.Drawing.Printing;
+using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace MyApp
 {
@@ -35,10 +40,21 @@ namespace MyApp
         //加载Excel水印图片
         SkiaSharp.SKBitmap bm = SkiaSharp.SKBitmap.Decode(Environment.CurrentDirectory + "\\WaterMarkPic\\ExcelWaterMark.png");
 
+        //联拓_转账请示模板文件路径
+        string LT_Template = Environment.CurrentDirectory + "\\Template\\联拓_转账申请.xlsx";
+        //海纳_转账请示模板文件路径
+        string HN_Template = Environment.CurrentDirectory + "\\Template\\海纳_转账申请.xlsx";
+
         //方正小标宋简体字体文件路径
         string FZXBSJW = Environment.CurrentDirectory + "\\Fonts\\FZXBSJW.TTF";
         //仿宋GB_2312字体文件路径
         string FSGB_2312 = Environment.CurrentDirectory + "\\Fonts\\仿宋_GB2312.ttf";
+        //方正仿宋GBK字体文件路径
+        string FZFS_GBK = Environment.CurrentDirectory + "\\Fonts\\FZXBSJW.TTF";
+        //方正黑体GBK字体文件路径
+        string FZHT_GBK = Environment.CurrentDirectory + "\\Fonts\\仿宋_GB2312.ttf";
+        //方正小标宋_GBK字体文件路径
+        string FZXBS_GBK = Environment.CurrentDirectory + "\\Fonts\\FZXBSJW.TTF";
         //获取Log文件内容
         public string LogsReader()
         {
@@ -157,14 +173,14 @@ namespace MyApp
                 iText.Kernel.Pdf.Canvas.PdfCanvas over = new iText.Kernel.Pdf.Canvas.PdfCanvas(pdfPage);
                 over.SaveState();
                 over.SetExtGState(gs1);
-                over.AddImageWithTransformationMatrix(img, w, 0, 0, h, x - (w / 2), y - (h / 2), true);
+                over.AddImageWithTransformationMatrix(img, w, 0, 0, h, x - (w / 2), y - (h / 2) +120, true);
                 over.RestoreState();
             }
 
             doc.Close();
         }
         /// <summary>
-        /// 为MP4视频文件添加水印
+        /// 为MP4视频文件添加水印、已废弃
         /// </summary>
         /// <param name="filePath"></param>
         /// <param name="fileDir"></param>
@@ -193,6 +209,11 @@ namespace MyApp
             //开始加水印
             System.Diagnostics.Process.Start(WaterMarkstartInfo);
         }
+        /// <summary>
+        /// 为视频添加水印
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="fileDir"></param>
         public void VideoWaterMark(string filePath,string fileDir)
         {
             //string position = "main_w-overlay_w-10:main_h-overlay_h-10";//水印位于视频右下角
@@ -344,6 +365,14 @@ namespace MyApp
                 Trace.WriteLine("处理图片时出错：" + ex.Message);
             }
         }
+        /// <summary>
+        /// 开始添加水印总入口
+        /// </summary>
+        /// <param name="fileOperate"></param>
+        /// <param name="filePath"></param>
+        /// <param name="fileDir"></param>
+        /// <param name="fileName"></param>
+        /// <param name="fileExtension"></param>
         public void StartAddWaterMark(FileOperate fileOperate, string filePath, string fileDir, string fileName, string fileExtension)
         {
             switch (fileExtension)
@@ -384,6 +413,153 @@ namespace MyApp
                     Trace.WriteLine("default");
                     break;
             }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <summary>
+        /// 压缩PDF文件，优化文本和图片以减少文件大小
+        /// </summary>
+        /// <param name="inputPath">输入PDF文件路径</param>
+        /// <param name="outputPath">压缩后输出的PDF文件路径</param>
+        /// <param name="imageQuality">图片质量（0-100），值越小质量越低</param>
+        public void PdfCompress(string inputPath, string outputPath, int imageQuality = 50)
+        {
+            // 加载PDF文档
+            Spire.Pdf.PdfDocument pdf = new Spire.Pdf.PdfDocument();
+            pdf.LoadFromFile(inputPath);
+
+            // 遍历每一页进行图片压缩
+            foreach (PdfPageBase page in pdf.Pages)
+            {
+                Image[] images = page.ExtractImages();
+                if (images != null && images.Length > 0)
+                {
+                    //遍历所有图片
+                    for (int j = 0; j < images.Length; j++)
+                    {
+                        Image image = images[j];
+                        PdfBitmap bp = new PdfBitmap(image);
+                        //降低图片的质量
+                        bp.Quality = 20;
+                        //用压缩后的图片替换原文档中的图片
+                        page.ReplaceImage(j, bp);
+                    }
+                }
+            }
+
+            //禁用incremental update
+            pdf.FileInfo.IncrementalUpdate = false;
+            //设置PDF文档的压缩级别
+            pdf.CompressionLevel = PdfCompressionLevel.Best;
+
+            // 保存压缩后的PDF
+            pdf.SaveToFile(outputPath);
+            pdf.Close();
+
+            Trace.WriteLine("PDF压缩完成，文件已保存至：" + outputPath);
+        }
+        /// <summary>
+        /// 压缩PDF文件，包括优化文本和图片
+        /// </summary>
+        /// <param name="inputPath">输入PDF文件路径</param>
+        /// <param name="outputPath">压缩后输出的PDF文件路径</param>
+        /// <param name="imageQuality">图片质量（0-100），值越小质量越低</param>
+        /// <summary>
+        /// 压缩PDF文件，包括优化文本和图片
+        /// </summary>
+        /// <param name="inputPath">输入PDF文件路径</param>
+        /// <param name="outputPath">压缩后输出的PDF文件路径</param>
+        /// <param name="imageQuality">图片质量（0-100），值越小质量越低</param>
+        //public void PdfCompress(string inputPath, string outputPath, int imageQuality = 50)
+        //{
+        //    PdfReader reader = new PdfReader(inputPath);
+        //    PdfWriter writer = new PdfWriter(outputPath, new WriterProperties().SetCompressionLevel(CompressionConstants.BEST_COMPRESSION));
+        //    iText.Kernel.Pdf.PdfDocument pdfDoc = new iText.Kernel.Pdf.PdfDocument(reader, writer);
+
+        //    for (int i = 1; i <= pdfDoc.GetNumberOfPages(); i++)
+        //    {
+        //        PdfPage page = pdfDoc.GetPage(i);
+        //        PdfResources resources = page.GetResources();
+        //        PdfDictionary xObjectDict = resources.GetResource(PdfName.XObject);
+
+        //        if (xObjectDict != null)
+        //        {
+        //            foreach (PdfName imgRef in xObjectDict.KeySet())
+        //            {
+        //                PdfStream stream = xObjectDict.GetAsStream(imgRef);
+        //                if (stream != null && stream.Get(PdfName.Subtype).Equals(PdfName.Image))
+        //                {
+        //                    try
+        //                    {
+        //                        PdfImageXObject imageXObject = new PdfImageXObject(stream);
+        //                        Image img = Image.FromStream(new MemoryStream(imageXObject.GetImageBytes()));
+        //                        Image compressedImage = CompressImage(img, imageQuality);
+
+        //                        byte[] compressedBytes;
+        //                        using (MemoryStream ms = new MemoryStream())
+        //                        {
+        //                            compressedImage.Save(ms, ImageFormat.Jpeg);
+        //                            compressedBytes = ms.ToArray();
+        //                        }
+
+        //                        // **修正代码**：使用 ImageDataFactory.Create() 创建 ImageData
+        //                        ImageData imageData = ImageDataFactory.Create(compressedBytes);
+        //                        PdfImageXObject newImageXObject = new PdfImageXObject(imageData);
+
+        //                        // 替换 PDF 中的图片
+        //                        stream.Clear();
+        //                        stream.SetData(newImageXObject.GetPdfObject().GetBytes());
+        //                    }
+        //                    catch (Exception ex)
+        //                    {
+        //                        Console.WriteLine($"图片压缩错误: {ex.Message}");
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    // 关闭文档
+        //    pdfDoc.Close();
+        //    Console.WriteLine("PDF压缩完成，文件已保存至：" + outputPath);
+        //}
+
+        /// <summary>
+        /// 压缩图片并降低质量
+        /// </summary>
+        /// <param name="image">原始图片</param>
+        /// <param name="quality">质量（0-100）</param>
+        /// <returns>压缩后的图片</returns>
+        private static Image CompressImage(Image image, int quality)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
+                EncoderParameters encoderParams = new EncoderParameters(1);
+                encoderParams.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, quality);
+
+                image.Save(ms, jpgEncoder, encoderParams);
+                return Image.FromStream(ms);
+            }
+        }
+
+        /// <summary>
+        /// 获取指定格式的图片编码器
+        /// </summary>
+        /// <param name="format">图片格式</param>
+        /// <returns>ImageCodecInfo 编码器</returns>
+        private static ImageCodecInfo GetEncoder(ImageFormat format)
+        {
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageEncoders();
+            foreach (ImageCodecInfo codec in codecs)
+            {
+                if (codec.FormatID == format.Guid)
+                {
+                    return codec;
+                }
+            }
+            return null;
         }
         /**
         * 在指定目录等分pdf
@@ -429,268 +605,515 @@ namespace MyApp
         /// <param name="Type"></param>
         /// <param name="InfoText"></param>
         /// <param name="CostText"></param>
-        public void InitMoneyRequestDOC(int Type, string InfoText, string CostText)
+        //public void InitMoneyRequestDOC(int Type, string HC_InfoText, string WX_InfoText, string HC_CostText, string WX_CostText)
+        //{
+        //    //上一月
+        //    string previous_month = DateTime.Parse(DateTime.Now.ToString("Y")).AddMonths(-1).ToString("yyyy年MM月");
+        //    string fileName = null;
+        //    //大写金额
+        //    string HC_COSTTEXT = null;
+        //    string WX_COSTTEXT = null;
+        //    string Sum_CostText = null;
+        //    string SUM_COSTTEXT = null;
+
+        //    //耗材金额转换大写
+        //    if (HC_CostText == "0" || HC_CostText == null)
+        //    {
+        //        HC_COSTTEXT = "金额错误";
+        //    }
+        //    else
+        //    {
+        //        HC_COSTTEXT = AaConvert.a2Afunc(HC_CostText);
+        //        if (!HC_CostText.Contains("."))
+        //        {
+        //            HC_CostText = HC_CostText + ".00";
+        //        }
+        //    }
+        //    //维修金额转换大写
+        //    if (WX_CostText == "0" || WX_CostText == null)
+        //    {
+        //        WX_COSTTEXT = "金额错误";
+        //    }
+        //    else
+        //    {
+        //        WX_COSTTEXT = AaConvert.a2Afunc(WX_CostText);
+        //        if (!WX_CostText.Contains("."))
+        //        {
+        //            WX_CostText = WX_CostText + ".00";
+        //        }
+        //    }
+        //    //合计金额转换大写
+        //    if ((HC_CostText != "0" || HC_CostText != null) &&(WX_CostText != "0" || WX_CostText != null)) 
+        //    {
+        //        if (float.TryParse(HC_CostText, out float number1))
+        //        {
+        //            Console.WriteLine(number1); // 输出 3.14
+        //        }
+        //        else
+        //        {
+        //            Console.WriteLine("转换失败");
+        //        }
+
+        //        if (float.TryParse(WX_CostText, out float number2))
+        //        {
+        //            Console.WriteLine(number2); // 输出 3.14
+        //        }
+        //        else
+        //        {
+        //            Console.WriteLine("转换失败");
+        //        }
+        //        Sum_CostText = (number1 + number2).ToString();
+        //        if (!Sum_CostText.Contains("."))
+        //        {
+        //            Sum_CostText = Sum_CostText + ".00";
+        //        }
+        //        SUM_COSTTEXT = AaConvert.a2Afunc(Sum_CostText);
+        //    }
+        //    //户名
+        //    string bodyParagraph_4_text = null;
+        //    //开户行
+        //    string bodyParagraph_5_text = null;
+        //    //银行账号
+        //    string bodyParagraph_6_text = null;
+        //    if (Type == 0)//0:联拓;1:海纳
+        //    {
+        //        bodyParagraph_4_text = "户  名：广西联拓信息技术有限公司";
+        //        bodyParagraph_5_text = "开户行：招商银行股份有限公司南宁分行";
+        //        bodyParagraph_6_text = "帐  号：7719 0192 1910 605";
+        //    }
+        //    else
+        //    {
+        //        bodyParagraph_4_text = "户  名：广西海纳电子科技有限公司";
+        //        bodyParagraph_5_text = "开户行：桂林银行南宁分行";
+        //        bodyParagraph_6_text = "账  号：6602 0000 8136 1000 10";
+        //    }
+        //    //创建一个Document对象
+        //    Document doc = new Document();
+
+        //    //添加section
+        //    Section section = doc.AddSection();
+
+        //    //设置页边距
+        //    section.PageSetup.Margins.Left = 90f;
+        //    section.PageSetup.Margins.Right = 90f;
+        //    section.PageSetup.Margins.Top = 72f;
+        //    section.PageSetup.Margins.Bottom = 72f;
+
+        //    //添加一个段落作为标题
+        //    Paragraph titleParagraph = section.AddParagraph();
+        //    titleParagraph.AppendText("转账请示");
+
+        //    Paragraph bodyParagraph_0 = section.AddParagraph();
+        //    bodyParagraph_0.AppendText("");
+        //    //添加两个段落作为正文
+        //    Paragraph bodyParagraph_1 = section.AddParagraph();
+        //    bodyParagraph_1.AppendText("馆领导：");
+
+
+        //    Paragraph bodyParagraph_2 = section.AddParagraph();
+        //    if (Type == 0)
+        //    {
+        //        fileName = "联拓_转账请示" + "_" + DateTime.Parse(DateTime.Now.ToString("Y")).ToString("yyyy_MM");
+
+        //        bodyParagraph_2.AppendText("我馆在"+ previous_month + "工作中,");
+
+        //        if (HC_InfoText != "0") 
+        //        {
+        //            bodyParagraph_2.AppendText("因办公需要,向广西联拓信息技术有限公司购买" +
+        //            HC_InfoText +
+        //            "等办公用品及耗材配件。耗材费用共计" +
+        //            HC_COSTTEXT +
+        //            "（¥" +
+        //            HC_CostText +
+        //            "）。");
+        //        }
+
+        //        if (WX_InfoText != "0") 
+        //        {
+        //            bodyParagraph_2.AppendText("部分" +
+        //            WX_InfoText +
+        //            "出现故障，需要维修或更换配件，维修费用共计" +
+        //            WX_COSTTEXT +
+        //            "（¥" +
+        //            WX_CostText +
+        //            "）。");
+        //        }
+
+        //        if (HC_InfoText != "0" && WX_InfoText != "0") 
+        //        {
+        //            bodyParagraph_2.AppendText("耗材及维修费用合计" + SUM_COSTTEXT + "（¥" +
+        //            Sum_CostText +
+        //            "）。");
+        //        }
+        //        bodyParagraph_2.AppendText("请财务给予转账，从本馆商品和服务费支出。");
+        //    }
+        //    else
+        //    {
+        //        fileName = "海纳_转账请示" + "_" + DateTime.Parse(DateTime.Now.ToString("Y")).ToString("yyyy_MM");
+
+        //        bodyParagraph_2.AppendText("我馆在" + previous_month + "工作中,");
+
+        //        if (HC_InfoText != "0")
+        //        {
+        //            bodyParagraph_2.AppendText("因办公需要，向广西海纳电子科技有限公司购买" +
+        //            HC_InfoText +
+        //            "等办公用品及耗材配件。耗材费用共计" +
+        //            HC_COSTTEXT +
+        //            "（¥" +
+        //            HC_CostText +
+        //            "）。");
+        //        }
+
+        //        if (WX_InfoText != "0")
+        //        {
+        //            bodyParagraph_2.AppendText("部分" +
+        //            WX_InfoText +
+        //            "出现故障，需要维修或更换配件，维修费用共计" +
+        //            WX_COSTTEXT +
+        //            "（¥" +
+        //            WX_CostText +
+        //            "）。");
+        //        }
+
+        //        if (HC_InfoText != "0" && WX_InfoText != "0")
+        //        {
+        //            bodyParagraph_2.AppendText("耗材及维修费用合计" + SUM_COSTTEXT + "（¥" +
+        //            Sum_CostText +
+        //            "）。");
+        //        }
+
+        //        bodyParagraph_2.AppendText("请财务给予转账，从本馆商品和服务费支出。");
+        //    }
+
+        //    Paragraph bodyParagraph_3 = section.AddParagraph();
+        //    bodyParagraph_3.AppendText("妥否，请领导审批。");
+
+        //    Paragraph bodyParagraph_00 = section.AddParagraph();
+        //    bodyParagraph_00.AppendText("");
+
+        //    Paragraph bodyParagraph_4 = section.AddParagraph();
+        //    bodyParagraph_4.AppendText(bodyParagraph_4_text);
+
+        //    Paragraph bodyParagraph_5 = section.AddParagraph();
+        //    bodyParagraph_5.AppendText(bodyParagraph_5_text);
+
+        //    Paragraph bodyParagraph_6 = section.AddParagraph();
+        //    bodyParagraph_6.AppendText(bodyParagraph_6_text);
+
+        //    Paragraph bodyParagraph_000 = section.AddParagraph();
+        //    bodyParagraph_000.AppendText("");
+
+        //    Paragraph bodyParagraph_7 = section.AddParagraph();
+        //    bodyParagraph_7.AppendText("网络和信息中心");
+
+        //    Paragraph bodyParagraph_8 = section.AddParagraph();
+        //    bodyParagraph_8.AppendText("经办人：______");
+
+        //    Paragraph bodyParagraph_9 = section.AddParagraph();
+        //    bodyParagraph_9.AppendText(DateTime.Now.ToString("yyyy年MM月dd日"));
+
+
+        //    //为标题段落创建样式
+        //    ParagraphStyle style1 = new ParagraphStyle(doc);
+        //    style1.Name = "titleStyle";
+        //    style1.CharacterFormat.Bold = false;
+        //    style1.CharacterFormat.TextColor = Color.Black;
+        //    style1.CharacterFormat.FontName = "方正小标宋简体";
+        //    style1.CharacterFormat.FontSize = 22;
+        //    doc.Styles.Add(style1);
+        //    titleParagraph.ApplyStyle("titleStyle");
+
+        //    //为正文段落创建样式
+        //    ParagraphStyle style2 = new ParagraphStyle(doc);
+        //    style2.Name = "paraStyle";
+        //    style2.CharacterFormat.FontName = "仿宋_GB2312";
+        //    style2.CharacterFormat.FontSize = 16;
+        //    doc.Styles.Add(style2);
+        //    bodyParagraph_1.ApplyStyle("paraStyle");
+        //    bodyParagraph_2.ApplyStyle("paraStyle");
+        //    bodyParagraph_3.ApplyStyle("paraStyle");
+        //    bodyParagraph_4.ApplyStyle("paraStyle");
+        //    bodyParagraph_5.ApplyStyle("paraStyle");
+        //    bodyParagraph_6.ApplyStyle("paraStyle");
+        //    bodyParagraph_7.ApplyStyle("paraStyle");
+        //    bodyParagraph_8.ApplyStyle("paraStyle");
+        //    bodyParagraph_9.ApplyStyle("paraStyle");
+
+        //    //为空白行创建样式
+        //    ParagraphStyle style3 = new ParagraphStyle(doc);
+        //    ParagraphStyle style4 = new ParagraphStyle(doc);
+        //    style3.Name = "spaceStyle_1";
+        //    style3.CharacterFormat.FontSize = 22;
+        //    doc.Styles.Add(style3);
+        //    style4.Name = "spaceStyle_2";
+        //    style4.CharacterFormat.FontSize = 36;
+        //    doc.Styles.Add(style4);
+        //    bodyParagraph_0.ApplyStyle("spaceStyle_1");
+        //    bodyParagraph_00.ApplyStyle("spaceStyle_2");
+        //    bodyParagraph_000.ApplyStyle("spaceStyle_2");
+
+        //    //设置段落的水平对齐方式
+        //    titleParagraph.Format.HorizontalAlignment = Spire.Doc.Documents.HorizontalAlignment.Center;
+        //    bodyParagraph_1.Format.HorizontalAlignment = Spire.Doc.Documents.HorizontalAlignment.Justify;
+        //    bodyParagraph_2.Format.HorizontalAlignment = Spire.Doc.Documents.HorizontalAlignment.Justify;
+        //    bodyParagraph_3.Format.HorizontalAlignment = Spire.Doc.Documents.HorizontalAlignment.Justify;
+        //    bodyParagraph_4.Format.HorizontalAlignment = Spire.Doc.Documents.HorizontalAlignment.Justify;
+        //    bodyParagraph_5.Format.HorizontalAlignment = Spire.Doc.Documents.HorizontalAlignment.Justify;
+        //    bodyParagraph_6.Format.HorizontalAlignment = Spire.Doc.Documents.HorizontalAlignment.Justify;
+        //    bodyParagraph_7.Format.HorizontalAlignment = Spire.Doc.Documents.HorizontalAlignment.Right;
+        //    bodyParagraph_8.Format.HorizontalAlignment = Spire.Doc.Documents.HorizontalAlignment.Right;
+        //    bodyParagraph_9.Format.HorizontalAlignment = Spire.Doc.Documents.HorizontalAlignment.Right;
+
+        //    //设置首行缩进
+        //    bodyParagraph_1.Format.FirstLineIndent = 0;
+        //    bodyParagraph_2.Format.FirstLineIndent = 30;
+        //    bodyParagraph_3.Format.FirstLineIndent = 30;
+        //    bodyParagraph_4.Format.FirstLineIndent = 0;
+        //    bodyParagraph_5.Format.FirstLineIndent = 0;
+        //    bodyParagraph_6.Format.FirstLineIndent = 0;
+        //    bodyParagraph_7.Format.FirstLineIndent = 0;
+        //    bodyParagraph_8.Format.FirstLineIndent = 0;
+        //    bodyParagraph_9.Format.FirstLineIndent = 0;
+
+        //    //设置行间距
+        //    bodyParagraph_2.Format.LineSpacing = 17f;
+        //    //设置后间距
+        //    titleParagraph.Format.AfterSpacing = 10;
+        //    bodyParagraph_0.Format.AfterSpacing = 10;
+        //    bodyParagraph_1.Format.AfterSpacing = 10;
+        //    bodyParagraph_2.Format.AfterSpacing = 10;
+        //    bodyParagraph_3.Format.AfterSpacing = 10;
+        //    bodyParagraph_4.Format.AfterSpacing = 10;
+        //    bodyParagraph_5.Format.AfterSpacing = 10;
+        //    bodyParagraph_6.Format.AfterSpacing = 10;
+        //    bodyParagraph_7.Format.AfterSpacing = 10;
+        //    bodyParagraph_8.Format.AfterSpacing = 10;
+        //    bodyParagraph_9.Format.AfterSpacing = 10;
+
+        //    //查找指定文本
+        //    TextSelection[] text1 = doc.FindAllString("______", false, true);
+        //    TextSelection[] text2 = doc.FindAllString("金额错误", false, true);
+        //    TextSelection text3 = doc.FindString("¥", false, false);
+        //    TextSelection text4 = doc.FindString("维修内容", false, false);
+
+        //    if (text1 != null)
+        //    {
+        //        //更改特定文本的字体颜色
+        //        foreach (TextSelection seletion in text1)
+        //        {
+        //            seletion.GetAsOneRange().CharacterFormat.TextColor = Color.White;
+        //        }
+        //    }
+
+        //    if (text2 != null)
+        //    {
+        //        foreach (TextSelection seletion in text2)
+        //        {
+        //            seletion.GetAsOneRange().CharacterFormat.TextColor = Color.Red;
+        //        }
+        //    }
+        //    if (text3 != null)
+        //    {
+        //        text3.GetAsOneRange().CharacterFormat.FontName = "宋体";
+        //    }
+
+        //    //保存文件
+        //    doc.SaveToFile(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\水印工具Output\转账请示文档\" + fileName + ".docx", Spire.Doc.FileFormat.Docx2016);
+        //    Word2PDF(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\水印工具Output\转账请示文档\" + fileName + ".docx", fileName);
+        //    //StartPrintPDF(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\水印工具Output\转账请示文档\" + fileName + ".pdf");
+        //    StartPrintDoc(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\水印工具Output\转账请示文档\" + fileName + ".docx");
+        //}
+
+        /// <summary>
+        /// 撰写转账请示xls表格
+        /// </summary>
+        /// <param name="filePath"></param>
+        public void InitMoneyRequestXlsx(int Type, string HC_InfoText, string WX_InfoText, string HC_CostText, string WX_CostText)
         {
+
+            //创建Workbook对象
+            Workbook wb = new Workbook();
+
+            if (Type == 0)//0:联拓;1:海纳
+            {
+                //加载Excel文档
+                wb.LoadFromFile(LT_Template);
+            }
+            else
+            {
+                //加载Excel文档
+                wb.LoadFromFile(LT_Template);
+            }
+
+            //获取第一张工作表
+            Worksheet sheet = wb.Worksheets[0];
+
+            //更改指定单元格的值
+            sheet.Range["A3"].Value = "部门：网络和信息中心                                           申请日期： " + DateTime.Now.ToString("yyyy年MM月dd日");
+
+            //string theReasonForTheRequest_Text = "";
+            var builder = new StringBuilder();
+
             //上一月
             string previous_month = DateTime.Parse(DateTime.Now.ToString("Y")).AddMonths(-1).ToString("yyyy年MM月");
             string fileName = null;
             //大写金额
-            string COSTTEXT = null;
-            //if (string.IsNullOrEmpty(InfoText))
-            if (InfoText == "0" || InfoText == null)
-            {
-                InfoText = "未正确填写耗材或维修内容";
-            }
+            string HC_COSTTEXT = null;
+            string WX_COSTTEXT = null;
+            string Sum_CostText = null;
+            string SUM_COSTTEXT = null;
 
-            //if (string.IsNullOrEmpty(CostText))
-            if (CostText == "0" || CostText == null)
+            //耗材金额转换大写
+            if (HC_CostText == "0" || HC_CostText == null)
             {
-                COSTTEXT = "金额错误";
+                HC_COSTTEXT = "金额错误";
             }
             else
             {
-                COSTTEXT = AaConvert.a2Afunc(CostText);
-                if (!CostText.Contains("."))
+                HC_COSTTEXT = AaConvert.a2Afunc(HC_CostText);
+                if (!HC_CostText.Contains("."))
                 {
-                    CostText = CostText + ".00";
+                    HC_CostText = HC_CostText + ".00";
                 }
             }
-            //户名
-            string bodyParagraph_4_text = null;
-            //开户行
-            string bodyParagraph_5_text = null;
-            //银行账号
-            string bodyParagraph_6_text = null;
-            if (Type == 0 || Type == 1)//联拓
+            //维修金额转换大写
+            if (WX_CostText == "0" || WX_CostText == null)
             {
-                bodyParagraph_4_text = "户  名：广西联拓信息技术有限公司";
-                bodyParagraph_5_text = "开户行：招商银行股份有限公司南宁分行";
-                bodyParagraph_6_text = "帐  号：771901921910605";
+                WX_COSTTEXT = "金额错误";
             }
             else
             {
-                bodyParagraph_4_text = "户  名：广西海纳电子科技有限公司";
-                bodyParagraph_5_text = "开户行：桂林银行南宁分行";
-                bodyParagraph_6_text = "账  号：6602 0000 8136 1000 10";
+                WX_COSTTEXT = AaConvert.a2Afunc(WX_CostText);
+                if (!WX_CostText.Contains("."))
+                {
+                    WX_CostText = WX_CostText + ".00";
+                }
             }
-            //创建一个Document对象
-            Document doc = new Document();
+            //合计金额转换大写
+            if ((HC_CostText != "0" || HC_CostText != null) && (WX_CostText != "0" || WX_CostText != null))
+            {
+                if (float.TryParse(HC_CostText, out float number1))
+                {
+                    //Console.WriteLine(number1); 
+                }
+                else
+                {
+                    Console.WriteLine("转换失败");
+                }
 
-            //添加section
-            Section section = doc.AddSection();
+                if (float.TryParse(WX_CostText, out float number2))
+                {
+                    //Console.WriteLine(number2); 
+                }
+                else
+                {
+                    Console.WriteLine("转换失败");
+                }
 
-            //设置页边距
-            section.PageSetup.Margins.Left = 90f;
-            section.PageSetup.Margins.Right = 90f;
-            section.PageSetup.Margins.Top = 72f;
-            section.PageSetup.Margins.Bottom = 72f;
+                Sum_CostText = (number1 + number2).ToString();
 
-            //添加一个段落作为标题
-            Paragraph titleParagraph = section.AddParagraph();
-            titleParagraph.AppendText("转账请示");
+                if (!Sum_CostText.Contains("."))
+                {
+                    Sum_CostText = Sum_CostText + ".00";
+                }
+                SUM_COSTTEXT = AaConvert.a2Afunc(Sum_CostText);
+            }
 
-            Paragraph bodyParagraph_0 = section.AddParagraph();
-            bodyParagraph_0.AppendText("");
-            //添加两个段落作为正文
-            Paragraph bodyParagraph_1 = section.AddParagraph();
-            bodyParagraph_1.AppendText("馆领导：");
-
-
-            Paragraph bodyParagraph_2 = section.AddParagraph();
             if (Type == 0)
             {
-                fileName = "联拓_办公耗材_转账请示" + "_" + DateTime.Parse(DateTime.Now.ToString("Y")).ToString("yyyy_MM");
+                fileName = "联拓_转账请示" + "_" + DateTime.Parse(DateTime.Now.ToString("Y")).ToString("yyyy_MM");
 
-                bodyParagraph_2.AppendText("我馆因办公需要，向广西联拓信息技术有限公司购买" +
-                InfoText +
-                "等办公用品及耗材配件。" +
-                previous_month +
-                "的费用共计" +
-                COSTTEXT +
-                "（¥" +
-                CostText +
-                "）。现所有物品已到位使用，请财务给予转账，从部门办公耗材经费支出。");
-            }
-            else if (Type == 1)
-            {
-                fileName = "联拓_维修_转账请示" + "_" + DateTime.Parse(DateTime.Now.ToString("Y")).ToString("yyyy_MM");
-                bodyParagraph_2.AppendText("我馆在" +
-                    previous_month +
-                    "工作中，部分" +
-                    InfoText +
-                    "出现故障，需要维修及更换配件，费用合计" +
-                    COSTTEXT +
-                    "（¥" +
-                    CostText +
-                    "）(详见清单)。请财务给予转账，从部门办公设备维修维护经费支出。");
-            }
-            else if (Type == 2)
-            {
-                fileName = "海纳_办公耗材_转账请示" + "_" + DateTime.Parse(DateTime.Now.ToString("Y")).ToString("yyyy_MM");
-                bodyParagraph_2.AppendText("我馆因办公需要，" +
-                    previous_month +
-                    "向广西海纳电子科技有限公司购买" +
-                    InfoText +
-                    "等办公用品及耗材配件，费用共计" +
-                    COSTTEXT +
-                    "（¥" +
-                    CostText +
-                    "）（详见清单）。请财务给予转账，从部门办公耗材经费支出。");
+                //theReasonForTheRequest_Text += "我馆在" + previous_month + "工作中,";
+                builder.Append("     我馆在");
+                builder.Append(previous_month);
+                builder.Append("工作中,");
+
+                if (HC_InfoText != "0")
+                {
+                    builder.Append("因办公需要,向广西联拓信息技术有限公司购买");
+                    builder.Append(HC_InfoText);
+                    builder.Append("等办公用品及耗材配件。耗材费用共计");
+                    builder.Append(HC_COSTTEXT);
+                    builder.Append("（¥");
+                    builder.Append(HC_CostText);
+                    builder.Append("）。");
+                }
+
+                if (WX_InfoText != "0")
+                {
+                    builder.Append("部分");
+                    builder.Append(WX_InfoText);
+                    builder.Append("出现故障，需要维修或更换配件，维修费用共计");
+                    builder.Append(WX_COSTTEXT);
+                    builder.Append("（¥");
+                    builder.Append(WX_CostText);
+                    builder.Append("）。");
+                }
+
+                if (HC_InfoText != "0" && WX_InfoText != "0")
+                {
+                    builder.Append("耗材及维修费用合计");
+                    builder.Append(SUM_COSTTEXT);
+                    builder.Append("（¥");
+                    builder.Append(Sum_CostText);
+                    builder.Append("）。");
+                }
+                builder.Append("请财务给予转账，从本馆商品和服务费支出。");
             }
             else
             {
-                fileName = "海纳_维修_转账请示" + "_" + DateTime.Parse(DateTime.Now.ToString("Y")).ToString("yyyy_MM");
-                bodyParagraph_2.AppendText("我馆在" +
-                    previous_month +
-                    "工作中，部分" +
-                    InfoText +
-                    "出现故障，需要维修及更换配件，费用合计" +
-                    COSTTEXT +
-                    "（¥" +
-                    CostText +
-                    "）(详见清单)。请财务给予转账，从部门办公设备维修维护经费支出。");
-            }
+                fileName = "海纳_转账请示" + "_" + DateTime.Parse(DateTime.Now.ToString("Y")).ToString("yyyy_MM");
 
-            Paragraph bodyParagraph_3 = section.AddParagraph();
-            bodyParagraph_3.AppendText("妥否，请领导审批。");
+                builder.Append("     我馆在");
+                builder.Append(previous_month);
+                builder.Append("工作中,");
 
-            Paragraph bodyParagraph_00 = section.AddParagraph();
-            bodyParagraph_00.AppendText("");
-
-            Paragraph bodyParagraph_4 = section.AddParagraph();
-            bodyParagraph_4.AppendText(bodyParagraph_4_text);
-
-            Paragraph bodyParagraph_5 = section.AddParagraph();
-            bodyParagraph_5.AppendText(bodyParagraph_5_text);
-
-            Paragraph bodyParagraph_6 = section.AddParagraph();
-            bodyParagraph_6.AppendText(bodyParagraph_6_text);
-
-            Paragraph bodyParagraph_000 = section.AddParagraph();
-            bodyParagraph_000.AppendText("");
-
-            Paragraph bodyParagraph_7 = section.AddParagraph();
-            bodyParagraph_7.AppendText("网络和信息中心");
-
-            Paragraph bodyParagraph_8 = section.AddParagraph();
-            bodyParagraph_8.AppendText("经办人：______");
-
-            Paragraph bodyParagraph_9 = section.AddParagraph();
-            bodyParagraph_9.AppendText(DateTime.Now.ToString("yyyy年MM月dd日"));
-
-
-            //为标题段落创建样式
-            ParagraphStyle style1 = new ParagraphStyle(doc);
-            style1.Name = "titleStyle";
-            style1.CharacterFormat.Bold = false;
-            style1.CharacterFormat.TextColor = Color.Black;
-            style1.CharacterFormat.FontName = "方正小标宋简体";
-            style1.CharacterFormat.FontSize = 22;
-            doc.Styles.Add(style1);
-            titleParagraph.ApplyStyle("titleStyle");
-
-            //为正文段落创建样式
-            ParagraphStyle style2 = new ParagraphStyle(doc);
-            style2.Name = "paraStyle";
-            style2.CharacterFormat.FontName = "仿宋_GB2312";
-            style2.CharacterFormat.FontSize = 16;
-            doc.Styles.Add(style2);
-            bodyParagraph_1.ApplyStyle("paraStyle");
-            bodyParagraph_2.ApplyStyle("paraStyle");
-            bodyParagraph_3.ApplyStyle("paraStyle");
-            bodyParagraph_4.ApplyStyle("paraStyle");
-            bodyParagraph_5.ApplyStyle("paraStyle");
-            bodyParagraph_6.ApplyStyle("paraStyle");
-            bodyParagraph_7.ApplyStyle("paraStyle");
-            bodyParagraph_8.ApplyStyle("paraStyle");
-            bodyParagraph_9.ApplyStyle("paraStyle");
-
-            //为空白行创建样式
-            ParagraphStyle style3 = new ParagraphStyle(doc);
-            ParagraphStyle style4 = new ParagraphStyle(doc);
-            style3.Name = "spaceStyle_1";
-            style3.CharacterFormat.FontSize = 22;
-            doc.Styles.Add(style3);
-            style4.Name = "spaceStyle_2";
-            style4.CharacterFormat.FontSize = 36;
-            doc.Styles.Add(style4);
-            bodyParagraph_0.ApplyStyle("spaceStyle_1");
-            bodyParagraph_00.ApplyStyle("spaceStyle_2");
-            bodyParagraph_000.ApplyStyle("spaceStyle_2");
-
-            //设置段落的水平对齐方式
-            titleParagraph.Format.HorizontalAlignment = Spire.Doc.Documents.HorizontalAlignment.Center;
-            bodyParagraph_1.Format.HorizontalAlignment = Spire.Doc.Documents.HorizontalAlignment.Justify;
-            bodyParagraph_2.Format.HorizontalAlignment = Spire.Doc.Documents.HorizontalAlignment.Justify;
-            bodyParagraph_3.Format.HorizontalAlignment = Spire.Doc.Documents.HorizontalAlignment.Justify;
-            bodyParagraph_4.Format.HorizontalAlignment = Spire.Doc.Documents.HorizontalAlignment.Justify;
-            bodyParagraph_5.Format.HorizontalAlignment = Spire.Doc.Documents.HorizontalAlignment.Justify;
-            bodyParagraph_6.Format.HorizontalAlignment = Spire.Doc.Documents.HorizontalAlignment.Justify;
-            bodyParagraph_7.Format.HorizontalAlignment = Spire.Doc.Documents.HorizontalAlignment.Right;
-            bodyParagraph_8.Format.HorizontalAlignment = Spire.Doc.Documents.HorizontalAlignment.Right;
-            bodyParagraph_9.Format.HorizontalAlignment = Spire.Doc.Documents.HorizontalAlignment.Right;
-
-            //设置首行缩进
-            bodyParagraph_1.Format.FirstLineIndent = 0;
-            bodyParagraph_2.Format.FirstLineIndent = 30;
-            bodyParagraph_3.Format.FirstLineIndent = 30;
-            bodyParagraph_4.Format.FirstLineIndent = 0;
-            bodyParagraph_5.Format.FirstLineIndent = 0;
-            bodyParagraph_6.Format.FirstLineIndent = 0;
-            bodyParagraph_7.Format.FirstLineIndent = 0;
-            bodyParagraph_8.Format.FirstLineIndent = 0;
-            bodyParagraph_9.Format.FirstLineIndent = 0;
-
-            //设置行间距
-            bodyParagraph_2.Format.LineSpacing = 17f;
-            //设置后间距
-            titleParagraph.Format.AfterSpacing = 10;
-            bodyParagraph_0.Format.AfterSpacing = 10;
-            bodyParagraph_1.Format.AfterSpacing = 10;
-            bodyParagraph_2.Format.AfterSpacing = 10;
-            bodyParagraph_3.Format.AfterSpacing = 10;
-            bodyParagraph_4.Format.AfterSpacing = 10;
-            bodyParagraph_5.Format.AfterSpacing = 10;
-            bodyParagraph_6.Format.AfterSpacing = 10;
-            bodyParagraph_7.Format.AfterSpacing = 10;
-            bodyParagraph_8.Format.AfterSpacing = 10;
-            bodyParagraph_9.Format.AfterSpacing = 10;
-
-            //查找指定文本
-            TextSelection[] text1 = doc.FindAllString("______", false, true);
-            TextSelection[] text2 = doc.FindAllString("金额错误", false, true);
-            TextSelection text3 = doc.FindString("¥", false, false);
-            TextSelection text4 = doc.FindString("维修内容", false, false);
-
-            if (text1 != null)
-            {
-                //更改特定文本的字体颜色
-                foreach (TextSelection seletion in text1)
+                if (HC_InfoText != "0")
                 {
-                    seletion.GetAsOneRange().CharacterFormat.TextColor = Color.White;
+                    builder.Append("因办公需要，向广西海纳电子科技有限公司购买");
+                    builder.Append(HC_InfoText);
+                    builder.Append("等办公用品及耗材配件。耗材费用共计");
+                    builder.Append(HC_COSTTEXT);
+                    builder.Append("（¥");
+                    builder.Append(HC_CostText);
+                    builder.Append("）。");
                 }
-            }
 
-            if (text2 != null)
-            {
-                foreach (TextSelection seletion in text2)
+                if (WX_InfoText != "0")
                 {
-                    seletion.GetAsOneRange().CharacterFormat.TextColor = Color.Red;
+                    builder.Append("部分");
+                    builder.Append(WX_InfoText);
+                    builder.Append("出现故障，需要维修或更换配件，维修费用共计");
+                    builder.Append(WX_COSTTEXT);
+                    builder.Append("（¥");
+                    builder.Append(WX_CostText);
+                    builder.Append("）。");
                 }
-            }
-            if (text3 != null)
-            {
-                //text3.GetAsOneRange().CharacterFormat.FontName = "宋体";
-            }
-            if (text4 != null)
-            {
-                //text4.GetAsOneRange().CharacterFormat.TextColor = Color.Red;
-            }
 
-            //保存文件
-            doc.SaveToFile(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\水印工具Output\转账请示文档\" + fileName + ".docx", Spire.Doc.FileFormat.Docx2016);
-            Word2PDF(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\水印工具Output\转账请示文档\" + fileName + ".docx", fileName);
-            //StartPrintPDF(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\水印工具Output\转账请示文档\" + fileName + ".pdf");
+                if (HC_InfoText != "0" && WX_InfoText != "0")
+                {
+                    builder.Append("耗材及维修费用合计");
+                    builder.Append(SUM_COSTTEXT);
+                    builder.Append("（¥");
+                    builder.Append(Sum_CostText);
+                    builder.Append("）。");
+                }
+
+                builder.Append("请财务给予转账，从本馆商品和服务费支出。");
+            }
+            builder.AppendLine();
+            builder.AppendLine();
+            builder.Append("     妥否，请领导审批。");
+
+            string theReasonForTheRequest_Text = builder.ToString();
+
+            sheet.Range["B4"].Value = theReasonForTheRequest_Text;
+
+            sheet.Range["B5"].Value = Sum_CostText;
+
+            //保存结果文件
+            wb.SaveToFile(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\水印工具Output\转账请示文档\" + fileName + ".xlsx", ExcelVersion.Version2016);
+            StartPrintExcel(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\水印工具Output\转账请示文档\" + fileName + ".xlsx");
         }
         /// <summary>
         /// 打印Doc文件
@@ -722,11 +1145,50 @@ namespace MyApp
             //加载PDF文档
             var doc = new Spire.Pdf.PdfDocument();
             doc.LoadFromFile(filePath);
-
-            //静默打印PDF文档
             PrintDocument printDoc = doc.PrintDocument;
             printDoc.PrintController = new StandardPrintController();
             printDoc.Print();
+
+        }
+        /// <summary>
+        /// 打印Excel文件
+        /// </summary>
+        /// <param name="filePath"></param>
+        public void StartPrintExcel(string filePath)
+        {
+            var excelType = Type.GetTypeFromProgID("Excel.Application");
+            dynamic excelApp = Activator.CreateInstance(excelType);
+            excelApp.Visible = false;
+
+            dynamic workbook = excelApp.Workbooks.Open(filePath);
+            workbook.PrintOut();
+            workbook.Close(false);
+            excelApp.Quit();
+
+            //// 创建Workbook对象
+            //Workbook workbook = new Workbook();
+
+            //// 加载Excel文档
+            //workbook.LoadFromFile("测试.xlsx");
+
+            //// 将工作表打印到一页纸上  
+            //Spire.Xls.PageSetup pageSetup = workbook.Worksheets[0].PageSetup;
+            //pageSetup.IsFitToPage = true;
+
+            //// 将打印控制器设置为StandardPrintController，防止显示打印过程
+            //workbook.PrintDocument.PrintController = new StandardPrintController();
+
+            //// 从工作簿中获取打印机设置
+            //PrinterSettings settings = workbook.PrintDocument.PrinterSettings;
+
+            //// 指定打印机名称、双面打印模式和打印页数
+            ////settings.PrinterName = "HP LaserJet P1007";
+            ////settings.Duplex = Duplex.Simplex;
+            ////settings.FromPage = 1;
+            ////settings.ToPage = 3;
+
+            //// 打印工作簿
+            //workbook.PrintDocument.Print();
         }
         /// <summary>
         /// Word转PDF

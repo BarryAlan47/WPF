@@ -11,7 +11,31 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\a2A1.jpg" />
+    <None Remove="Images\a2A2.jpg" />
+    <None Remove="Images\a2A3.png" />
+    <None Remove="Images\BG1.jpg" />
+    <None Remove="Images\BG10.jpg" />
+    <None Remove="Images\BG11.jpg" />
+    <None Remove="Images\BG12.jpg" />
+    <None Remove="Images\BG13.jpg" />
+    <None Remove="Images\BG14.jpg" />
+    <None Remove="Images\BG15.jpg" />
+    <None Remove="Images\BG2.jpg" />
+    <None Remove="Images\BG3.jpg" />
+    <None Remove="Images\BG33.jpg" />
+    <None Remove="Images\BG4.jpg" />
+    <None Remove="Images\BG44.jpg" />
+    <None Remove="Images\BG5.jpg" />
+    <None Remove="Images\BG6.jpg" />
+    <None Remove="Images\BG7.jpg" />
+    <None Remove="Images\BG8.jpg" />
+    <None Remove="Images\BG9.jpg" />
+    <None Remove="Images\icon.ico" />
     <None Remove="Images\p1.jpg" />
+    <None Remove="Images\p2.jpg" />
+    <None Remove="Images\p3.jpg" />
+    <None Remove="Images\背景3%28已裁切%29.jpg" />
     <None Remove="左侧图.jpg" />
   </ItemGroup>
 
@@ -30,14 +54,76 @@
     <PackageReference Include="itext7" Version="8.0.5" />
     <PackageReference Include="itext7.bouncy-castle-adapter" Version="8.0.5" />
     <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="4.11.0" />
+    <PackageReference Include="Microsoft.Office.Interop.Excel" Version="15.0.4795.1001" />
     <PackageReference Include="OfficeOpenXml.Core.ExcelPackage" Version="1.0.0" />
     <PackageReference Include="QRCoder" Version="1.6.0" />
     <PackageReference Include="System.Text.Json" Version="9.0.0" />
+    <PackageReference Include="TaskScheduler" Version="2.11.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\a2A1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\a2A2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\a2A3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\BG1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\BG10.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\BG11.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\BG12.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\BG13.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\BG14.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\BG2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\BG3.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\BG4.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\BG5.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\BG6.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\BG7.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\BG8.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\BG9.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\icon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Images\p1.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\p2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\p3.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="左侧图.jpg" />
   </ItemGroup>

@@ -77,7 +77,7 @@ namespace MyApp
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns></returns>
-        public static async Task WXQRCodeMultiplyGenerated(string filePath)
+        public static async Task NormalQRCodeMultiplyGenerated(string filePath)
         {
             Trace.WriteLine($"WXQRCode Multiplied: {filePath}");
             try
@@ -114,6 +114,39 @@ namespace MyApp
             {
                 Trace.WriteLine($"发生错误：{ex.Message}");
             }
+        }
+        /// <summary>
+        /// 临时函数：生成连接WIFI的二维码
+        /// </summary>
+        /// <returns></returns>
+        public static async Task WifiQRCode_Generate()
+        {
+            // WiFi 信息
+            string ssid = "gxmuseum";  // WiFi 名称
+            string password = "88888888"; // WiFi 密码
+            string authType = "WPA";        // 认证类型：WPA、WEP、nopass
+
+            string outputDirectory = @"C:\Users\12040\Desktop\二维码";  // 输出目录路径
+            string SaveName = "WIFI二维码";
+            string outputPath = Path.Combine(outputDirectory, $"{SaveName}.png");
+
+            // 构造 WiFi 连接内容
+            string wifiString = $"WIFI:S:{ssid};T:{authType};P:{password};;";
+
+            // 生成二维码
+            //using (QRCodeGenerator qrGenerator = new QRCodeGenerator())
+            //{
+            //    QRCodeData qrCodeData = qrGenerator.CreateQrCode(wifiString, QRCodeGenerator.ECCLevel.Q);
+            //    using (QRCode qrCode = new QRCode(qrCodeData))
+            //    {
+            //        using (Bitmap qrCodeImage = qrCode.GetGraphic(20))
+            //        {
+            //            // 保存二维码为图片文件
+            //            qrCodeImage.Save(outputPath, ImageFormat.Png);
+            //        }
+            //    }
+            //}
+            await NormalQRCode_Generate(wifiString, outputPath);
         }
     }
 }
